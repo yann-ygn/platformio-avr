@@ -2,5 +2,6 @@
     "board": "ATTinyCore:avr:attinyx5",
     "configuration": "LTO=disable,TimerClockSource=default,chip=85,clock=8internal,bod=disable",
     "sketch": "src\\relay_switching\\relay_switching.ino",
-    "port": "COM3"
+    "port": "COM3",
+    "programmer": "Arduino as ISP"
 }

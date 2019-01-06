@@ -1,7 +1,7 @@
 #include <arduino.h>
 
-#define FOOTSWITCH 3
-#define RELAY 4
+#define FOOTSWITCH 4
+#define RELAY 3
 #define OK 0
 #define STARTUPSTATE 1
 
