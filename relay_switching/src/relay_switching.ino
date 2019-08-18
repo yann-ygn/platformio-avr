@@ -2,7 +2,9 @@
 
 #define FOOTSWITCH 4
 #define RELAY 3
-#define J175 0
+#define OK 2
+#define LED 1
+#define STARTUPSTATE 0
 
 long int now;
 int switchState;
@@ -15,10 +17,14 @@ int footSwitchPress();
 void setup()
 {
     pinMode(FOOTSWITCH, INPUT_PULLUP);
+    pinMode(STARTUPSTATE, INPUT_PULLUP);
     pinMode(RELAY, OUTPUT);
-    pinMode(J175, OUTPUT);
+    pinMode(OK, OUTPUT);
+    pinMode(LED, OUTPUT);
 
+    relayState = digitalRead(STARTUPSTATE);
     digitalWrite(RELAY, relayState);
+    digitalWrite(LED, relayState);
 }
 
 void loop()
@@ -30,22 +36,12 @@ void loop()
         lastPressTime = now;
         relayState = !relayState;
 
-        switch (relayState)
-        {            
-            // Effect -> Bypass
-            case 0:
-                digitalWrite(J175, HIGH);
-                delay(10);
-                digitalWrite(RELAY, relayState);
-            break;
-            
-            // Bypass -> Effect
-            case 1:
-                digitalWrite(RELAY, relayState);
-                delay(10);
-                digitalWrite(J175, LOW);
-            break;
-        }
+        digitalWrite(OK, HIGH);
+        delay(5);
+        digitalWrite(RELAY, relayState);
+        digitalWrite(LED, relayState);
+        delay(5);
+        digitalWrite(OK, LOW);
     }
 }
 
