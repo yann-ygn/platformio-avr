@@ -9,7 +9,7 @@
 long int now;
 int switchState;
 int lastSwitchState = 0;
-int relayState = 0;
+int relayState = 0; 
 long int lastPressTime = 0;
 
 int footSwitchPress();
