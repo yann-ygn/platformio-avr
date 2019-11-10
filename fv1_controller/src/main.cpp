@@ -17,16 +17,5 @@ void setup()
 
 void loop()
 {
-  if (pot0.potTurned())
-  {
-    Serial.println(pot0.getPotValue());
-  }
-  if (pot1.potTurned())
-  {
-    Serial.println(pot1.getPotValue());
-  }
-  if (pot2.potTurned())
-  {
-    Serial.println(pot2.getPotValue());
-  }
+  
 }
