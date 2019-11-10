@@ -15,7 +15,7 @@ class Pot
         Pot(byte pin);
         void potSetup();
         int getPotValue();
-        boolean potTurned();
+        bool potTurned();
 };
 
 #endif

@@ -24,7 +24,7 @@ int Pot::getPotValue()
     return m_currPotValue;
 }
 
-boolean Pot::potTurned()
+bool Pot::potTurned()
 {
     m_currPotValue = readPotValue();
 
