@@ -23,6 +23,19 @@ void setup()
 
 void loop()
 {
+  tap0.m_now = millis();
+  tap0.tapTimeout();
+
+  if (tap0.tapPressed())
+  {
+    tap0.setTapCount();
+
+    if (tap0.getTapCount >= tap0.c_maxTaps)
+    {
+      
+    }
+  }
+
   if (pot0.potTurned())
   {
     Serial.println(pot0.getPotValue());
