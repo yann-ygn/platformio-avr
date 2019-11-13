@@ -6,19 +6,24 @@
 class Tap
 {
     private:
-        byte m_pin;
+        byte m_tapPin;
         byte m_ledPin;
-        byte m_timesTapped;
-        bool m_stillTaping;
-        bool m_tapState;
-        bool m_lastTapState;
-        unsigned long m_firstTapTime;
-        unsigned long m_lastTaptime;
-        int m_interval;
+        byte m_timesTapped = 0;
+        bool m_stillTaping = 0;
+        bool m_tapState = 0;
+        bool m_lastTapState = 0;
+        unsigned long m_firstTapTime = 0;
+        unsigned long m_lastTaptime = 0;
+        int m_interval = 0;
         const int c_maxInterval = 1000;
 
     public:
-        Tap (byte pin, byte ledPin);
+        Tap (byte pin, byte ledPin)
+            : m_tapPin(pin),
+            m_ledPin(ledPin)
+        {
+
+        }
         void tapSetup();
         bool tapPressed();
         void setTapCount();
@@ -28,8 +33,8 @@ class Tap
         void setInterval();
         int getInterval();
 
-        unsigned long m_now;
-        bool m_newInterval;
+        unsigned long m_now = 0;
+        bool m_newInterval = 0;
         const byte c_maxTaps = 3;
 };
 

@@ -29,11 +29,6 @@ void loop()
   if (tap0.tapPressed())
   {
     tap0.setTapCount();
-
-    if (tap0.getTapCount >= tap0.c_maxTaps)
-    {
-      
-    }
   }
 
   if (pot0.potTurned())
