@@ -8,20 +8,23 @@ void Bypass::bypassSetup()
     pinMode(m_ledPin, OUTPUT);
     pinMode(m_okPin, OUTPUT),
     pinMode(m_switchPin, INPUT_PULLUP);
+    pinMode(m_startupPin, INPUT_PULLUP);
 
-    digitalWrite(m_relayPin, LOW);
+    m_relayState = digitalRead(m_startupPin);
     digitalWrite(m_okPin, LOW);
-    digitalWrite(m_ledPin, LOW);
+    digitalWrite(m_ledPin, m_relayState);
+    digitalWrite(m_relayPin, m_relayState);
 }
 
 boolean Bypass::bypassPressed()
 {
     m_switchState = digitalRead(m_switchPin);
 
-    if (m_switchState == LOW && m_now - m_lastPressTime > c_debounceTime && m_switchState != m_lastSwtichState)
+    if (m_switchState == LOW 
+        && m_now - m_lastPressTime > c_debounceTime 
+        && m_switchState != m_lastSwtichState)
     {
-        m_lastPressTime = m_now;
-        
+        m_lastPressTime = m_now;        
         return true;
     }
     else

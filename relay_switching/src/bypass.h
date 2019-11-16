@@ -10,6 +10,7 @@ class Bypass
         byte m_ledPin;
         byte m_okPin;
         byte m_switchPin;
+        byte m_startupPin;
         unsigned long m_lastPressTime = 0;
         byte m_switchState = 0;
         byte m_lastSwtichState = 0;
@@ -17,11 +18,12 @@ class Bypass
         const unsigned int c_debounceTime = 300;
 
     public:
-        Bypass(byte relayPin, byte ledPin, byte okPin, byte switchPin)
-            : m_relayPin(relayPin),
+        Bypass(byte relayPin, byte ledPin, byte okPin, byte switchPin, byte startupPin) : 
+            m_relayPin(relayPin),
             m_ledPin(ledPin),
             m_okPin(okPin),
-            m_switchPin(switchPin)
+            m_switchPin(switchPin),
+            m_startupPin(startupPin)
         {
 
         }
