@@ -2,21 +2,11 @@
 
 #include "potentiometer.h"
 
-Pot::Pot(byte pin)
-{
-    m_pin = pin;
-}
-
 void Pot::potSetup()
 {
     pinMode(m_pin, INPUT);
-    m_currPotValue = readPotValue();
+    m_currPotValue = analogRead(m_pin);
     m_lastPotValue = m_currPotValue;
-}
-
-int Pot::readPotValue()
-{
-    return analogRead(m_pin);
 }
 
 int Pot::getPotValue()
@@ -26,15 +16,15 @@ int Pot::getPotValue()
 
 bool Pot::potTurned()
 {
-    m_currPotValue = readPotValue();
+    m_currPotValue = analogRead(m_pin);
 
     if (m_currPotValue > m_lastPotValue + 3 || m_currPotValue < m_lastPotValue - 3)
     {
         m_lastPotValue = m_currPotValue;
-        return 1;
+        return true;
     }
     else
     {
-        return 0;
+        return false;
     }
 }

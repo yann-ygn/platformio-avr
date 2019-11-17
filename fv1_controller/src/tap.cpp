@@ -8,7 +8,6 @@ void Tap::tapSetup()
     pinMode(m_ledPin, OUTPUT);
 }
 
-///toto
 bool Tap::tapPressed()
 {
     m_tapState = digitalRead(m_tapPin);
