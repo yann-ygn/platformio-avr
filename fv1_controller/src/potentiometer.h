@@ -4,7 +4,7 @@
 #define POTENTIOMETER_H
 
 /**
- * @brief test
+ * @brief 
  * 
  */
 class Pot
