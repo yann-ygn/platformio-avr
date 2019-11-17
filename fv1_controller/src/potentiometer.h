@@ -26,12 +26,12 @@ class Pot
         }
 
         /**
-         * @brief Setup the µC's pin and read the current value
+         * @brief Setup the µC's pin and store the current value
          */
         void potSetup();
 
         /**
-         * @brief Get the pot current value
+         * @brief Get the storred pot current value
          * 
          * @return int 
          */

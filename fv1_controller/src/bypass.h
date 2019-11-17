@@ -3,6 +3,10 @@
 #ifndef BYPASS_H
 #define BYPASS_H
 
+/**
+ * @brief 
+ * 
+ */
 class Bypass
 {
     private:
