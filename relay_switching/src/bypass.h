@@ -23,8 +23,6 @@ class Bypass
         const unsigned int c_debounceTime = 300; // Minimum delay between 2 footswitch press, in ms.
 
     public:
-        Bypass();
-
         /**
          * @brief Setup the µC's pins, read the startup state and set the relay/LED accordingly.
          */

@@ -3,17 +3,13 @@
 #include "potentiometer.h"
 #include "tap.h"
 
-Pot pot0(A0);
-Pot pot1(A1);
-Pot pot2(A2);
+//Pot pot0(A0);
 
-Tap tap0(13, 14);
+Tap tap0;
 
 void setup()
 {
-  pot0.potSetup();
-  pot1.potSetup();
-  pot2.potSetup();
+  //pot0.potSetup();
 
   tap0.tapSetup();
 
@@ -24,15 +20,23 @@ void setup()
 void loop()
 {
   tap0.m_now = millis();
-  tap0.tapTimeout();
+  if (tap0.tapTimeout())
+  {
+    tap0.tapReset();
+    Serial.println("Reset");
+  }
 
   if (tap0.tapPressed())
   {
+    Serial.println("Tap");
     tap0.setTapCount();
-  }
-
-  if (pot0.potTurned())
-  {
-    Serial.println(pot0.getPotValue());
+    Serial.println(tap0.getTapCount());
+    Serial.println(tap0.m_now);
+        
+    if (tap0.getTapCount() == tap0.c_maxTaps)
+    {
+      tap0.setInterval();
+      Serial.println(tap0.getInterval());
+    }
   }
 }

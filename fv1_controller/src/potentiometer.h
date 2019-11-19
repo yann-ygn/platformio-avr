@@ -18,7 +18,7 @@ class Pot
         /**
          * @brief Construct a new Pot object
          * 
-         * @param pin The physical pin #
+         * @param pin The potentiometer pin #
          */     
         Pot(byte pin) : m_pin(pin)
         {
