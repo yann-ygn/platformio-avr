@@ -31,7 +31,7 @@ class Pot
         void potSetup();
 
         /**
-         * @brief Get the storred pot current value
+         * @brief Get the stored pot current value
          * 
          * @return int 
          */

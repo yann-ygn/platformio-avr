@@ -14,15 +14,15 @@ bool Tap::tapPressed()
     
     if (m_tapState == LOW 
     && m_now - m_lastTaptime > c_debounceTime 
-    && m_tapState != m_lastTapState)
+    /*&& m_tapState != m_lastTapState*/)
     {
         m_lastTaptime = m_now;
-        m_lastTapState = m_tapState;
+        //m_lastTapState = m_tapState;
         return true;
     }
     else
     {
-        m_lastTapState = m_tapState;
+        //m_lastTapState = m_tapState;
         return false;
     }
     
