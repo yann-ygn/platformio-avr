@@ -20,6 +20,7 @@ void setup()
 void loop()
 {
   tap0.m_now = millis();
+  tap0.blinkTapLed();
   if (tap0.tapTimeout())
   {
     tap0.tapReset();
@@ -37,6 +38,19 @@ void loop()
     {
       tap0.setInterval();
       Serial.println(tap0.getInterval());
+    }
+  }
+  
+  if (tap0.divPressed())
+  {
+    Serial.println("Long press");
+    tap0.setDivision();
+
+    if (tap0.m_newInterval)
+    {
+      tap0.setInterval();
+      tap0.lightDivLed();
+      Serial.println(tap0.getDivision());
     }
   }
 }

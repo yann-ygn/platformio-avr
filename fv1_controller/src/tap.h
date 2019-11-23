@@ -1,26 +1,34 @@
-#include <Arduino.h>
-
 #ifndef TAP_H
 #define TAP_H
 
 /**
- * @brief A switch is connected to the µC, and is monitored for press to 
- * calculate the mean value between a defined maximum number of presses. An 
- * LED is flashed at that same frequency.
+ * @brief A switch is connected to the µC, and is monitored for press to calculate
+ * the mean value between a defined maximum number of presses. An LED is 
+ * flashed at that same frequency.
+ * The switch is also monitored for long presses to set the delay division. Three 
+ * LEDs are used to indicate the current division value between 1/2, 1/3 and 1/4.
  */
 class Tap
 {
     private:
-        const byte c_swPin = 53; // Footswitch pin #, to be set.
-        const byte c_ledPin = 52; // LED pin #, to be set.
-        byte m_timesTapped = 0;
+        const uint8_t c_swPin = 53; // Footswitch pin #, to be set.
+        const uint8_t c_ledPin = 2; // LED pin #, to be set.
+        const uint8_t c_ledPinHalf = 0; // 
+        const uint8_t c_ledPinThird = 0; //
+        const uint8_t c_ledPinQuarter = 0; //
+        uint8_t m_timesTapped = 0;
         bool m_tapState = 0;
         bool m_lastTapState = 0;
         unsigned long m_firstTapTime = 0;
         unsigned long m_lastTaptime = 0;
         int m_interval = 0;
         const int c_maxInterval = 1000; // The absolute maximum delay value
-        const byte c_debounceTime = 100; // Minimum time between two footswich press
+        const uint8_t c_debounceTime = 100; // Minimum time between two footswich press
+        int m_blinkValue = 0;
+        bool m_longTapPress = false;   
+        bool m_divEnabled = false;
+        uint8_t m_divValue = 0;
+        const unsigned int c_divDebounceTime = 1000; //
 
     public:
         /**
@@ -60,7 +68,7 @@ class Tap
          * @brief Get the Tap counter
          * @return byte 
          */
-        byte getTapCount();
+        uint8_t getTapCount();
 
         /**
          * @brief Calculate the mean value between the first and last tap time 
@@ -74,9 +82,34 @@ class Tap
          */
         int getInterval();
 
+        /**
+         * @brief Blink the LED according to the set interval
+         */
+        void blinkTapLed();
+
+        /**
+         * @brief Read the footswitch state
+         * 
+         * @return true if the footswitch has been pressed for more than a second
+         * @return false 
+         */
+        bool divPressed();
+
+        /**
+         * @brief Set the division value
+         */
+        void setDivision();
+
+        int getDivision();
+
+        /**
+         * @brief Light the correct LED according to the current division 
+         */
+        void lightDivLed();
+
         unsigned long m_now = 0;
-        bool m_newInterval = 0;
-        const byte c_maxTaps = 3; // The number of taps before the mean value is calculated
+        bool m_newInterval = false;
+        const uint8_t c_maxTaps = 3; // The number of taps before the mean value is calculated
 };
 
 #endif
