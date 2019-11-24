@@ -3,7 +3,6 @@
 #include "potentiometer.h"
 #include "tap.h"
 #include "selector.h"
-#include "Rotary.h"
 
 //Pot pot0(A0);
 
@@ -71,9 +70,9 @@ void loop()
     }
   }
   */
-  if (selector0.m_newPreset)
+  if (selector0.m_newProgram)
   {
     Serial.println(selector0.m_counter);
-    selector0.m_newPreset = false;
+    selector0.m_newProgram = false;
   }
 }

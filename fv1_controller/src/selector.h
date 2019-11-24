@@ -9,9 +9,9 @@
 class Selector
 {
     private:
-        const uint8_t m_encoderPinA = 18;
-        const uint8_t m_encoderPinB = 19;
-        const uint8_t m_encoderSwitch = 32;
+        const uint8_t m_encoderPinA = 18; // Encoder CLK pin #, interrupt pin, to be set
+        const uint8_t m_encoderPinB = 19; // Encoder DT pin #, interrupt pin, to be set
+        const uint8_t m_encoderSwitch = 32; // Encoder switch pin #, to be set
         uint8_t m_switchState = 0;
         uint8_t m_lastSwitchState = 0;
         int m_selectorState = 0;
@@ -47,7 +47,8 @@ class Selector
         bool selectorSwitch();
 
         int m_counter = 0;
-        bool m_newPreset = false;
+        bool m_newProgram = false;
+        bool m_presetMode = false;
 };
 
 #endif

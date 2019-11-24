@@ -25,6 +25,7 @@ bool Pot::potTurned()
     }
     else
     {
+        m_lastPotValue = m_currPotValue;
         return false;
     }
 }

@@ -24,7 +24,7 @@ void Selector::selectorMove()
         {
             m_counter = 7;
         }
-        m_newPreset = true;
+        m_newProgram = true;
     }
     if (m_selectorState == 0x20)
     {
@@ -33,7 +33,7 @@ void Selector::selectorMove()
         {
             m_counter = 0;
         }
-        m_newPreset = true;
+        m_newProgram = true;
     }
 }
 
