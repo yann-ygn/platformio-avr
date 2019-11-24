@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #ifndef TAP_H
 #define TAP_H
 
@@ -27,8 +29,9 @@ class Tap
         int m_blinkValue = 0;
         bool m_longTapPress = false;   
         bool m_divEnabled = false;
-        uint8_t m_divValue = 0;
+        uint8_t m_divValue = 1;
         const unsigned int c_divDebounceTime = 1000; //
+        int m_divInterval = 0;
 
     public:
         /**
@@ -100,6 +103,23 @@ class Tap
          */
         void setDivision();
 
+        /**
+         * @brief Set the interval when div is enabled
+         */
+        void setDivInterval();
+
+        /**
+         * @brief Get the Div Interval object
+         * 
+         * @return int 
+         */
+        int getDivInterval();
+
+        /**
+         * @brief Get the Division object
+         * 
+         * @return int 
+         */
         int getDivision();
 
         /**

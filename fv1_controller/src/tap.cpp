@@ -22,7 +22,8 @@ bool Tap::tapPressed()
     
     if (m_tapState == LOW 
     && m_now - m_lastTaptime > c_debounceTime 
-    && m_tapState != m_lastTapState)
+    && m_tapState != m_lastTapState
+    && !m_longTapPress)
     {
         m_lastTaptime = m_now;
         m_lastTapState = m_tapState;
@@ -51,6 +52,7 @@ bool Tap::tapTimeout()
 void Tap::tapReset()
 {
     m_timesTapped = 0;
+    m_longTapPress = false;
 }
 
 void Tap::setTapCount()
@@ -73,16 +75,8 @@ uint8_t Tap::getTapCount()
 
 void Tap::setInterval()
 {
-    if (m_divEnabled)
-    {
-        m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
-        m_newInterval = true;
-    }
-    else
-    {
-        m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
-        m_newInterval = true;
-    }    
+    m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
+    m_newInterval = true;
 }
 
 int Tap::getInterval()
@@ -92,9 +86,17 @@ int Tap::getInterval()
 
 void Tap::blinkTapLed()
 {
-    m_blinkValue = 128 + (127 * cos(2 * PI / (m_interval * 2 ) * m_now)); // WIP try the whole range
-    analogWrite(c_ledPin, m_blinkValue);
-}
+    if (m_divEnabled)
+    {
+        m_blinkValue = 128 + (127 * cos(2 * PI / (m_divInterval * 2 ) * m_now)); // WIP try the whole range
+        analogWrite(c_ledPin, m_blinkValue);
+    }
+    else
+    {
+        m_blinkValue = 128 + (127 * cos(2 * PI / (m_interval * 2 ) * m_now)); // WIP try the whole range
+        analogWrite(c_ledPin, m_blinkValue);
+    }
+}    
 
 bool Tap::divPressed()
 {
@@ -105,6 +107,7 @@ bool Tap::divPressed()
     {
         m_tapState = m_lastTapState;
         m_lastTaptime = m_now;
+        m_longTapPress = true;
         m_divEnabled = true;
 
         return true;
@@ -129,17 +132,28 @@ bool Tap::divPressed()
 
 void Tap::setDivision()
 {
-    if (m_divValue < 3)
+    if (m_divValue < 4)
     {
         m_divValue ++;
         m_newInterval = true;
     }
     else
     {
-        m_divValue = 0;
+        m_divValue = 1;
         m_divEnabled = false;
         m_newInterval = true;
     }    
+}
+
+void Tap::setDivInterval()
+{
+    m_divInterval = m_interval / m_divValue;
+    m_newInterval = true;
+}
+
+int Tap::getDivInterval()
+{
+    return m_divInterval;
 }
 
 void Tap::lightDivLed()
@@ -148,15 +162,15 @@ void Tap::lightDivLed()
     {
         switch (m_divValue)
         {
-            case 1:
+            case 2:
                 digitalWrite(c_ledPinHalf, HIGH);
                 break;
 
-            case 2:
+            case 3:
                 digitalWrite(c_ledPinThird, HIGH);
                 break;
 
-            case 3:
+            case 4:
                 digitalWrite(c_ledPinQuarter, HIGH);
                 break;
         }
