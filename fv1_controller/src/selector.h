@@ -9,14 +9,16 @@
 class Selector
 {
     private:
-        const uint8_t m_encoderPinA = 18; // Encoder CLK pin #, interrupt pin, to be set
-        const uint8_t m_encoderPinB = 19; // Encoder DT pin #, interrupt pin, to be set
-        const uint8_t m_encoderSwitch = 32; // Encoder switch pin #, to be set
+        const uint8_t c_encoderPinA = 18; // Encoder CLK pin #, interrupt pin, to be set
+        const uint8_t c_encoderPinB = 19; // Encoder DT pin #, interrupt pin, to be set
+        const uint8_t c_switchPin = 32; // Encoder switch pin #, to be set
         uint8_t m_switchState = 0;
         uint8_t m_lastSwitchState = 0;
-        int m_selectorState = 0;
-        int m_lastSelectorState = 0;
-        const unsigned int c_encoderStates[7][4] = 
+        unsigned long m_lastSwitchTime = 0;
+        const unsigned int c_debounceTime = 300;
+        uint8_t m_selectorState = 0;
+        uint8_t m_lastSelectorState = 0;
+        const uint8_t c_encoderStates[7][4] = 
         {
             {0x0, 0x2, 0x4, 0x0},
             {0x3, 0x0, 0x1, 0x0 | 0x10},
@@ -39,16 +41,22 @@ class Selector
         void selectorMove();
 
         /**
-         * @brief 
+         * @brief Monitors the encoder switch for short press
          * 
          * @return true 
          * @return false 
          */
-        bool selectorSwitch();
+        bool presetSwitch();
+
+        /**
+         * @brief Set the presetMode
+         */
+        void setPresetMode();
 
         int m_counter = 0;
         bool m_newProgram = false;
         bool m_presetMode = false;
+        unsigned long m_now = 0;
 };
 
 #endif

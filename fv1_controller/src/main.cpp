@@ -25,6 +25,13 @@ void setup()
 
   attachInterrupt(digitalPinToInterrupt(18), selectorRotate, CHANGE);
   attachInterrupt(digitalPinToInterrupt(19), selectorRotate, CHANGE);
+
+  pinMode(33, OUTPUT);
+  pinMode(34, OUTPUT);
+  pinMode(35, OUTPUT);
+  pinMode(36, OUTPUT);
+  pinMode(37, OUTPUT);
+  pinMode(38, OUTPUT);
 }
 
 
@@ -75,4 +82,39 @@ void loop()
     Serial.println(selector0.m_counter);
     selector0.m_newProgram = false;
   }
+
+  selector0.m_now = millis();
+  if(selector0.presetSwitch())
+  {
+    selector0.setPresetMode();
+    Serial.println(selector0.m_presetMode);
+  }
+
+  digitalWrite(33, HIGH);
+  digitalWrite(34, HIGH);
+  delay(500);
+  digitalWrite(35, HIGH);
+  digitalWrite(36, HIGH);
+  delay(500);
+  digitalWrite(33, LOW);
+  digitalWrite(34, LOW);
+  delay(500);
+  digitalWrite(37, HIGH);
+  digitalWrite(38, HIGH);
+  delay(500);
+  digitalWrite(35, LOW);
+  digitalWrite(36, LOW);
+  delay(500);
+  digitalWrite(33, HIGH);
+  digitalWrite(34, HIGH);
+  delay(500);
+  digitalWrite(35, HIGH);
+  digitalWrite(36, HIGH);
+  delay(500);
+  digitalWrite(33, LOW);
+  digitalWrite(34, LOW);
+  digitalWrite(35, LOW);
+  digitalWrite(36, LOW);
+  digitalWrite(37, LOW);
+  digitalWrite(38, LOW);
 }

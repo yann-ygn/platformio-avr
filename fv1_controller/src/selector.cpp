@@ -4,17 +4,17 @@
 
 void Selector::selectorSetup()
 {
-    pinMode(m_encoderPinA, INPUT);
-    pinMode(m_encoderPinB, INPUT);
-    pinMode(m_encoderSwitch, INPUT);
+    pinMode(c_encoderPinA, INPUT);
+    pinMode(c_encoderPinB, INPUT);
+    pinMode(c_switchPin, INPUT);
 
-    digitalWrite(m_encoderPinA, HIGH);
-    digitalWrite(m_encoderPinB, HIGH);
+    digitalWrite(c_encoderPinA, HIGH);
+    digitalWrite(c_encoderPinB, HIGH);
 }
 
 void Selector::selectorMove()
 {
-    m_lastSelectorState = (digitalRead(m_encoderPinB) << 1) | digitalRead(m_encoderPinA);
+    m_lastSelectorState = (digitalRead(c_encoderPinB) << 1) | digitalRead(c_encoderPinA);
     m_selectorState = c_encoderStates[m_selectorState & 15][m_lastSelectorState];
 
     if (m_selectorState == 0x10)
@@ -37,7 +37,28 @@ void Selector::selectorMove()
     }
 }
 
-bool Selector::selectorSwitch()
+bool Selector::presetSwitch()
 {
+    m_switchState = digitalRead(c_switchPin);
+    
+    if (m_switchState == HIGH 
+    && m_now - m_lastSwitchTime > c_debounceTime 
+    && m_switchState != m_lastSwitchState)
+    {
+        m_lastSwitchTime = m_now;
+        m_lastSwitchState = m_switchState;
 
+        return true;
+    }
+    else
+    {
+        m_lastSwitchState = m_switchState;
+
+        return false;
+    }    
+}
+
+void Selector::setPresetMode()
+{
+    m_presetMode = !m_presetMode;
 }
