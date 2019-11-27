@@ -12,6 +12,9 @@ class Selector
         const uint8_t c_encoderPinA = 18; // Encoder CLK pin #, interrupt pin, to be set
         const uint8_t c_encoderPinB = 19; // Encoder DT pin #, interrupt pin, to be set
         const uint8_t c_switchPin = 32; // Encoder switch pin #, to be set
+        const uint8_t c_clockPin = 12; // Shift register clock pin, to be set
+        const uint8_t c_dataPin = 11; // Shift register data pin, to be set
+        const uint8_t c_latchPin = 8; // Shift register latch pin, to be set
         uint8_t m_switchState = 0;
         uint8_t m_lastSwitchState = 0;
         unsigned long m_lastSwitchTime = 0;
@@ -52,6 +55,11 @@ class Selector
          * @brief Set the presetMode
          */
         void setPresetMode();
+
+        /**
+         * @brief Manage the LEDs reflecting the current program or preset
+         */
+        void lightSelectorLed();
 
         int m_counter = 0;
         bool m_newProgram = false;

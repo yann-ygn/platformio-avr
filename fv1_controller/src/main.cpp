@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <SPI.h>
 
 #include "potentiometer.h"
 #include "tap.h"
@@ -8,6 +9,13 @@
 
 Tap tap0;
 Selector selector0;
+
+//Pin connected to ST_CP of 74HC595
+int latchPin = 8;
+//Pin connected to SH_CP of 74HC595
+int clockPin = 12;
+////Pin connected to DS of 74HC595
+int dataPin = 11;
 
 void selectorRotate()
 {
@@ -26,12 +34,9 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(18), selectorRotate, CHANGE);
   attachInterrupt(digitalPinToInterrupt(19), selectorRotate, CHANGE);
 
-  pinMode(33, OUTPUT);
-  pinMode(34, OUTPUT);
-  pinMode(35, OUTPUT);
-  pinMode(36, OUTPUT);
-  pinMode(37, OUTPUT);
-  pinMode(38, OUTPUT);
+  pinMode(latchPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);
 }
 
 
@@ -77,8 +82,10 @@ void loop()
     }
   }
   */
+
   if (selector0.m_newProgram)
   {
+    selector0.lightSelectorLed();
     Serial.println(selector0.m_counter);
     selector0.m_newProgram = false;
   }
@@ -89,32 +96,4 @@ void loop()
     selector0.setPresetMode();
     Serial.println(selector0.m_presetMode);
   }
-
-  digitalWrite(33, HIGH);
-  digitalWrite(34, HIGH);
-  delay(500);
-  digitalWrite(35, HIGH);
-  digitalWrite(36, HIGH);
-  delay(500);
-  digitalWrite(33, LOW);
-  digitalWrite(34, LOW);
-  delay(500);
-  digitalWrite(37, HIGH);
-  digitalWrite(38, HIGH);
-  delay(500);
-  digitalWrite(35, LOW);
-  digitalWrite(36, LOW);
-  delay(500);
-  digitalWrite(33, HIGH);
-  digitalWrite(34, HIGH);
-  delay(500);
-  digitalWrite(35, HIGH);
-  digitalWrite(36, HIGH);
-  delay(500);
-  digitalWrite(33, LOW);
-  digitalWrite(34, LOW);
-  digitalWrite(35, LOW);
-  digitalWrite(36, LOW);
-  digitalWrite(37, LOW);
-  digitalWrite(38, LOW);
 }

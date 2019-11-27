@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <SPI.h>
 
 #include "selector.h"
 
@@ -7,9 +8,16 @@ void Selector::selectorSetup()
     pinMode(c_encoderPinA, INPUT);
     pinMode(c_encoderPinB, INPUT);
     pinMode(c_switchPin, INPUT);
+    pinMode(c_clockPin, OUTPUT);
+    pinMode(c_dataPin, OUTPUT);
+    pinMode(c_latchPin, OUTPUT);
 
     digitalWrite(c_encoderPinA, HIGH);
     digitalWrite(c_encoderPinB, HIGH);
+
+    digitalWrite(c_latchPin, LOW);
+    shiftOut(c_dataPin, c_clockPin, MSBFIRST, 0);
+    digitalWrite(c_latchPin, HIGH);
 }
 
 void Selector::selectorMove()
@@ -61,4 +69,14 @@ bool Selector::presetSwitch()
 void Selector::setPresetMode()
 {
     m_presetMode = !m_presetMode;
+}
+
+void Selector::lightSelectorLed()
+{
+    if (!m_presetMode)
+    {
+        digitalWrite(c_latchPin, LOW);
+        shiftOut(c_dataPin, c_clockPin, MSBFIRST, 1 << m_counter);
+        digitalWrite(c_latchPin, HIGH);
+    }
 }
