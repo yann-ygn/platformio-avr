@@ -9,16 +9,21 @@
 class Selector
 {
     private:
+        // Pins delcarations
         const uint8_t c_encoderPinA = 18; // Encoder CLK pin #, interrupt pin, to be set
         const uint8_t c_encoderPinB = 19; // Encoder DT pin #, interrupt pin, to be set
         const uint8_t c_switchPin = 32; // Encoder switch pin #, to be set
         const uint8_t c_clockPin = 12; // Shift register clock pin, to be set
         const uint8_t c_dataPin = 11; // Shift register data pin, to be set
         const uint8_t c_latchPin = 8; // Shift register latch pin, to be set
+
+        // Switch
         uint8_t m_switchState = 0;
         uint8_t m_lastSwitchState = 0;
         unsigned long m_lastSwitchTime = 0;
         const unsigned int c_debounceTime = 300;
+
+        // Encoder
         uint8_t m_selectorState = 0;
         uint8_t m_lastSelectorState = 0;
         const uint8_t c_encoderStates[7][4] = 

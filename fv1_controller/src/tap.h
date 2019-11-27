@@ -13,11 +13,14 @@
 class Tap
 {
     private:
+        // Pins declarations
         const uint8_t c_swPin = 53; // Footswitch pin #, to be set.
         const uint8_t c_ledPin = 2; // LED pin #, to be set.
-        const uint8_t c_ledPinHalf = 0; // 
-        const uint8_t c_ledPinThird = 0; //
-        const uint8_t c_ledPinQuarter = 0; //
+        const uint8_t c_ledPinHalf = 0; // Div 1/2 LED pin #, to be set
+        const uint8_t c_ledPinThird = 0; // Div 1/3 LED pin #, to be set
+        const uint8_t c_ledPinQuarter = 0; // Div 1/4 LED pin #, to be set
+
+        // Switch -> Tap
         uint8_t m_timesTapped = 0;
         bool m_tapState = 0;
         bool m_lastTapState = 0;
@@ -26,7 +29,11 @@ class Tap
         int m_interval = 0;
         const int c_maxInterval = 1000; // The absolute maximum delay value
         const uint8_t c_debounceTime = 100; // Minimum time between two footswich press
+
+        // Tap LED
         int m_blinkValue = 0;
+
+        // Switch -> Div
         bool m_longTapPress = false;   
         bool m_divEnabled = false;
         uint8_t m_divValue = 1;
