@@ -14,8 +14,8 @@ class Tap
 {
     private:
         // Pins declarations
-        const uint8_t c_swPin = 53; // Footswitch pin #, to be set.
-        const uint8_t c_ledPin = 2; // LED pin #, to be set.
+        const uint8_t c_swPin = 16; // Footswitch pin #, to be set.
+        const uint8_t c_ledPin = 15; // LED pin #, to be set.
         const uint8_t c_ledPinHalf = 0; // Div 1/2 LED pin #, to be set
         const uint8_t c_ledPinThird = 0; // Div 1/3 LED pin #, to be set
         const uint8_t c_ledPinQuarter = 0; // Div 1/4 LED pin #, to be set

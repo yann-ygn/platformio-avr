@@ -3,46 +3,43 @@
 
 #include "potentiometer.h"
 #include "tap.h"
-#include "selector.h"
+//#include "selector.h"
 
-//Pot pot0(A0);
+Pot pot0(A0);
+Pot pot1(A1);
+Pot pot2(A2);
 
 Tap tap0;
-Selector selector0;
+//Selector selector0;
 
-//Pin connected to ST_CP of 74HC595
-int latchPin = 8;
-//Pin connected to SH_CP of 74HC595
-int clockPin = 12;
-////Pin connected to DS of 74HC595
-int dataPin = 11;
-
+/*
 void selectorRotate()
 {
   selector0.selectorMove();
 }
+*/
 
 void setup()
 {
-  //pot0.potSetup();
+  pot0.potSetup();
+  pot1.potSetup();
+  pot2.potSetup();
+
+  pinMode(0, OUTPUT);
 
   tap0.tapSetup();
-  selector0.selectorSetup();
+  //selector0.selectorSetup();
 
   Serial.begin(9600);
 
-  attachInterrupt(digitalPinToInterrupt(18), selectorRotate, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(19), selectorRotate, CHANGE);
-
-  pinMode(latchPin, OUTPUT);
-  pinMode(clockPin, OUTPUT);
-  pinMode(dataPin, OUTPUT);
+  //attachInterrupt(digitalPinToInterrupt(18), selectorRotate, CHANGE);
+  //attachInterrupt(digitalPinToInterrupt(19), selectorRotate, CHANGE);
 }
 
 
 void loop()
 {
-  /*
+  
   tap0.m_now = millis();
   tap0.blinkTapLed();
   if (tap0.tapTimeout())
@@ -81,8 +78,7 @@ void loop()
       Serial.println(tap0.getDivInterval());
     }
   }
-  */
-
+  /*
   if (selector0.m_newProgram)
   {
     selector0.lightSelectorLed();
@@ -95,5 +91,18 @@ void loop()
   {
     selector0.setPresetMode();
     Serial.println(selector0.m_presetMode);
+  }
+  */
+  if (pot0.potTurned())
+  {
+    Serial.println(pot0.getPotValue());
+  }
+  if (pot1.potTurned())
+  {
+    Serial.println(pot1.getPotValue());
+  }
+  if (pot2.potTurned())
+  {
+    Serial.println(pot2.getPotValue());
   }
 }
