@@ -167,10 +167,12 @@ void Tap::lightDivLed()
                 break;
 
             case 3:
+                digitalWrite(c_ledPinHalf, LOW);
                 digitalWrite(c_ledPinThird, HIGH);
                 break;
 
             case 4:
+                digitalWrite(c_ledPinThird, LOW);
                 digitalWrite(c_ledPinQuarter, HIGH);
                 break;
         }

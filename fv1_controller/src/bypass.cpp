@@ -8,9 +8,7 @@ void Bypass::bypassSetup()
     pinMode(c_ledPin, OUTPUT);
     pinMode(c_okPin, OUTPUT),
     pinMode(c_switchPin, INPUT_PULLUP);
-    pinMode(c_startupPin, INPUT_PULLUP);
 
-    m_relayState = digitalRead(c_startupPin);
     digitalWrite(c_okPin, LOW);
     digitalWrite(c_ledPin, m_relayState);
     digitalWrite(c_relayPin, m_relayState);

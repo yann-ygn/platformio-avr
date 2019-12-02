@@ -18,7 +18,7 @@ bool Pot::potTurned()
 {
     m_currPotValue = analogRead(m_pin);
 
-    if ((m_currPotValue > (m_lastPotValue + 1)) || (m_currPotValue < (m_lastPotValue - 1)))
+    if ((m_currPotValue > m_lastPotValue) || (m_currPotValue < m_lastPotValue))
     {
         m_lastPotValue = m_currPotValue;
         return true;
