@@ -33,7 +33,7 @@ class Tap
         // Tap LED
         int m_blinkValue = 0;
 
-        // Switch -> Div
+        // Switch -> Division
         bool m_longTapPress = false;   
         bool m_divEnabled = false;
         uint8_t m_divValue = 1;
