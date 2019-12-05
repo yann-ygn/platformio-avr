@@ -77,6 +77,7 @@ void Selector::lightSelectorLed()
     {
         digitalWrite(c_latchPin, LOW);
         shiftOut(c_dataPin, c_clockPin, MSBFIRST, 1 << m_counter);
+        shiftOut(c_dataPin, c_clockPin, MSBFIRST, 256);
         digitalWrite(c_latchPin, HIGH);
     }
 }

@@ -3,21 +3,19 @@
 
 #include "potentiometer.h"
 #include "tap.h"
-//#include "selector.h"
+#include "selector.h"
 
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2);
 
 Tap tap0;
-//Selector selector0;
+Selector selector0;
 
-/*
 void selectorRotate()
 {
   selector0.selectorMove();
 }
-*/
 
 void setup()
 {
@@ -28,12 +26,12 @@ void setup()
   pinMode(0, OUTPUT);
 
   tap0.tapSetup();
-  //selector0.selectorSetup();
+  selector0.selectorSetup();
 
   Serial.begin(9600);
 
-  //attachInterrupt(digitalPinToInterrupt(18), selectorRotate, CHANGE);
-  //attachInterrupt(digitalPinToInterrupt(19), selectorRotate, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(10), selectorRotate, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(11), selectorRotate, CHANGE);
 }
 
 
@@ -78,7 +76,7 @@ void loop()
       Serial.println(tap0.getDivInterval());
     }
   }
-  /*
+  
   if (selector0.m_newProgram)
   {
     selector0.lightSelectorLed();
@@ -92,7 +90,7 @@ void loop()
     selector0.setPresetMode();
     Serial.println(selector0.m_presetMode);
   }
-  */
+  
   if (pot0.potTurned())
   {
     Serial.println(pot0.getPotValue());
