@@ -4,40 +4,52 @@
 #include "potentiometer.h"
 #include "tap.h"
 #include "selector.h"
+#include "bypass.h"
 
+/*
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2);
 
 Tap tap0;
 Selector selector0;
+Bypass bypass0;
 
 void selectorRotate()
 {
   selector0.selectorMove();
 }
+*/
 
 void setup()
 {
+  /*
   pot0.potSetup();
   pot1.potSetup();
   pot2.potSetup();
 
-  pinMode(0, OUTPUT);
+  bypass0.bypassSetup();
 
   tap0.tapSetup();
   selector0.selectorSetup();
 
-  Serial.begin(9600);
-
   attachInterrupt(digitalPinToInterrupt(10), selectorRotate, CHANGE);
   attachInterrupt(digitalPinToInterrupt(11), selectorRotate, CHANGE);
-}
+  */
 
+  Serial.begin(9600);
+}
 
 void loop()
 {
-  
+  /*
+  bypass0.m_now = millis();
+
+  if (bypass0.bypassPressed())
+  {
+      bypass0.switchRelay();
+  }
+
   tap0.m_now = millis();
   tap0.blinkTapLed();
   if (tap0.tapTimeout())
@@ -103,4 +115,5 @@ void loop()
   {
     Serial.println(pot2.getPotValue());
   }
+  */
 }
