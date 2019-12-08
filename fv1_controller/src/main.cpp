@@ -5,7 +5,6 @@
 #include "tap.h"
 #include "selector.h"
 #include "bypass.h"
-#include "M95256.h"
 
 /*
 Pot pot0(A0);
@@ -22,8 +21,6 @@ void selectorRotate()
 }
 */
 
-M95256 eeprom0(53);
-
 void setup()
 {
   /*
@@ -39,8 +36,6 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(10), selectorRotate, CHANGE);
   attachInterrupt(digitalPinToInterrupt(11), selectorRotate, CHANGE);
   */
-
-  eeprom0.setup();
 
   Serial.begin(9600);
 }
