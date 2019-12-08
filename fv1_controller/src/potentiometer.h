@@ -11,8 +11,8 @@ class Pot
 {
     private:
         byte m_pin;
-        int m_currPotValue;
-        int m_lastPotValue;
+        int m_currPotValue = 0;
+        int m_lastPotValue = 0;
 
     public:
         /**
