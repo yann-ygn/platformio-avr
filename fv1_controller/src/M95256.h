@@ -71,10 +71,10 @@ class M95256
          */
         void setup();
 
-        void writeByte(long addr, byte data);
-        void writeArray(long addr, byte data[], int length);
-        byte readByte(long addr);
-        void readArray(long addr, byte data[], int length);
+        void writeByte(byte addr, byte data);
+        void writeArray(byte addr, byte data[], int length);
+        byte readByte(byte addr);
+        void readArray(byte addr, byte data[], int length);
 };
 	
 #endif

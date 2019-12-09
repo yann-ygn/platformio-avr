@@ -5,6 +5,9 @@
 #include "tap.h"
 #include "selector.h"
 #include "bypass.h"
+#include "memory.h"
+
+Memory mem0;
 
 /*
 Pot pot0(A0);
@@ -36,6 +39,8 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(10), selectorRotate, CHANGE);
   attachInterrupt(digitalPinToInterrupt(11), selectorRotate, CHANGE);
   */
+
+  mem0.memorySetup();
 
   Serial.begin(9600);
 }
@@ -115,5 +120,13 @@ void loop()
   {
     Serial.println(pot2.getPotValue());
   }
+  */
+  /*
+  mem0.writeBypassState(1);
+  Serial.println(mem0.readBypassState());
+  delay(500);
+  mem0.writeBypassState(0);
+  Serial.println(mem0.readBypassState());
+  delay(500);
   */
 }

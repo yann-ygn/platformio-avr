@@ -51,7 +51,7 @@ byte M95256::readStatus()
     return data;
 }
 
-void M95256::writeByte(long addr, byte data)
+void M95256::writeByte(byte addr, byte data)
 {
 	enableWrite();	
 	while (WIP()) {};
@@ -62,7 +62,7 @@ void M95256::writeByte(long addr, byte data)
 	deselect();
 }
 
-void M95256::writeArray(long addr, byte* data, int length)
+void M95256::writeArray(byte addr, byte* data, int length)
 {
 	enableWrite();
 	select();
@@ -77,8 +77,9 @@ void M95256::writeArray(long addr, byte* data, int length)
 	deselect();
 }
 
-byte M95256::readByte(long addr) 
+byte M95256::readByte(byte addr) 
 {
+	while (WIP()) {};
 	select();
 	SPI.transfer(READ);
 	sendAddress(addr);
@@ -87,7 +88,7 @@ byte M95256::readByte(long addr)
 	return data;
 }
 
-void M95256::readArray(long addr, byte *data, int length)
+void M95256::readArray(byte addr, byte *data, int length)
 {
 	select();
 	SPI.transfer(READ);
