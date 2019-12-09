@@ -44,3 +44,13 @@ void Bypass::switchRelay()
     delay(10);                              // 5~10 ms depending on the relay
     digitalWrite(c_okPin, LOW);             // OK off
 }
+
+byte Bypass::getRelayState()
+{
+    return m_relayState;
+}
+
+void Bypass::setRelayState(byte state)
+{
+    m_relayState = state;
+}

@@ -53,8 +53,8 @@ byte M95256::readStatus()
 
 void M95256::writeByte(byte addr, byte data)
 {
-	enableWrite();	
 	while (WIP()) {};
+	enableWrite();
 	select();
 	SPI.transfer(WRITE);
 	sendAddress(addr);

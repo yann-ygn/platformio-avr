@@ -40,6 +40,18 @@ class Bypass
          */
         void switchRelay();
 
+        /**
+         * @brief Get the Relay State object
+         * 
+         * @return byte 
+         */
+        byte getRelayState();
+
+        /**
+         * @brief Set the Relay State object
+         */
+        void setRelayState(byte state);
+
         unsigned long m_now = 0;
 };
 

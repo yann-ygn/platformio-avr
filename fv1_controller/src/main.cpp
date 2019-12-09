@@ -8,6 +8,7 @@
 #include "memory.h"
 
 Memory mem0;
+Bypass bypass0;
 
 /*
 Pot pot0(A0);
@@ -16,7 +17,6 @@ Pot pot2(A2);
 
 Tap tap0;
 Selector selector0;
-Bypass bypass0;
 
 void selectorRotate()
 {
@@ -26,12 +26,15 @@ void selectorRotate()
 
 void setup()
 {
+  mem0.memorySetup();
+
+  bypass0.setRelayState(mem0.readBypassState());
+  bypass0.bypassSetup();
+
   /*
   pot0.potSetup();
   pot1.potSetup();
   pot2.potSetup();
-
-  bypass0.bypassSetup();
 
   tap0.tapSetup();
   selector0.selectorSetup();
@@ -40,20 +43,22 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(11), selectorRotate, CHANGE);
   */
 
-  mem0.memorySetup();
-
   Serial.begin(9600);
 }
 
 void loop()
 {
-  /*
   bypass0.m_now = millis();
 
   if (bypass0.bypassPressed())
   {
       bypass0.switchRelay();
+      mem0.writeBypassState(bypass0.getRelayState());
+
+      Serial.println(mem0.readBypassState());
   }
+
+  /*
 
   tap0.m_now = millis();
   tap0.blinkTapLed();
