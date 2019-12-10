@@ -10,7 +10,6 @@
 Memory mem0;
 Bypass bypass0;
 
-/*
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2);
@@ -22,13 +21,13 @@ void selectorRotate()
 {
   selector0.selectorMove();
 }
-*/
+
 
 void setup()
 {
   mem0.memorySetup();
 
-  bypass0.setRelayState(mem0.readBypassState());
+  bypass0.setBypassState(mem0.readBypassState());
   bypass0.bypassSetup();
 
   /*
@@ -53,7 +52,7 @@ void loop()
   if (bypass0.bypassPressed())
   {
       bypass0.switchRelay();
-      mem0.writeBypassState(bypass0.getRelayState());
+      mem0.writeBypassState(bypass0.getBypassState());
 
       Serial.println(mem0.readBypassState());
   }

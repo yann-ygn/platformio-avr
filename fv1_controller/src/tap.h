@@ -123,11 +123,18 @@ class Tap
         int getDivInterval();
 
         /**
-         * @brief Get the Division object
+         * @brief Get the Div Value object
          * 
-         * @return int 
+         * @return uint8_t 
          */
-        int getDivision();
+        uint8_t getDivValue();
+
+        /**
+         * @brief Set the Div Value object
+         * 
+         * @param value 
+         */
+        void setDivValue(uint8_t value);
 
         /**
          * @brief Light the correct LED according to the current division 

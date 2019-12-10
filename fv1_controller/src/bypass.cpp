@@ -5,13 +5,11 @@
 void Bypass::bypassSetup()
 {
     pinMode(c_relayPin, OUTPUT);
-    //pinMode(c_ledPin, OUTPUT);
     pinMode(c_okPin, OUTPUT),
     pinMode(c_switchPin, INPUT_PULLUP);
 
     digitalWrite(c_okPin, LOW);
-    //digitalWrite(c_ledPin, m_relayState);
-    digitalWrite(c_relayPin, m_relayState);
+    digitalWrite(c_relayPin, m_bypassState);
 }
 
 bool Bypass::bypassPressed()
@@ -35,22 +33,21 @@ bool Bypass::bypassPressed()
 
 void Bypass::switchRelay()
 {
-    m_relayState = !m_relayState;
+    m_bypassState = !m_bypassState;
 
     digitalWrite(c_okPin, HIGH);            // OK on
     delay(10);                              // 5~10 ms depending on the OK
-    digitalWrite(c_relayPin, m_relayState);
-    //digitalWrite(c_ledPin, m_relayState);
+    digitalWrite(c_relayPin, m_bypassState);
     delay(10);                              // 5~10 ms depending on the relay
     digitalWrite(c_okPin, LOW);             // OK off
 }
 
-byte Bypass::getRelayState()
+uint8_t Bypass::getBypassState()
 {
-    return m_relayState;
+    return m_bypassState;
 }
 
-void Bypass::setRelayState(byte state)
+void Bypass::setBypassState(uint8_t state)
 {
-    m_relayState = state;
+    m_bypassState = state;
 }

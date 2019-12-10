@@ -11,14 +11,13 @@
 class Bypass
 {
     private:
-        const byte c_relayPin = 1; // Relay pin #, to be set.
-        //const byte c_ledPin = 1; // LED pin #, to be set.
-        const byte c_okPin = 2; // Optical relay pin #, to be set.
-        const byte c_switchPin = 0; // Footswitch pin #, to be set.
+        const uint8_t c_relayPin = 1; // Relay pin #, to be set.
+        const uint8_t c_okPin = 2; // Optical relay pin #, to be set.
+        const uint8_t c_switchPin = 0; // Footswitch pin #, to be set.
         unsigned long m_lastPressTime = 0;
-        byte m_switchState = 0;
-        byte m_lastSwitchState = 0;
-        byte m_relayState = 0;
+        uint8_t m_switchState = 0;
+        uint8_t m_lastSwitchState = 0;
+        uint8_t m_bypassState = 0;
         const unsigned int c_debounceTime = 300; // Minimum delay between 2 footswitch press, in ms.
 
     public:
@@ -41,16 +40,18 @@ class Bypass
         void switchRelay();
 
         /**
-         * @brief Get the Relay State object
+         * @brief Get the Bypass State object
          * 
-         * @return byte 
+         * @return uint8_t 
          */
-        byte getRelayState();
+        uint8_t getBypassState();
 
         /**
-         * @brief Set the Relay State object
+         * @brief Set the Bypass State object
+         * 
+         * @param state 
          */
-        void setRelayState(byte state);
+        void setBypassState(uint8_t state);
 
         unsigned long m_now = 0;
 };

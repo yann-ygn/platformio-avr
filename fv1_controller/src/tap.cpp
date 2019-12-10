@@ -185,7 +185,12 @@ void Tap::lightDivLed()
     }    
 }
 
-int Tap::getDivision()
+uint8_t Tap::getDivValue()
 {
     return m_divValue;
+}
+
+void Tap::setDivValue(uint8_t value)
+{
+    m_divValue = value;
 }
