@@ -12,14 +12,25 @@ Bypass bypass0;
 
 Pot pot0(A0);
 Pot pot1(A1);
-Pot pot2(A2);
+Pot pot2(A2); 
 
 Tap tap0;
 Selector selector0;
 
-void selectorRotate()
+void selectorInterrupt()
 {
   selector0.selectorMove();
+}
+
+void bypassInterrupt()
+{
+  if (bypass0.bypassPressed())
+  {
+    bypass0.switchRelay();
+    mem0.writeBypassState(bypass0.getBypassState());
+
+    Serial.println(mem0.readBypassState());
+  }
 }
 
 
@@ -29,6 +40,8 @@ void setup()
 
   bypass0.setBypassState(mem0.readBypassState());
   bypass0.bypassSetup();
+
+  attachInterrupt(digitalPinToInterrupt(2), bypassInterrupt, FALLING);
 
   /*
   pot0.potSetup();
@@ -47,6 +60,7 @@ void setup()
 
 void loop()
 {
+  /*
   bypass0.m_now = millis();
 
   if (bypass0.bypassPressed())
@@ -57,6 +71,7 @@ void loop()
       Serial.println(mem0.readBypassState());
   }
 
+*/
   /*
 
   tap0.m_now = millis();

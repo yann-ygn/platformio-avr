@@ -12,6 +12,7 @@ void Bypass::bypassSetup()
     digitalWrite(c_relayPin, m_bypassState);
 }
 
+/*
 bool Bypass::bypassPressed()
 {
     m_switchState = digitalRead(c_switchPin);
@@ -29,6 +30,22 @@ bool Bypass::bypassPressed()
         m_lastSwitchState = m_switchState;
         return false;
     }
+}
+*/
+
+bool Bypass::bypassPressed()
+{
+    m_now = millis();
+
+    if (m_now - m_lastPressTime > c_debounceTime )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    
 }
 
 void Bypass::switchRelay()
