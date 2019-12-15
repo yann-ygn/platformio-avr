@@ -39,6 +39,7 @@ bool Bypass::bypassPressed()
 
     if (m_now - m_lastPressTime > c_debounceTime )
     {
+        m_lastPressTime = m_now;   
         return true;
     }
     else

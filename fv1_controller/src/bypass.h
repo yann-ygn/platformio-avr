@@ -15,8 +15,8 @@ class Bypass
         const uint8_t c_okPin = 0; // Optical relay pin #, to be set.
         const uint8_t c_switchPin = 2; // Footswitch pin #, to be set.
         unsigned long m_lastPressTime = 0;
-        uint8_t m_switchState = 0;
-        uint8_t m_lastSwitchState = 0;
+        //uint8_t m_switchState = 0;
+        //uint8_t m_lastSwitchState = 0;
         uint8_t m_bypassState = 0;
         const unsigned int c_debounceTime = 300; // Minimum delay between 2 footswitch press, in ms.
 

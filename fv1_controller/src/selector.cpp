@@ -66,6 +66,11 @@ bool Selector::presetSwitch()
     }    
 }
 
+uint8_t Selector::getPresetMode()
+{
+    return m_presetMode;
+}
+
 void Selector::setPresetMode()
 {
     m_presetMode = !m_presetMode;
@@ -75,9 +80,21 @@ void Selector::lightSelectorLed()
 {
     if (!m_presetMode)
     {
+        SPI.beginTransaction(SPISettings(30000000, MSBFIRST, SPI_MODE0));
         digitalWrite(c_latchPin, LOW);
-        shiftOut(c_dataPin, c_clockPin, MSBFIRST, 1 << m_counter);
-        shiftOut(c_dataPin, c_clockPin, MSBFIRST, 256);
+        SPI.transfer(1 << m_counter);
         digitalWrite(c_latchPin, HIGH);
+        digitalWrite(c_latchPin, LOW);
+        SPI.endTransaction();
     }
+}
+
+uint8_t Selector::getCounter()
+{
+    return m_counter;
+}
+
+void Selector::setCounter(uint8_t counter)
+{
+    m_counter = counter;
 }

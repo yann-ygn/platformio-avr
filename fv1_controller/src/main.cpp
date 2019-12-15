@@ -17,11 +17,36 @@ Pot pot2(A2);
 Tap tap0;
 Selector selector0;
 
+// Selector interrupt function
 void selectorInterrupt()
 {
-  selector0.selectorMove();
+  if (bypass0.getBypassState() == 1)
+  {
+    selector0.selectorMove();
+
+    if (selector0.m_newProgram)
+    {
+      if (selector0.getPresetMode() == 0)
+      {
+        selector0.lightSelectorLed();
+        Serial.println(selector0.getCounter());
+        selector0.m_newProgram = false;
+
+        // TODO : change program
+      }
+      else
+      {
+        selector0.lightSelectorLed();
+        Serial.println(selector0.getCounter());
+        selector0.m_newProgram = false;
+
+        // TODO : change the preset
+      }
+    }
+  }
 }
 
+// Bypass Interupt function
 void bypassInterrupt()
 {
   if (bypass0.bypassPressed())
@@ -40,19 +65,18 @@ void setup()
 
   bypass0.setBypassState(mem0.readBypassState());
   bypass0.bypassSetup();
-
   attachInterrupt(digitalPinToInterrupt(2), bypassInterrupt, FALLING);
+
+  selector0.selectorSetup();
+  attachInterrupt(digitalPinToInterrupt(10), selectorInterrupt, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(11), selectorInterrupt, CHANGE);
+  
+  tap0.tapSetup();
 
   /*
   pot0.potSetup();
   pot1.potSetup();
   pot2.potSetup();
-
-  tap0.tapSetup();
-  selector0.selectorSetup();
-
-  attachInterrupt(digitalPinToInterrupt(10), selectorRotate, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(11), selectorRotate, CHANGE);
   */
 
   Serial.begin(9600);
@@ -60,20 +84,7 @@ void setup()
 
 void loop()
 {
-  /*
-  bypass0.m_now = millis();
-
-  if (bypass0.bypassPressed())
-  {
-      bypass0.switchRelay();
-      mem0.writeBypassState(bypass0.getBypassState());
-
-      Serial.println(mem0.readBypassState());
-  }
-
-*/
-  /*
-
+  
   tap0.m_now = millis();
   tap0.blinkTapLed();
   if (tap0.tapTimeout())
@@ -107,26 +118,19 @@ void loop()
       tap0.setDivInterval();
       tap0.lightDivLed();
       Serial.println("Division : ");
-      Serial.println(tap0.getDivision());
+      Serial.println(tap0.getDivValue());
       Serial.println("Interval : ");
       Serial.println(tap0.getDivInterval());
     }
-  }
-  
-  if (selector0.m_newProgram)
-  {
-    selector0.lightSelectorLed();
-    Serial.println(selector0.m_counter);
-    selector0.m_newProgram = false;
   }
 
   selector0.m_now = millis();
   if(selector0.presetSwitch())
   {
     selector0.setPresetMode();
-    Serial.println(selector0.m_presetMode);
+    Serial.println(selector0.getPresetMode());
   }
-  
+  /*
   if (pot0.potTurned())
   {
     Serial.println(pot0.getPotValue());
@@ -138,14 +142,5 @@ void loop()
   if (pot2.potTurned())
   {
     Serial.println(pot2.getPotValue());
-  }
-  */
-  /*
-  mem0.writeBypassState(1);
-  Serial.println(mem0.readBypassState());
-  delay(500);
-  mem0.writeBypassState(0);
-  Serial.println(mem0.readBypassState());
-  delay(500);
-  */
+  }*/
 }

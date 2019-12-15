@@ -22,7 +22,6 @@ class Selector
         uint8_t m_lastSwitchState = 0;
         unsigned long m_lastSwitchTime = 0;
         const unsigned int c_debounceTime = 300;
-        uint8_t m_presetMode = 0;
 
         // Encoder
         uint8_t m_selectorState = 0;
@@ -37,7 +36,9 @@ class Selector
             {0x6, 0x5, 0x0, 0x0 | 0x20},
             {0x6, 0x5, 0x4, 0x0},
         };
-        uint8_t m_counter = 0;
+        
+        uint8_t m_presetMode = 0; // Preset mode / Program mode
+        uint8_t m_counter = 0; // Program counter
 
     public:
         /**
@@ -59,6 +60,13 @@ class Selector
         bool presetSwitch();
 
         /**
+         * @brief Get the Preset Mode object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getPresetMode();
+
+        /**
          * @brief Set the presetMode
          */
         void setPresetMode();
@@ -78,7 +86,7 @@ class Selector
         /**
          * @brief Set the Counter object
          */
-        void setCounter();
+        void setCounter(uint8_t counter);
 
         bool m_newProgram = false;
         unsigned long m_now = 0;
