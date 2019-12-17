@@ -13,9 +13,7 @@ class Selector
         const uint8_t c_encoderPinA = 10; // Encoder CLK pin #, interrupt pin, to be set
         const uint8_t c_encoderPinB = 11; // Encoder DT pin #, interrupt pin, to be set
         const uint8_t c_switchPin = 32; // Encoder switch pin #, to be set
-        const uint8_t c_clockPin = 7; // Shift register clock pin, to be set
-        const uint8_t c_dataPin = 5; // Shift register data pin, to be set
-        const uint8_t c_latchPin = 3; // Shift register latch pin, to be set
+        const uint8_t c_latchPin = 23; // Shift register latch pin, to be set
 
         // Switch
         uint8_t m_switchState = 0;
