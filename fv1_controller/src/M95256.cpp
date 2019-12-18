@@ -4,7 +4,7 @@
 
 
 void M95256::setup()
-{	
+{
 	pinMode(m_csPin,OUTPUT);
     digitalWrite(m_csPin,HIGH);
 	SPI.begin();
@@ -53,7 +53,7 @@ byte M95256::readStatus()
 
 void M95256::writeByte(byte addr, byte data)
 {
-	while (WIP()) {};
+	//while (WIP()) {};
 	enableWrite();
 	select();
 	SPI.transfer(WRITE);

@@ -1,13 +1,16 @@
 #include <Arduino.h>
 #include <SPI.h>
 
+/*
 #include "potentiometer.h"
 #include "tap.h"
 #include "selector.h"
-#include "bypass.h"
+#include "bypass.h"*/
 #include "memory.h"
 
+
 Memory mem0;
+/*
 Bypass bypass0;
 
 Pot pot0(A0);
@@ -57,10 +60,12 @@ void bypassInterrupt()
     Serial.println(mem0.readBypassState());
   }
 }
+*/
 
 
 void setup()
 {
+  /*
   mem0.memorySetup();
 
   bypass0.setBypassState(mem0.readBypassState());
@@ -73,18 +78,20 @@ void setup()
   
   tap0.tapSetup();
 
-  /*
+  
   pot0.potSetup();
   pot1.potSetup();
   pot2.potSetup();
   */
+
+  mem0.memorySetup();
 
   Serial.begin(9600);
 }
 
 void loop()
 {
-  
+  /*
   tap0.m_now = millis();
   tap0.blinkTapLed();
   if (tap0.tapTimeout())
@@ -143,4 +150,14 @@ void loop()
   {
     Serial.println(pot2.getPotValue());
   }*/
+
+  Serial.println(mem0.readBypassState());
+  mem0.writeBypassState(0);
+
+  delay(500);
+
+  Serial.println(mem0.readBypassState());
+  mem0.writeBypassState(1);
+
+  delay(500);
 }
