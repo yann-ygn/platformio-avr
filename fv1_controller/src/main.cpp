@@ -1,18 +1,19 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-/*
-#include "potentiometer.h"
-#include "tap.h"
-#include "selector.h"
-#include "bypass.h"*/
+
+//#include "potentiometer.h"
+//#include "tap.h"
+//#include "selector.h"
+//#include "bypass.h"
 #include "memory.h"
 
 
 Memory mem0;
-/*
-Bypass bypass0;
 
+//Bypass bypass0;
+
+/*
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2); 
