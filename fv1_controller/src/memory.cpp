@@ -7,6 +7,17 @@ void Memory::memorySetup()
     eeprom0.setup();
 }
 
+void Memory::memoryTest()
+{
+    Serial.println(readBypassState());
+    writeBypassState(0);
+    delay(500);
+
+    Serial.println(readBypassState());
+    writeBypassState(1);
+    delay(500);
+}
+
 uint8_t Memory::readBypassState()
 {
     return eeprom0.readByte(c_bypassStateAddress);

@@ -1,4 +1,7 @@
+#define DEBUG 1
+
 #include <Arduino.h>
+#include <SPI.h>
 
 #include "tap.h"
 
@@ -6,14 +9,14 @@ void Tap::tapSetup()
 {
     pinMode(c_swPin, INPUT_PULLUP);
     pinMode(c_ledPin, OUTPUT);
-    pinMode(c_ledPinHalf, OUTPUT);
-    pinMode(c_ledPinThird, OUTPUT);
-    pinMode(c_ledPinQuarter, OUTPUT);
+    pinMode(c_latchPin, OUTPUT);
 
     digitalWrite(c_ledPin, LOW);
-    digitalWrite(c_ledPinHalf, LOW);
-    digitalWrite(c_ledPinThird, LOW);
-    digitalWrite(c_ledPinQuarter, LOW);
+    digitalWrite(c_latchPin, LOW);
+
+    SPI.begin();
+
+    shiftReg(0);
 }
 
 bool Tap::tapPressed()
@@ -33,8 +36,7 @@ bool Tap::tapPressed()
     {
         m_lastTapState = m_tapState;
         return false;
-    }
-    
+    }    
 }
 
 bool Tap::tapTimeout()
@@ -53,6 +55,10 @@ void Tap::tapReset()
 {
     m_timesTapped = 0;
     m_longTapPress = false;
+
+    #ifdef DEBUG
+        Serial.println("Reset");
+    #endif
 }
 
 void Tap::setTapCount()
@@ -66,6 +72,17 @@ void Tap::setTapCount()
     {
         m_timesTapped++;
     }
+
+    if (m_timesTapped == c_maxTaps)
+    {
+        m_newInterval = true;
+    }
+
+    #ifdef DEBUG            
+        Serial.println("Tap count : ");
+        Serial.println(m_timesTapped);
+        Serial.println(m_now);
+    #endif    
 }
 
 uint8_t Tap::getTapCount()
@@ -73,15 +90,46 @@ uint8_t Tap::getTapCount()
     return m_timesTapped;
 }
 
-void Tap::setInterval()
-{
-    m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
-    m_newInterval = true;
+void Tap::calculateInterval()
+{    
+    if (m_newInterval)
+    {
+        if (m_divEnabled)
+        {
+            m_divInterval = m_interval / m_divValue;
+        }
+        m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
+        m_newInterval = false;
+
+        #ifdef DEBUG
+            Serial.println("Interval :");
+            Serial.println(m_interval);
+        #endif
+    }
+    
+    if(m_newDivInterval)
+    {
+        m_divInterval = m_interval / m_divValue;
+        lightDivLed();
+        m_newDivInterval = false;
+
+        #ifdef DEBUG
+            Serial.println("Division :");
+            Serial.println(m_divValue);
+            Serial.println("Interval :");
+            Serial.println(m_divInterval);
+        #endif
+    }
 }
 
 int Tap::getInterval()
 {
     return m_interval;
+}
+
+void Tap::setInterval(int interval)
+{
+    m_interval = interval;
 }
 
 void Tap::blinkTapLed()
@@ -103,7 +151,8 @@ bool Tap::divPressed()
     if (m_tapState == LOW
     && m_now - m_lastTaptime > c_divDebounceTime
     && m_tapState == m_tapState
-    && m_divEnabled == false)
+    && m_divEnabled == false
+    && m_interval > 0)
     {
         m_tapState = m_lastTapState;
         m_lastTaptime = m_now;
@@ -112,7 +161,7 @@ bool Tap::divPressed()
 
         return true;
     }
-    if (m_tapState == LOW
+    else if (m_tapState == LOW
     && m_now - m_lastTaptime > c_divDebounceTime
     && m_tapState == m_lastTapState
     && m_divEnabled == true)
@@ -135,13 +184,13 @@ void Tap::setDivision()
     if (m_divValue < 4)
     {
         m_divValue ++;
-        m_newInterval = true;
+        m_newDivInterval = true;
     }
     else
     {
         m_divValue = 1;
         m_divEnabled = false;
-        m_newInterval = true;
+        m_newDivInterval = true;
     }    
 }
 
@@ -160,29 +209,13 @@ void Tap::lightDivLed()
 {
     if (m_divEnabled)
     {
-        switch (m_divValue)
-        {
-            case 2:
-                digitalWrite(c_ledPinHalf, HIGH);
-                break;
-
-            case 3:
-                digitalWrite(c_ledPinHalf, LOW);
-                digitalWrite(c_ledPinThird, HIGH);
-                break;
-
-            case 4:
-                digitalWrite(c_ledPinThird, LOW);
-                digitalWrite(c_ledPinQuarter, HIGH);
-                break;
-        }
+        shiftReg(1 << (m_divValue -1));
     }
     else
     {
-        digitalWrite(c_ledPinHalf, LOW);
-        digitalWrite(c_ledPinThird, LOW);
-        digitalWrite(c_ledPinQuarter, LOW);
-    }    
+        shiftReg(0);
+    }
+    
 }
 
 uint8_t Tap::getDivValue()
@@ -193,4 +226,14 @@ uint8_t Tap::getDivValue()
 void Tap::setDivValue(uint8_t value)
 {
     m_divValue = value;
+}
+
+void Tap::shiftReg(uint8_t value)
+{
+    SPI.beginTransaction(SPISettings(30000000, MSBFIRST, SPI_MODE0));
+    digitalWrite(c_latchPin, LOW);
+    SPI.transfer(value);
+    digitalWrite(c_latchPin, HIGH);
+    digitalWrite(c_latchPin, LOW);
+    SPI.endTransaction();
 }

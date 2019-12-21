@@ -22,9 +22,11 @@ class Memory
     
 
     public:
-        Memory() : eeprom0(22) {}
+        Memory() : eeprom0(23) {}
 
         void memorySetup();
+        
+        void memoryTest();
 
         uint8_t readBypassState();
         void writeBypassState(uint8_t state);

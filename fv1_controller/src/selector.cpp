@@ -12,6 +12,9 @@ void Selector::selectorSetup()
 
     digitalWrite(c_encoderPinA, HIGH);
     digitalWrite(c_encoderPinB, HIGH);
+    digitalWrite(c_latchPin, LOW);
+
+    SPI.begin();
 }
 
 void Selector::selectorMove()

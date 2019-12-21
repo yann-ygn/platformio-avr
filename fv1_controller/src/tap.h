@@ -14,11 +14,9 @@ class Tap
 {
     private:
         // Pins declarations
-        const uint8_t c_swPin = 16; // Footswitch pin #, to be set.
+        const uint8_t c_swPin = 20; // Footswitch pin #, to be set.
         const uint8_t c_ledPin = 15; // LED pin #, to be set.
-        const uint8_t c_ledPinHalf = 17; // Div 1/2 LED pin #, to be set
-        const uint8_t c_ledPinThird = 18; // Div 1/3 LED pin #, to be set
-        const uint8_t c_ledPinQuarter = 19; // Div 1/4 LED pin #, to be set
+        const uint8_t c_latchPin = 19; // Shift register latch pin, to be set. 
 
         // Switch -> Tap
         uint8_t m_timesTapped = 0;
@@ -83,7 +81,7 @@ class Tap
         /**
          * @brief Calculate the mean value between the first and last tap time 
          */
-        void setInterval();
+        void calculateInterval();
 
         /**
          * @brief Get the current calculated interval
@@ -91,6 +89,13 @@ class Tap
          * @return int 
          */
         int getInterval();
+
+        /**
+         * @brief Set the Interval object
+         * 
+         * @param interval 
+         */
+        void setInterval (int interval);
 
         /**
          * @brief Blink the LED according to the set interval
@@ -141,8 +146,16 @@ class Tap
          */
         void lightDivLed();
 
+        /**
+         * @brief Sends a value to the shift register
+         * 
+         * @param value 
+         */
+        void shiftReg(uint8_t value);
+
         unsigned long m_now = 0;
         bool m_newInterval = false;
+        bool m_newDivInterval = false;
         const uint8_t c_maxTaps = 3; // The number of taps before the mean value is calculated
 };
 
