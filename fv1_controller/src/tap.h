@@ -118,7 +118,7 @@ class Tap
         /**
          * @brief Set the interval when div is enabled
          */
-        void setDivInterval();
+        void setDivInterval(int interval);
 
         /**
          * @brief Get the Div Interval object

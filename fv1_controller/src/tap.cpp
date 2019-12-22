@@ -194,15 +194,24 @@ void Tap::setDivision()
     }    
 }
 
-void Tap::setDivInterval()
+void Tap::setDivInterval(int interval)
 {
-    m_divInterval = m_interval / m_divValue;
-    m_newInterval = true;
+    m_divInterval = interval;
 }
 
 int Tap::getDivInterval()
 {
     return m_divInterval;
+}
+
+uint8_t Tap::getDivValue()
+{
+    return m_divValue;
+}
+
+void Tap::setDivValue(uint8_t value)
+{
+    m_divValue = value;
 }
 
 void Tap::lightDivLed()
@@ -216,16 +225,6 @@ void Tap::lightDivLed()
         shiftReg(0);
     }
     
-}
-
-uint8_t Tap::getDivValue()
-{
-    return m_divValue;
-}
-
-void Tap::setDivValue(uint8_t value)
-{
-    m_divValue = value;
 }
 
 void Tap::shiftReg(uint8_t value)

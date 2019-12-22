@@ -1,3 +1,5 @@
+#define DEBUG 1
+
 #include <Arduino.h>
 #include <SPI.h>
 
@@ -7,7 +9,7 @@ void Selector::selectorSetup()
 {
     pinMode(c_encoderPinA, INPUT);
     pinMode(c_encoderPinB, INPUT);
-    pinMode(c_switchPin, INPUT);
+    pinMode(c_switchPin, INPUT_PULLUP);
     pinMode(c_latchPin, OUTPUT);
 
     digitalWrite(c_encoderPinA, HIGH);
@@ -15,6 +17,7 @@ void Selector::selectorSetup()
     digitalWrite(c_latchPin, LOW);
 
     SPI.begin();
+    
 }
 
 void Selector::selectorMove()
@@ -25,33 +28,38 @@ void Selector::selectorMove()
     if (m_selectorState == 0x10)
     {
         m_counter --;
-        if (m_counter < 0)
+        if (m_counter == 255)
         {
             m_counter = 7;
         }
-        m_newProgram = true;
     }
     if (m_selectorState == 0x20)
     {
         m_counter ++;
-        if(m_counter > 7)
+        if(m_counter == 8)
         {
             m_counter = 0;
         }
-        m_newProgram = true;
     }
+
+    m_newProgram = true;
 }
 
-bool Selector::presetSwitch()
+bool Selector::selectorSwitch()
 {
     m_switchState = digitalRead(c_switchPin);
     
-    if (m_switchState == HIGH 
+    if (m_switchState == LOW 
     && m_now - m_lastSwitchTime > c_debounceTime 
     && m_switchState != m_lastSwitchState)
     {
         m_lastSwitchTime = m_now;
         m_lastSwitchState = m_switchState;
+
+        
+    #ifdef DEBUG
+        Serial.println("PSwitch");
+    #endif
 
         return true;
     }
@@ -63,27 +71,37 @@ bool Selector::presetSwitch()
     }    
 }
 
+void Selector::switchPresetMode()
+{
+    m_presetMode = !m_presetMode;
+
+    #ifdef DEBUG
+        Serial.println("Preset mode :");
+        Serial.println(m_presetMode);
+    #endif
+}
+
 uint8_t Selector::getPresetMode()
 {
     return m_presetMode;
 }
 
-void Selector::setPresetMode()
+void Selector::setPresetMode(uint8_t mode)
 {
-    m_presetMode = !m_presetMode;
+    m_presetMode = mode;
 }
 
 void Selector::lightSelectorLed()
 {
-    if (!m_presetMode)
+    if (m_presetMode == 0)
     {
-        SPI.beginTransaction(SPISettings(30000000, MSBFIRST, SPI_MODE0));
-        digitalWrite(c_latchPin, LOW);
-        SPI.transfer(1 << m_counter);
-        digitalWrite(c_latchPin, HIGH);
-        digitalWrite(c_latchPin, LOW);
-        SPI.endTransaction();
+        shiftReg(1 << m_counter);
     }
+    else
+    {
+        shiftReg(1 << m_counter);
+    }
+    
 }
 
 uint8_t Selector::getCounter()
@@ -94,4 +112,14 @@ uint8_t Selector::getCounter()
 void Selector::setCounter(uint8_t counter)
 {
     m_counter = counter;
+}
+
+void Selector::shiftReg(uint8_t value)
+{
+    SPI.beginTransaction(SPISettings(30000000, MSBFIRST, SPI_MODE0));
+    digitalWrite(c_latchPin, LOW);
+    SPI.transfer(value);
+    digitalWrite(c_latchPin, HIGH);
+    digitalWrite(c_latchPin, LOW);
+    SPI.endTransaction();
 }

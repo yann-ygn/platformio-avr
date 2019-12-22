@@ -38,7 +38,7 @@ class M95256
          * 
          * @param addr 
          */
-        void sendAddress(long addr);
+        void sendAddress(uint8_t addr);
 
         /**
          * @brief Read the status register
@@ -71,10 +71,17 @@ class M95256
          */
         void setup();
 
-        void writeByte(byte addr, byte data);
-        void writeArray(byte addr, byte data[], int length);
-        byte readByte(byte addr);
+        uint8_t readByte(uint8_t addr);
+        void writeByte(uint8_t addr, uint8_t data);
+
+        int readInt(uint8_t addr);
+        void writeInt(uint8_t addr, int data);
+
+        long readLong(uint8_t addr);
+        void readLong(uint8_t addr, long data);
+
         void readArray(byte addr, byte data[], int length);
+        void writeArray(byte addr, byte data[], int length);
 };
 	
 #endif

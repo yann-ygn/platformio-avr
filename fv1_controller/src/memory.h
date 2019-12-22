@@ -13,12 +13,14 @@ class Memory
     private:
         M95256 eeprom0;
 
-        const uint8_t c_bypassStateAddress = 0;
+        const uint8_t c_bypassStateAddress = 10;
         const uint8_t c_presetModeAddress = 1;
         const uint8_t c_currentPresetAddress = 2;
-        const uint8_t c_currentProgramAddress = 3;
-        const uint8_t c_tapStateAddress = 4;
-        const uint8_t c_divValueAddress = 5;
+        const uint8_t c_tapStateAddress = 3;
+        const uint8_t c_intervalAddress = 4;
+        const uint8_t c_divStateAddress = 6;
+        const uint8_t c_divValueAddress = 7;
+        const uint8_t c_divIntervalAddress = 8;
     
 
     public:
@@ -27,6 +29,7 @@ class Memory
         void memorySetup();
         
         void memoryTest();
+        void memoryTestInt();
 
         uint8_t readBypassState();
         void writeBypassState(uint8_t state);
@@ -37,14 +40,20 @@ class Memory
         uint8_t readCurrentPreset();
         void writeCurrentPreset(uint8_t preset);
 
-        uint8_t readCurrentProgram();
-        void writeCurrentProgram(uint8_t program);
-
         uint8_t readTapState();
         void writeTapState(uint8_t state);
 
+        int readIntervalValue();
+        void writeIntervalValue(int value);
+
+        uint8_t readDivState();
+        void writeDivState(uint8_t state);
+
         uint8_t readDivValue();
         void writeDivValue(byte value);
+
+        int readDivIntervalValue();
+        void writeDivIntervalValue(int value);
 };
 
 #endif

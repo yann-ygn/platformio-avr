@@ -10,8 +10,8 @@ class Selector
 {
     private:
         // Pins delcarations
-        const uint8_t c_encoderPinA = 10; // Encoder CLK pin #, interrupt pin, to be set
-        const uint8_t c_encoderPinB = 11; // Encoder DT pin #, interrupt pin, to be set
+        const uint8_t c_encoderPinA = 11; // Encoder CLK pin #, interrupt pin, to be set
+        const uint8_t c_encoderPinB = 10; // Encoder DT pin #, interrupt pin, to be set
         const uint8_t c_switchPin = 17; // Encoder switch pin #, to be set
         const uint8_t c_latchPin = 18; // Shift register latch pin, to be set
 
@@ -55,7 +55,12 @@ class Selector
          * @return true 
          * @return false 
          */
-        bool presetSwitch();
+        bool selectorSwitch();
+
+        /**
+         * @brief Switch program/preset mode
+         */
+        void switchPresetMode();
 
         /**
          * @brief Get the Preset Mode object
@@ -67,7 +72,7 @@ class Selector
         /**
          * @brief Set the presetMode
          */
-        void setPresetMode();
+        void setPresetMode(uint8_t mode);
 
         /**
          * @brief Manage the LEDs reflecting the current program or preset
@@ -85,6 +90,13 @@ class Selector
          * @brief Set the Counter object
          */
         void setCounter(uint8_t counter);
+
+        /**
+         * @brief Sends a value to the shift register
+         * 
+         * @param value 
+         */
+        void shiftReg(uint8_t value);
 
         bool m_newProgram = false;
         unsigned long m_now = 0;

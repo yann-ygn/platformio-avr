@@ -1,3 +1,5 @@
+#define DEBUG 1
+
 #include <Arduino.h>
 
 #include "potentiometer.h"
@@ -18,14 +20,17 @@ bool Pot::potTurned()
 {
     m_currPotValue = analogRead(m_pin);
 
-    if ((m_currPotValue > m_lastPotValue) || (m_currPotValue < m_lastPotValue))
+    if (abs(m_currPotValue - m_lastPotValue) > 3)
     {
+        #ifdef DEBUG
+            Serial.println(m_currPotValue);
+        #endif
+
         m_lastPotValue = m_currPotValue;
         return true;
     }
     else
     {
-        m_lastPotValue = m_currPotValue;
         return false;
     }
 }
