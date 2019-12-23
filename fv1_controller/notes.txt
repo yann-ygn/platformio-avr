@@ -1,0 +1,30 @@
+to save :
+bypass state
+program/preset mode
+current program/preset id
+tap enabled
+interval
+div enabled
+div value
+div interval
+
+startup :
+check bypass state
+setup bypass
+check selector mode
+check selector counter
+setup selector
+
+program structure :
+id
+is delay
+max delay time
+has tap
+pot1 enabled
+pot2 enabled
+pot3 enabled
+
+preset structure :
+program id
+
+
