@@ -5,13 +5,14 @@
 
 struct program
 {
-    uint8_t m_id;
-    uint8_t m_isDelay;
-    int m_maxInterval;
-    uint8_t m_tapEnabled;
-    uint8_t m_pot0Enabled;
-    uint8_t m_pot1Enabled;
-    uint8_t m_pot2Enabled;
+    const uint8_t m_id;
+    const uint8_t m_delayEffect;
+    const int m_maxInterval;
+    const uint8_t m_tapEnabled;
+    const uint8_t m_pot0Enabled;
+    const uint8_t m_pot1Enabled;
+    const uint8_t m_pot2Enabled;
 };
 
 #endif
+    
