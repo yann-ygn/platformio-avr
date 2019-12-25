@@ -14,5 +14,7 @@ struct program
     const uint8_t m_pot2Enabled;
 };
 
+extern program programs[7];
+
 #endif
     

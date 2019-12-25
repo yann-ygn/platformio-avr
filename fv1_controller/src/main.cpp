@@ -6,6 +6,7 @@
 #include "selector.h"
 #include "bypass.h"
 #include "memory.h"
+#include "program.h"
 
 Memory mem0;
 Bypass bypass0;
@@ -15,6 +16,8 @@ Selector selector0;
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2); 
+
+program curentProgram = programs[1];
 
 // Selector interrupt function
 void selectorInterrupt()
@@ -42,23 +45,46 @@ void setup()
   Serial.begin(9600);
   mem0.memorySetup();
 
+  if (mem0.readInitialSetupState() == 0) // First startup, need to initialize
+  {
+    mem0.writeBypassState(0);
+    mem0.writePresetMode(0);
+    mem0.writeCurrentPreset(0);
+    mem0.writeTapState(0);
+    mem0.writeDivState(0);
+    mem0.writeDivValue(0);
+    mem0.writeDivIntervalValue(0);
+    mem0.writeIntervalValue(0);
+
+    mem0.writeInitialSetupState(1); // Initialization done
+  }
+
   bypass0.setBypassState(mem0.readBypassState());
   bypass0.bypassSetup();
   attachInterrupt(digitalPinToInterrupt(2), bypassInterrupt, FALLING);
   
   tap0.tapSetup();
   
-  selector0.setCounter(mem0.readCurrentPreset());
-  selector0.setPresetMode(mem0.readPresetMode());
+  pot0.potSetup();
+  pot1.potSetup();
+  pot2.potSetup();
 
   selector0.selectorSetup();
   attachInterrupt(digitalPinToInterrupt(10), selectorInterrupt, CHANGE);
   attachInterrupt(digitalPinToInterrupt(11), selectorInterrupt, CHANGE);
-  selector0.lightSelectorLed();
 
-  pot0.potSetup();
-  pot1.potSetup();
-  pot2.potSetup();
+  if (mem0.readPresetMode() == 1) // preset mode
+  {
+    selector0.setPresetMode(mem0.readPresetMode());
+    selector0.setCounter(mem0.readCurrentPreset());
+  }
+  else // program mode
+  {
+    selector0.setPresetMode(mem0.readPresetMode());
+    selector0.setCounter(mem0.readCurrentPreset());
+  } 
+
+  selector0.lightSelectorLed();
 }
 
 void loop()

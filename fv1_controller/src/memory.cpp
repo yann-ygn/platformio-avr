@@ -9,6 +9,16 @@ void Memory::memorySetup()
     eeprom0.setup();
 }
 
+uint8_t Memory::readInitialSetupState()
+{
+    return eeprom0.readByte(c_initialSetupStateAddress);
+}
+
+void Memory::writeInitialSetupState(uint8_t state)
+{
+    eeprom0.writeByte(c_initialSetupStateAddress, state);
+}
+
 uint8_t Memory::readBypassState()
 {
     #ifdef DEBUG

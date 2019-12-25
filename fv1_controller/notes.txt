@@ -9,6 +9,7 @@ div value
 div interval
 
 startup :
+check initial setup
 check bypass state
 setup bypass
 check selector mode
