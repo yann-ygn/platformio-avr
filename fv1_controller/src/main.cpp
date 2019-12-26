@@ -15,9 +15,9 @@ Selector selector0;
 
 Pot pot0(A0);
 Pot pot1(A1);
-Pot pot2(A2); 
+Pot pot2(A2);
 
-program curentProgram = programs[1];
+program test = programs[0];
 
 // Selector interrupt function
 void selectorInterrupt()
@@ -82,6 +82,9 @@ void setup()
   {
     selector0.setPresetMode(mem0.readPresetMode());
     selector0.setCounter(mem0.readCurrentPreset());
+
+    
+test = programs[1];
   } 
 
   selector0.lightSelectorLed();

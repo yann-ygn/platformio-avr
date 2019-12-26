@@ -21,20 +21,20 @@ void Tap::tapSetup()
 
 bool Tap::tapPressed()
 {
-    m_tapState = digitalRead(c_swPin);
+    m_switchState = digitalRead(c_swPin);
     
-    if (m_tapState == LOW 
+    if (m_switchState == LOW 
     && m_now - m_lastTaptime > c_debounceTime 
-    && m_tapState != m_lastTapState
+    && m_switchState != m_lastSwitchState
     && !m_longTapPress)
     {
         m_lastTaptime = m_now;
-        m_lastTapState = m_tapState;
+        m_lastSwitchState = m_switchState;
         return true;
     }
     else
     {
-        m_lastTapState = m_tapState;
+        m_lastSwitchState = m_switchState;
         return false;
     }    
 }
@@ -94,11 +94,12 @@ void Tap::calculateInterval()
 {    
     if (m_newInterval)
     {
-        if (m_divEnabled)
+        if (m_divState)
         {
             m_divInterval = m_interval / m_divValue;
         }
         m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
+        m_tapState = 1;
         m_newInterval = false;
 
         #ifdef DEBUG
@@ -134,7 +135,7 @@ void Tap::setInterval(int interval)
 
 void Tap::blinkTapLed()
 {
-    if (m_divEnabled)
+    if (m_divState)
     {
         m_blinkValue = 128 + (127 * cos(2 * PI / (m_divInterval * 2 ) * m_now)); // WIP try the whole range
         analogWrite(c_ledPin, m_blinkValue);
@@ -148,32 +149,32 @@ void Tap::blinkTapLed()
 
 bool Tap::divPressed()
 {
-    if (m_tapState == LOW
+    if (m_switchState == LOW
     && m_now - m_lastTaptime > c_divDebounceTime
-    && m_tapState == m_tapState
-    && m_divEnabled == false
+    && m_switchState == m_lastSwitchState
+    && m_divState == false
     && m_interval > 0)
     {
-        m_tapState = m_lastTapState;
+        m_switchState = m_lastSwitchState;
         m_lastTaptime = m_now;
         m_longTapPress = true;
-        m_divEnabled = true;
+        m_divState = 1;
 
         return true;
     }
-    else if (m_tapState == LOW
+    else if (m_switchState == LOW
     && m_now - m_lastTaptime > c_divDebounceTime
-    && m_tapState == m_lastTapState
-    && m_divEnabled == true)
+    && m_switchState == m_lastSwitchState
+    && m_divState == true)
     {
-        m_tapState = m_lastTapState;
+        m_switchState = m_switchState;
         m_lastTaptime = m_now;
 
         return true;
     }
     else
     {
-        m_tapState = m_lastTapState;
+        m_switchState = m_lastSwitchState;
 
         return false;
     }    
@@ -189,7 +190,7 @@ void Tap::setDivision()
     else
     {
         m_divValue = 1;
-        m_divEnabled = false;
+        m_divState = false;
         m_newDivInterval = true;
     }    
 }
@@ -216,7 +217,7 @@ void Tap::setDivValue(uint8_t value)
 
 void Tap::lightDivLed()
 {
-    if (m_divEnabled)
+    if (m_divState)
     {
         shiftReg(1 << (m_divValue -1));
     }
@@ -235,4 +236,24 @@ void Tap::shiftReg(uint8_t value)
     digitalWrite(c_latchPin, HIGH);
     digitalWrite(c_latchPin, LOW);
     SPI.endTransaction();
+}
+
+uint8_t Tap::getTapState()
+{
+    return m_tapState;
+}
+
+void Tap::setTapState(uint8_t state)
+{
+    m_tapState = state;
+}
+
+uint8_t Tap::getDivState()
+{
+    return m_divState;
+}
+
+void Tap::setDivState(uint8_t state)
+{
+    m_divState = state;
 }

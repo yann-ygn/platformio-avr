@@ -19,11 +19,13 @@ class Tap
         const uint8_t c_latchPin = 19; // Shift register latch pin, to be set. 
 
         // Switch -> Tap
-        uint8_t m_timesTapped = 0;
-        bool m_tapState = 0;
-        bool m_lastTapState = 0;
+        uint8_t m_tapState = 0; // Is tap enabled
+        uint8_t m_switchState = 0;
+        uint8_t m_lastSwitchState = 0;
         unsigned long m_firstTapTime = 0;
         unsigned long m_lastTaptime = 0;
+        uint8_t m_timesTapped = 0;
+        const uint8_t c_maxTaps = 3; // The number of taps before the mean value is calculated
         int m_interval = 0;
         const int c_maxInterval = 1000; // The absolute maximum delay value
         const uint8_t c_debounceTime = 100; // Minimum time between two footswich press
@@ -32,8 +34,8 @@ class Tap
         int m_blinkValue = 0;
 
         // Switch -> Division
-        bool m_longTapPress = false;   
-        bool m_divEnabled = false;
+        bool m_divState = 0; // Is div enabled
+        bool m_longTapPress = false;
         uint8_t m_divValue = 1;
         const unsigned int c_divDebounceTime = 1000; //
         int m_divInterval = 0;
@@ -153,10 +155,37 @@ class Tap
          */
         void shiftReg(uint8_t value);
 
+        /**
+         * @brief Get the Tap State object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getTapState();
+
+        /**
+         * @brief Set the Tap State object
+         * 
+         * @param state 
+         */
+        void setTapState(uint8_t state);
+
+        /**
+         * @brief Get the Div State object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getDivState();
+
+        /**
+         * @brief Set the Div State object
+         * 
+         * @param state 
+         */
+        void setDivState(uint8_t state);
+
         unsigned long m_now = 0;
         bool m_newInterval = false;
         bool m_newDivInterval = false;
-        const uint8_t c_maxTaps = 3; // The number of taps before the mean value is calculated
 };
 
 #endif
