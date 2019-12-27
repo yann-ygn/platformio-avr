@@ -82,9 +82,6 @@ void setup()
   {
     selector0.setPresetMode(mem0.readPresetMode());
     selector0.setCounter(mem0.readCurrentPreset());
-
-    
-test = programs[1];
   } 
 
   selector0.lightSelectorLed();
