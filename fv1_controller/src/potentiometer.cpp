@@ -23,6 +23,9 @@ bool Pot::potTurned()
     if (abs(m_currPotValue - m_lastPotValue) > 3)
     {
         #ifdef DEBUG
+            Serial.print("Pot ");
+            Serial.print(m_pin);
+            Serial.print(" : ");
             Serial.println(m_currPotValue);
         #endif
 

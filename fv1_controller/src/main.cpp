@@ -7,11 +7,13 @@
 #include "bypass.h"
 #include "memory.h"
 #include "program.h"
+#include "FV1.h"
 
 Memory mem0;
 Bypass bypass0;
 Tap tap0;
 Selector selector0;
+FV1 dsp0;
 
 Pot pot0(A0);
 Pot pot1(A1);
@@ -25,8 +27,6 @@ void selectorInterrupt()
   if (bypass0.getBypassState() == 1)
   {
     selector0.selectorMove();
-
-    Serial.println(selector0.getCounter());
   }
 }
 
@@ -62,6 +62,8 @@ void setup()
   bypass0.setBypassState(mem0.readBypassState());
   bypass0.bypassSetup();
   attachInterrupt(digitalPinToInterrupt(2), bypassInterrupt, FALLING);
+
+  dsp0.FV1Setup();
   
   tap0.tapSetup();
   
@@ -84,6 +86,7 @@ void setup()
     selector0.setCounter(mem0.readCurrentPreset());
   } 
 
+  dsp0.sendProgramChange(selector0.getCounter());
   selector0.lightSelectorLed();
 }
 
@@ -101,6 +104,7 @@ void loop()
   if (selector0.m_newProgram)
   {
     selector0.lightSelectorLed();
+    dsp0.sendProgramChange(selector0.getCounter());
     mem0.writeCurrentPreset(selector0.getCounter());
     selector0.m_newProgram = false;
   }
@@ -133,11 +137,15 @@ void loop()
 
   if (pot0.potTurned())
   {
+    dsp0.sendPot0Value(pot0.getPotValue());
   }
+
   if (pot1.potTurned())
   {
+    dsp0.sendPot1Value(pot1.getPotValue());
   }
   if (pot2.potTurned())
   {
+    dsp0.sendPot2Value(pot2.getPotValue());
   }
 }

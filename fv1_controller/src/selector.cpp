@@ -42,6 +42,11 @@ void Selector::selectorMove()
         }
     }
 
+    #ifdef DEBUG
+        Serial.print("Selector counter : ");
+        Serial.println(m_counter);
+    #endif
+
     m_newProgram = true;
 }
 
@@ -58,7 +63,7 @@ bool Selector::selectorSwitch()
 
         
     #ifdef DEBUG
-        Serial.println("PSwitch");
+        Serial.println("Selector switch");
     #endif
 
         return true;
@@ -76,7 +81,7 @@ void Selector::switchPresetMode()
     m_presetMode = !m_presetMode;
 
     #ifdef DEBUG
-        Serial.println("Preset mode :");
+        Serial.print("Preset mode : ");
         Serial.println(m_presetMode);
     #endif
 }

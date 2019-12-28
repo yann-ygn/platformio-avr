@@ -29,9 +29,6 @@ class Memory
 
         void memorySetup();
         
-        void memoryTest();
-        void memoryTestInt();
-
         uint8_t readInitialSetupState();
         void writeInitialSetupState(uint8_t state);
 

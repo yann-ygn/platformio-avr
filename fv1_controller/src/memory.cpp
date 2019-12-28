@@ -21,18 +21,11 @@ void Memory::writeInitialSetupState(uint8_t state)
 
 uint8_t Memory::readBypassState()
 {
-    #ifdef DEBUG
-        Serial.println("Reading bypass state");
-    #endif
     return eeprom0.readByte(c_bypassStateAddress);
 }
 
 void Memory::writeBypassState(uint8_t state)
 {
-    #ifdef DEBUG
-        Serial.println("Writing bypass state :");
-        Serial.println(state);
-    #endif
     eeprom0.writeByte(c_bypassStateAddress, state);
 
 }
@@ -44,10 +37,6 @@ uint8_t Memory::readPresetMode()
 
 void Memory::writePresetMode(uint8_t mode)
 {
-    #ifdef DEBUG
-        Serial.println("Writing preset mode :");
-        Serial.println(mode);
-    #endif
     eeprom0.writeByte(c_presetModeAddress, mode);
 }
 
@@ -110,29 +99,3 @@ void Memory::writeDivIntervalValue(int value)
 {
     eeprom0.writeInt(c_divIntervalAddress, value);
 }
-
-#ifdef DEBUG
-
-    void Memory::memoryTest()
-    {
-        writeBypassState(0);
-        delay(500);
-        Serial.println(readBypassState());
-
-        writeBypassState(1);
-        delay(500);
-        Serial.println(readBypassState());
-    }
-
-    void Memory::memoryTestInt()
-    {
-        writeIntervalValue(13219);
-        delay(500);
-        Serial.println(readIntervalValue());
-
-        writeIntervalValue(0);
-        delay(500);
-        Serial.println(readIntervalValue());
-    }    
-
-#endif

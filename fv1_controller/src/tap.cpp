@@ -57,7 +57,7 @@ void Tap::tapReset()
     m_longTapPress = false;
 
     #ifdef DEBUG
-        Serial.println("Reset");
+        Serial.println("Tap reset");
     #endif
 }
 
@@ -79,9 +79,8 @@ void Tap::setTapCount()
     }
 
     #ifdef DEBUG            
-        Serial.println("Tap count : ");
+        Serial.print("Tap count : ");
         Serial.println(m_timesTapped);
-        Serial.println(m_now);
     #endif    
 }
 
@@ -103,7 +102,7 @@ void Tap::calculateInterval()
         m_newInterval = false;
 
         #ifdef DEBUG
-            Serial.println("Interval :");
+            Serial.print("Interval : ");
             Serial.println(m_interval);
         #endif
     }
@@ -115,9 +114,9 @@ void Tap::calculateInterval()
         m_newDivInterval = false;
 
         #ifdef DEBUG
-            Serial.println("Division :");
+            Serial.print("Division : ");
             Serial.println(m_divValue);
-            Serial.println("Interval :");
+            Serial.print("Interval : ");
             Serial.println(m_divInterval);
         #endif
     }

@@ -17,4 +17,3 @@ struct program
 extern program programs[7];
 
 #endif
-    
