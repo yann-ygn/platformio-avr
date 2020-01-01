@@ -21,6 +21,8 @@ Pot pot2(A2);
 
 program test = programs[0];
 
+int incomingByte = 0;
+
 // Selector interrupt function
 void selectorInterrupt()
 {
@@ -42,7 +44,7 @@ void bypassInterrupt()
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(31250);
   mem0.memorySetup();
 
   if (mem0.readInitialSetupState() == 0) // First startup, need to initialize
@@ -147,5 +149,14 @@ void loop()
   if (pot2.potTurned())
   {
     dsp0.sendPot2Value(pot2.getPotValue());
+  }
+
+  if (Serial.available() > 0) {
+    // read the incoming byte:
+    incomingByte = Serial.read();
+
+    // say what you got:
+    Serial.print("I received: ");
+    Serial.println(incomingByte, DEC);
   }
 }
