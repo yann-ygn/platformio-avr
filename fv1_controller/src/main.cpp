@@ -8,20 +8,20 @@
 #include "memory.h"
 #include "program.h"
 #include "FV1.h"
+#include "midi.h"
 
 Memory mem0;
 Bypass bypass0;
 Tap tap0;
 Selector selector0;
 FV1 dsp0;
+Midi midi0;
 
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2);
 
 program test = programs[0];
-
-int incomingByte = 0;
 
 // Selector interrupt function
 void selectorInterrupt()
@@ -42,9 +42,14 @@ void bypassInterrupt()
   }
 }
 
+void midiHandler(uint8_t message, uint8_t byte1, uint8_t byte2)
+{
+
+}
+
 void setup()
 {
-  Serial.begin(31250);
+  midi0.midiSetup();
   mem0.memorySetup();
 
   if (mem0.readInitialSetupState() == 0) // First startup, need to initialize
@@ -146,17 +151,15 @@ void loop()
   {
     dsp0.sendPot1Value(pot1.getPotValue());
   }
+
   if (pot2.potTurned())
   {
     dsp0.sendPot2Value(pot2.getPotValue());
   }
 
-  if (Serial.available() > 0) {
-    // read the incoming byte:
-    incomingByte = Serial.read();
-
-    // say what you got:
-    Serial.print("I received: ");
-    Serial.println(incomingByte, DEC);
+  if (midi0.completeMidiMessage())
+  {
+    midiHandler(midi0.getCommandCode(), midi0.getDataByte1(), midi0.getDataByte2());
+    midi0.resetMidiMessage();
   }
 }
