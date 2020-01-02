@@ -19,7 +19,7 @@ bool Midi::completeMidiMessage()
         && ((newByte & 0xF) == m_midiChannel)) // Check that this is a status message on our channel
         {
             m_statusByte = newByte;
-            m_commandCode = newByte & 0x80;
+            m_commandCode = newByte & 0x70;
             m_channelInformation = newByte & 0xF;
 
             #ifdef DEBUG
@@ -35,8 +35,8 @@ bool Midi::completeMidiMessage()
         }
         else
         {
-            if ((m_commandCode == MIDI_PC) 
-            && (m_dataByte1 == 0x0) 
+            if ((m_commandCode == MIDI_PC)
+            && (m_dataByte1 == 0x0)
             && ((newByte & 0x80) == 0)) // Data byte for the PC message
             {
                 m_dataByte1 = newByte;
@@ -64,9 +64,9 @@ bool Midi::completeMidiMessage()
                 return false; // Incomplete message
             }
 
-            if ((m_commandCode == MIDI_CC) 
+            if ((m_commandCode == MIDI_CC)
             && (m_dataByte1 != 0x0) 
-            && ((m_dataByte2 == 0x0)) 
+            && (m_dataByte2 == 0x0)
             && ((newByte & 0x80) == 0)) // Second data byte of the CC message
             {
                 m_dataByte2 = newByte;
@@ -79,13 +79,14 @@ bool Midi::completeMidiMessage()
                 return true; // Completed message
             }
 
-            else // Weird case or wrong channel
+            else // Wrong channel or unsupported message
             {
                 #ifdef DEBUG
-                    Serial.print("WTF : ");
+                    Serial.print("Unsupported message : ");
                     Serial.println(newByte);
                 #endif
 
+                resetMidiMessage();
                 return false;
             }
         }        

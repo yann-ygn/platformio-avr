@@ -16,7 +16,6 @@ Tap tap0;
 Selector selector0;
 FV1 dsp0;
 Midi midi0;
-
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2);
