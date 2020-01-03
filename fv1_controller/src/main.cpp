@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
+#include "main.h"
 #include "potentiometer.h"
 #include "tap.h"
 #include "selector.h"
@@ -20,50 +21,12 @@ Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2);
 
-program test = programs[0];
-
-// Selector interrupt function
-void selectorInterrupt()
-{
-  if (bypass0.getBypassState() == 1)
-  {
-    selector0.selectorMove();
-  }
-}
-
-// Bypass Interupt function
-void bypassInterrupt()
-{
-  if (bypass0.bypassPressed())
-  {
-    bypass0.switchRelay();
-    mem0.writeBypassState(bypass0.getBypassState());
-  }
-}
-
-void midiHandler(uint8_t message, uint8_t byte1, uint8_t byte2)
-{
-
-}
-
 void setup()
 {
-  midi0.midiSetup();
   mem0.memorySetup();
 
-  if (mem0.readInitialSetupState() == 0) // First startup, need to initialize
-  {
-    mem0.writeBypassState(0);
-    mem0.writePresetMode(0);
-    mem0.writeCurrentPreset(0);
-    mem0.writeTapState(0);
-    mem0.writeDivState(0);
-    mem0.writeDivValue(0);
-    mem0.writeDivIntervalValue(0);
-    mem0.writeIntervalValue(0);
-
-    mem0.writeInitialSetupState(1); // Initialization done
-  }
+  midi0.midiSetup();
+  midi0.setMidiChannel(mem0.readMidiChannel());
 
   bypass0.setBypassState(mem0.readBypassState());
   bypass0.bypassSetup();
@@ -90,6 +53,30 @@ void setup()
   {
     selector0.setPresetMode(mem0.readPresetMode());
     selector0.setCounter(mem0.readCurrentPreset());
+
+    if (programs[selector0.getCounter()].m_delayEffect == 1) // Is this program a delay effect
+    {
+      if (programs[selector0.getCounter()].m_tapEnabled == 1) // If tap is enabled we need to load the stored values
+      {
+        tap0.setTapState(mem0.readTapState());
+        tap0.setInterval(mem0.readIntervalValue());
+        tap0.setDivState(mem0.readDivState());
+        tap0.setDivValue(mem0.readDivValue());
+        tap0.setDivInterval(mem0.readDivIntervalValue());
+
+        if (tap0.getTapState() == 1) // Tap was active, we nee to check if it was divided
+        {
+          if (tap0.getDivState() == 1) // Div was active, light the status LED
+          {
+            tap0.lightDivLed();
+          }
+        }
+        else // Tap wasn't active, send the pot0 current value to the DSP
+        {
+          /* code */
+        }
+      }
+    }
   } 
 
   dsp0.sendProgramChange(selector0.getCounter());
@@ -161,4 +148,26 @@ void loop()
     midiHandler(midi0.getCommandCode(), midi0.getDataByte1(), midi0.getDataByte2());
     midi0.resetMidiMessage();
   }
+}
+
+void selectorInterrupt()
+{
+  if (bypass0.getBypassState() == 1)
+  {
+    selector0.selectorMove();
+  }
+}
+
+void bypassInterrupt()
+{
+  if (bypass0.bypassPressed())
+  {
+    bypass0.switchRelay();
+    mem0.writeBypassState(bypass0.getBypassState());
+  }
+}
+
+void midiHandler(uint8_t message, uint8_t byte1, uint8_t byte2)
+{
+
 }

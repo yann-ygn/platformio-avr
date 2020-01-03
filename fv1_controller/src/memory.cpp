@@ -7,6 +7,26 @@
 void Memory::memorySetup()
 {
     eeprom0.setup();
+
+    if (readInitialSetupState() != 1) // First startup, need to initialize
+    {
+         memoryInitialization();
+    }
+}
+
+void Memory::memoryInitialization()
+{
+    writeMidiChannel(0);
+    writeBypassState(0);
+    writePresetMode(0);
+    writeCurrentPreset(0);
+    writeTapState(0);
+    writeDivState(0);
+    writeDivValue(0);
+    writeDivIntervalValue(0);
+    writeIntervalValue(0);
+
+    writeInitialSetupState(1); // Initialization done
 }
 
 uint8_t Memory::readInitialSetupState()
@@ -19,6 +39,16 @@ void Memory::writeInitialSetupState(uint8_t state)
     eeprom0.writeByte(c_initialSetupStateAddress, state);
 }
 
+uint8_t Memory::readMidiChannel()
+{
+    return eeprom0.readByte(c_midiChannelAddress);
+}
+
+void Memory::writeMidiChannel(uint8_t channel)
+{
+    eeprom0.writeByte(c_midiChannelAddress, channel);
+}
+
 uint8_t Memory::readBypassState()
 {
     return eeprom0.readByte(c_bypassStateAddress);
@@ -27,7 +57,6 @@ uint8_t Memory::readBypassState()
 void Memory::writeBypassState(uint8_t state)
 {
     eeprom0.writeByte(c_bypassStateAddress, state);
-
 }
 
 uint8_t Memory::readPresetMode()

@@ -14,23 +14,28 @@ class Memory
         M95256 eeprom0;
 
         const uint8_t c_initialSetupStateAddress = 0;
-        const uint8_t c_bypassStateAddress = 1;
-        const uint8_t c_presetModeAddress = 2;
-        const uint8_t c_currentPresetAddress = 3;
-        const uint8_t c_tapStateAddress = 4;
-        const uint8_t c_intervalAddress = 5;
-        const uint8_t c_divStateAddress = 7;
-        const uint8_t c_divValueAddress = 8;
-        const uint8_t c_divIntervalAddress = 9;
+        const uint8_t c_midiChannelAddress = 1;
+        const uint8_t c_bypassStateAddress = 2;
+        const uint8_t c_presetModeAddress = 3;
+        const uint8_t c_currentPresetAddress = 4;
+        const uint8_t c_tapStateAddress = 5;
+        const uint8_t c_intervalAddress = 6;
+        const uint8_t c_divStateAddress = 8;
+        const uint8_t c_divValueAddress = 9;
+        const uint8_t c_divIntervalAddress = 10;
     
 
     public:
         Memory() : eeprom0(23) {}
 
         void memorySetup();
+        void memoryInitialization();
         
         uint8_t readInitialSetupState();
         void writeInitialSetupState(uint8_t state);
+
+        uint8_t readMidiChannel();
+        void writeMidiChannel(uint8_t channel);
 
         uint8_t readBypassState();
         void writeBypassState(uint8_t state);

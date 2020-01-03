@@ -21,7 +21,6 @@ class FV1
         void sendPot1Value(int value);
 
         void sendPot2Value(int value);
-
 };
 
 #endif
