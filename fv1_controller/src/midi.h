@@ -3,8 +3,8 @@
 #ifndef MIDI_H
 #define MIDI_H
 
-#define MIDI_PC 0x40
-#define MIDI_CC 0x30
+#define MIDI_PC 0x40 // 01000000
+#define MIDI_CC 0x30 // 00110000
 
 class Midi
 {

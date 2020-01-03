@@ -93,13 +93,14 @@ void Tap::calculateInterval()
 {    
     if (m_newInterval)
     {
+        m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
+        m_tapState = 1;
+        m_newInterval = false;
+        
         if (m_divState)
         {
             m_divInterval = m_interval / m_divValue;
         }
-        m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
-        m_tapState = 1;
-        m_newInterval = false;
 
         #ifdef DEBUG
             Serial.print("Interval : ");

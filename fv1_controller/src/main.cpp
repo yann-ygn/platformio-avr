@@ -64,7 +64,7 @@ void setup()
         tap0.setDivValue(mem0.readDivValue());
         tap0.setDivInterval(mem0.readDivIntervalValue());
 
-        if (tap0.getTapState() == 1) // Tap was active, we nee to check if it was divided
+        if (tap0.getTapState() == 1) // Tap was active, need to check if it was divided
         {
           if (tap0.getDivState() == 1) // Div was active, light the status LED
           {

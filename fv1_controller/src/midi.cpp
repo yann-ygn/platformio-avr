@@ -15,12 +15,12 @@ bool Midi::completeMidiMessage()
     {
         uint8_t newByte = Serial.read();
 
-        if ((newByte & 0x80) 
+        if ((newByte & 0x80)  // & 10000000
         && ((newByte & 0xF) == m_midiChannel)) // Check that this is a status message on our channel
         {
             m_statusByte = newByte;
-            m_commandCode = newByte & 0x70;
-            m_channelInformation = newByte & 0xF;
+            m_commandCode = newByte & 0x70; // & 01110000
+            m_channelInformation = newByte & 0xF; // & 00001111
 
             #ifdef DEBUG
                 Serial.print("Status byte received : ");
