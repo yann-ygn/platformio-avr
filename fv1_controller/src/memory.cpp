@@ -22,7 +22,7 @@ void Memory::memoryInitialization()
     writeCurrentPreset(0);
     writeTapState(0);
     writeDivState(0);
-    writeDivValue(0);
+    writeDivValue(1);
     writeDivIntervalValue(0);
     writeIntervalValue(0);
 
@@ -31,7 +31,14 @@ void Memory::memoryInitialization()
 
 uint8_t Memory::readInitialSetupState()
 {
-    return eeprom0.readByte(c_initialSetupStateAddress);
+    uint8_t value = eeprom0.readByte(c_initialSetupStateAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading initial state : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writeInitialSetupState(uint8_t state)
@@ -41,7 +48,14 @@ void Memory::writeInitialSetupState(uint8_t state)
 
 uint8_t Memory::readMidiChannel()
 {
-    return eeprom0.readByte(c_midiChannelAddress);
+    uint8_t value = eeprom0.readByte(c_midiChannelAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading midi channel : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writeMidiChannel(uint8_t channel)
@@ -51,7 +65,14 @@ void Memory::writeMidiChannel(uint8_t channel)
 
 uint8_t Memory::readBypassState()
 {
-    return eeprom0.readByte(c_bypassStateAddress);
+    uint8_t value = eeprom0.readByte(c_bypassStateAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading bypass state : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writeBypassState(uint8_t state)
@@ -61,7 +82,14 @@ void Memory::writeBypassState(uint8_t state)
 
 uint8_t Memory::readPresetMode()
 {
-    return eeprom0.readByte(c_presetModeAddress);
+    uint8_t value = eeprom0.readByte(c_presetModeAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading preset mode : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writePresetMode(uint8_t mode)
@@ -71,7 +99,14 @@ void Memory::writePresetMode(uint8_t mode)
 
 uint8_t Memory::readCurrentPreset()
 {
-    return eeprom0.readByte(c_currentPresetAddress);
+    uint8_t value = eeprom0.readByte(c_currentPresetAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading current preset : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writeCurrentPreset(uint8_t preset)
@@ -81,7 +116,14 @@ void Memory::writeCurrentPreset(uint8_t preset)
 
 uint8_t Memory::readTapState()
 {
-    return eeprom0.readByte(c_tapStateAddress);
+    uint8_t value = eeprom0.readByte(c_tapStateAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading tap state : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writeTapState(uint8_t state)
@@ -91,7 +133,14 @@ void Memory::writeTapState(uint8_t state)
 
 int Memory::readIntervalValue()
 {
-    return eeprom0.readInt(c_intervalAddress);
+    int value = eeprom0.readByte(c_intervalAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading bypass state : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writeIntervalValue(int value)
@@ -101,7 +150,14 @@ void Memory::writeIntervalValue(int value)
 
 uint8_t Memory::readDivState()
 {
-    return eeprom0.readByte(c_divStateAddress);
+    uint8_t value = eeprom0.readByte(c_divStateAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading division state : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writeDivState(uint8_t state)
@@ -111,17 +167,31 @@ void Memory::writeDivState(uint8_t state)
 
 uint8_t Memory::readDivValue()
 {
-    return eeprom0.readByte(c_divValueAddress);
+    uint8_t value = eeprom0.readByte(c_divValueAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading division value : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
-void Memory::writeDivValue(byte value)
+void Memory::writeDivValue(uint8_t value)
 {
     eeprom0.writeByte(c_divValueAddress, value);
 }
 
 int Memory::readDivIntervalValue()
 {
-    return eeprom0.readInt(c_divIntervalAddress);
+    int value = eeprom0.readByte(c_divIntervalAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading division interval : ");
+        Serial.println(value);
+    #endif
+
+    return value;
 }
 
 void Memory::writeDivIntervalValue(int value)

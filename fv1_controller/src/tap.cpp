@@ -100,6 +100,11 @@ void Tap::calculateInterval()
         if (m_divState)
         {
             m_divInterval = m_interval / m_divValue;
+
+            #ifdef DEBUG
+                Serial.print("Division : ");
+                Serial.println(m_divValue);
+            #endif
         }
 
         #ifdef DEBUG
@@ -133,18 +138,24 @@ void Tap::setInterval(int interval)
     m_interval = interval;
 }
 
-void Tap::blinkTapLed()
+void Tap::blinkTapLed(int interval = 0)
 {
-    if (m_divState)
+    if (interval != 0)
     {
-        m_blinkValue = 128 + (127 * cos(2 * PI / (m_divInterval * 2 ) * m_now)); // WIP try the whole range
-        analogWrite(c_ledPin, m_blinkValue);
+        if (m_divState)
+        {
+            m_blinkValue = 128 + (127 * cos(2 * PI / m_divInterval * m_now)); // WIP try the whole range
+        }
+        else
+        {
+            m_blinkValue = 128 + (127 * cos(2 * PI / m_interval * m_now)); // WIP try the whole range
+        }
     }
     else
     {
-        m_blinkValue = 128 + (127 * cos(2 * PI / (m_interval * 2 ) * m_now)); // WIP try the whole range
-        analogWrite(c_ledPin, m_blinkValue);
+        m_blinkValue = 128 + (127 * cos(2 * PI / interval * m_now)); // WIP try the whole range
     }
+    analogWrite(c_ledPin, m_blinkValue);
 }    
 
 bool Tap::divPressed()
@@ -190,7 +201,7 @@ void Tap::setDivision()
     else
     {
         m_divValue = 1;
-        m_divState = false;
+        m_divState = 0;
         m_newDivInterval = true;
     }    
 }

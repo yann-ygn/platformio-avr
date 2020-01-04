@@ -19,10 +19,10 @@ class Memory
         const uint8_t c_presetModeAddress = 3;
         const uint8_t c_currentPresetAddress = 4;
         const uint8_t c_tapStateAddress = 5;
-        const uint8_t c_intervalAddress = 6;
-        const uint8_t c_divStateAddress = 8;
-        const uint8_t c_divValueAddress = 9;
-        const uint8_t c_divIntervalAddress = 10;
+        const uint8_t c_divStateAddress = 6;
+        const uint8_t c_divValueAddress = 7;
+        const uint8_t c_divIntervalAddress = 11;
+        const uint8_t c_intervalAddress = 15;
     
 
     public:

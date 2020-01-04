@@ -101,9 +101,11 @@ void Selector::lightSelectorLed()
     if (m_presetMode == 0)
     {
         shiftReg(1 << m_counter);
+        shiftReg(0);
     }
     else
     {
+        shiftReg(1 << m_counter);
         shiftReg(1 << m_counter);
     }
     

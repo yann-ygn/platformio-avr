@@ -10,6 +10,7 @@
 #include "program.h"
 #include "FV1.h"
 #include "midi.h"
+#include "expression.h"
 
 Memory mem0;
 Bypass bypass0;
@@ -20,12 +21,14 @@ Midi midi0;
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2);
+Expr expr0(A4, 0);
 
 void setup()
 {
-  mem0.memorySetup();
-
   midi0.midiSetup();
+  mem0.memorySetup();
+  //mem0.memoryInitialization();
+
   midi0.setMidiChannel(mem0.readMidiChannel());
 
   bypass0.setBypassState(mem0.readBypassState());
@@ -39,6 +42,8 @@ void setup()
   pot0.potSetup();
   pot1.potSetup();
   pot2.potSetup();
+
+  expr0.exprSetup();
 
   selector0.selectorSetup();
   attachInterrupt(digitalPinToInterrupt(10), selectorInterrupt, CHANGE);
@@ -54,93 +59,155 @@ void setup()
     selector0.setPresetMode(mem0.readPresetMode());
     selector0.setCounter(mem0.readCurrentPreset());
 
+    dsp0.sendProgramChange(selector0.getCounter());
+    selector0.lightSelectorLed();
+
     if (programs[selector0.getCounter()].m_delayEffect == 1) // Is this program a delay effect
     {
-      if (programs[selector0.getCounter()].m_tapEnabled == 1) // If tap is enabled we need to load the stored values
+      if (programs[selector0.getCounter()].m_tapEnabled == 1) // Tap is available, check if it was being used
       {
         tap0.setTapState(mem0.readTapState());
-        tap0.setInterval(mem0.readIntervalValue());
-        tap0.setDivState(mem0.readDivState());
-        tap0.setDivValue(mem0.readDivValue());
-        tap0.setDivInterval(mem0.readDivIntervalValue());
 
-        if (tap0.getTapState() == 1) // Tap was active, need to check if it was divided
-        {
-          if (tap0.getDivState() == 1) // Div was active, light the status LED
-          {
+        if (tap0.getTapState() == 1) // Tap was used, load the stored values
+        {          
+          tap0.setInterval(mem0.readIntervalValue());
+          tap0.setDivState(mem0.readDivState());
+
+          if (tap0.getDivState() == 1) // Div was active, load the stored value and light the LED
+          {            
+            tap0.setDivValue(mem0.readDivValue());
+            tap0.setDivInterval(mem0.readDivIntervalValue());
             tap0.lightDivLed();
           }
         }
-        else // Tap wasn't active, send the pot0 current value to the DSP
+        else // Tap wasn't being used, send the pot0 current value to the DSP
         {
-          /* code */
+          dsp0.sendPot0Value(pot0.getPotValue());
         }
       }
+      else // Tap is not available, send the pot0 current value to the dsp
+      {
+        dsp0.sendPot0Value(pot0.getPotValue());
+      }
     }
-  } 
+    else // not a delay effect, send the pot0 current value to the dsp
+    {
+      dsp0.sendPot0Value(pot0.getPotValue());
+    }
 
-  dsp0.sendProgramChange(selector0.getCounter());
-  selector0.lightSelectorLed();
+    dsp0.sendPot1Value(pot1.getPotValue());
+    dsp0.sendPot2Value(pot2.getPotValue());
+  } 
 }
 
 void loop()
 {
-  selector0.m_now = millis();
-  if(selector0.selectorSwitch())
+  if (bypass0.getBypassState() == 1) // The pedal is on
   {
-    selector0.switchPresetMode();
-    mem0.writePresetMode(selector0.getPresetMode());
-    selector0.setCounter(0);
-    selector0.m_newProgram = true;
-  }
+    selector0.m_now = millis();
+    if(selector0.selectorSwitch())
+    {
+      selector0.switchPresetMode();
+      mem0.writePresetMode(selector0.getPresetMode());
+      selector0.setCounter(0);
+      selector0.m_newProgram = true;
+    }
 
-  if (selector0.m_newProgram)
-  {
-    selector0.lightSelectorLed();
-    dsp0.sendProgramChange(selector0.getCounter());
-    mem0.writeCurrentPreset(selector0.getCounter());
-    selector0.m_newProgram = false;
-  }
+    if (selector0.m_newProgram)
+    {
+      selector0.lightSelectorLed();
+      dsp0.sendProgramChange(selector0.getCounter());
+      mem0.writeCurrentPreset(selector0.getCounter());
+      selector0.m_newProgram = false;
+    }
 
-  tap0.m_now = millis();
-  if (tap0.getInterval() > 0)
-  {
-    tap0.blinkTapLed();
-  }
+    if (selector0.getPresetMode() == 1) // The pedal is in preset mode
+    {
+      
+    }
+    else // The pedal is in program mode
+    {
+      if (programs[selector0.getCounter()].m_delayEffect == 1) // Current program is a delay effect
+      {
+        if (programs[selector0.getCounter()].m_tapEnabled == 1) // Current priorgram has tap available
+        {
+          tap0.m_now = millis();
 
-  if (tap0.tapTimeout())
-  {
-    tap0.tapReset();
-  }
+          if (tap0.getTapState() == 1)
+          {
+            tap0.blinkTapLed();
+          }
+          else
+          {
+            tap0.blinkTapLed(pot0.getPotValue());
+          }
 
-  if (tap0.tapPressed())
-  {
-    tap0.setTapCount();
-  }
-  
-  if (tap0.divPressed())
-  {
-    tap0.setDivision();
-  }
+          if (tap0.tapTimeout())
+          {
+            tap0.tapReset();
+          }
 
-  if (tap0.m_newInterval || tap0.m_newDivInterval)
-  {
-    tap0.calculateInterval();
-  }
+          if (tap0.tapPressed())
+          {
+            tap0.setTapCount();
+          }
+          
+          if (tap0.divPressed())
+          {
+            tap0.setDivision();
+          }
 
-  if (pot0.potTurned())
-  {
-    dsp0.sendPot0Value(pot0.getPotValue());
-  }
+          if (tap0.m_newInterval)
+          {
+            tap0.calculateInterval();
 
-  if (pot1.potTurned())
-  {
-    dsp0.sendPot1Value(pot1.getPotValue());
-  }
+            mem0.writeTapState(tap0.getTapState());
+            mem0.writeIntervalValue(tap0.getInterval());
+          }
 
-  if (pot2.potTurned())
+          if (tap0.m_newDivInterval)
+          {
+            tap0.calculateInterval();
+
+            mem0.writeDivState(tap0.getDivState());
+            mem0.writeDivValue(tap0.getDivValue());
+            mem0.writeDivIntervalValue(tap0.getDivInterval());
+          }
+
+          if (pot0.potTurned())
+          {
+            tap0.setTapState(0);
+            mem0.writeTapState(0);
+            tap0.setDivState(0);
+            mem0.writeDivState(0);
+            tap0.lightDivLed();
+            dsp0.sendPot0Value(pot0.getPotValue());
+          }
+        }
+        else // Current program doesn't have tap available
+        {
+          
+        }
+      }
+      else // Current program is not a delay
+      {
+        
+      }
+
+      if (pot1.potTurned())
+      {
+        dsp0.sendPot1Value(pot1.getPotValue());
+      }
+
+      if (pot2.potTurned())
+      {
+        dsp0.sendPot2Value(pot2.getPotValue());
+      }
+    }
+  }
+  else // The pedal is off
   {
-    dsp0.sendPot2Value(pot2.getPotValue());
+    
   }
 
   if (midi0.completeMidiMessage())

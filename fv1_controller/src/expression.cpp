@@ -16,11 +16,11 @@ bool Expr::exprPresent()
 
     if (state)
     {
-        return false;
+        return true;
     }
     else
     {
-        return true;
+        return false;
     }
 }
 

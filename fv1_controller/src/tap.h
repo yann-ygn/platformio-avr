@@ -101,8 +101,10 @@ class Tap
 
         /**
          * @brief Blink the LED according to the set interval
+         * 
+         * @param interval Optional if the tap interval is not used
          */
-        void blinkTapLed();
+        void blinkTapLed(int interval = 0);
 
         /**
          * @brief Read the footswitch state
