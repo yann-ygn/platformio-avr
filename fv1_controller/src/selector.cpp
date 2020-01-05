@@ -12,8 +12,8 @@ void Selector::selectorSetup()
     pinMode(c_switchPin, INPUT_PULLUP);
     pinMode(c_latchPin, OUTPUT);
 
-    digitalWrite(c_encoderPinA, HIGH);
-    digitalWrite(c_encoderPinB, HIGH);
+    //digitalWrite(c_encoderPinA, HIGH);
+    //digitalWrite(c_encoderPinB, HIGH);
     digitalWrite(c_latchPin, LOW);
 
     SPI.begin();
@@ -23,7 +23,7 @@ void Selector::selectorSetup()
 void Selector::selectorMove()
 {
     m_lastSelectorState = (digitalRead(c_encoderPinB) << 1) | digitalRead(c_encoderPinA);
-    m_selectorState = c_encoderStates[m_selectorState & 15][m_lastSelectorState];
+    m_selectorState = c_encoderStates[m_selectorState & 0xf][m_lastSelectorState];
 
     if (m_selectorState == 0x10)
     {

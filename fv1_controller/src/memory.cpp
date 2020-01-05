@@ -43,6 +43,11 @@ uint8_t Memory::readInitialSetupState()
 
 void Memory::writeInitialSetupState(uint8_t state)
 {
+    #ifdef DEBUG
+        Serial.print("Writing initial state : ");
+        Serial.println(state);
+    #endif
+
     eeprom0.writeByte(c_initialSetupStateAddress, state);
 }
 
@@ -60,6 +65,11 @@ uint8_t Memory::readMidiChannel()
 
 void Memory::writeMidiChannel(uint8_t channel)
 {
+    #ifdef DEBUG
+        Serial.print("Writing midi channel : ");
+        Serial.println(channel);
+    #endif
+
     eeprom0.writeByte(c_midiChannelAddress, channel);
 }
 
@@ -77,6 +87,11 @@ uint8_t Memory::readBypassState()
 
 void Memory::writeBypassState(uint8_t state)
 {
+    #ifdef DEBUG
+        Serial.print("Writing bypass state : ");
+        Serial.println(state);
+    #endif
+
     eeprom0.writeByte(c_bypassStateAddress, state);
 }
 
@@ -94,6 +109,11 @@ uint8_t Memory::readPresetMode()
 
 void Memory::writePresetMode(uint8_t mode)
 {
+    #ifdef DEBUG
+        Serial.print("Writing preset mode : ");
+        Serial.println(mode);
+    #endif
+
     eeprom0.writeByte(c_presetModeAddress, mode);
 }
 
@@ -111,6 +131,11 @@ uint8_t Memory::readCurrentPreset()
 
 void Memory::writeCurrentPreset(uint8_t preset)
 {
+    #ifdef DEBUG
+        Serial.print("Writing current preset : ");
+        Serial.println(preset);
+    #endif
+
     eeprom0.writeByte(c_currentPresetAddress, preset);
 }
 
@@ -128,15 +153,20 @@ uint8_t Memory::readTapState()
 
 void Memory::writeTapState(uint8_t state)
 {
+    #ifdef DEBUG
+        Serial.print("Writing tap state : ");
+        Serial.println(state);
+    #endif
+
     eeprom0.writeByte(c_tapStateAddress, state);
 }
 
 int Memory::readIntervalValue()
 {
-    int value = eeprom0.readByte(c_intervalAddress);
+    int value = eeprom0.readInt(c_intervalAddress);
 
     #ifdef DEBUG
-        Serial.print("Reading bypass state : ");
+        Serial.print("Reading interval value : ");
         Serial.println(value);
     #endif
 
@@ -145,6 +175,11 @@ int Memory::readIntervalValue()
 
 void Memory::writeIntervalValue(int value)
 {
+    #ifdef DEBUG
+        Serial.print("Writing interval value : ");
+        Serial.println(value);
+    #endif
+
     eeprom0.writeInt(c_intervalAddress, value);
 }
 
@@ -162,6 +197,11 @@ uint8_t Memory::readDivState()
 
 void Memory::writeDivState(uint8_t state)
 {
+    #ifdef DEBUG
+        Serial.print("Writing division state : ");
+        Serial.println(state);
+    #endif
+
     eeprom0.writeByte(c_divStateAddress, state);
 }
 
@@ -179,12 +219,17 @@ uint8_t Memory::readDivValue()
 
 void Memory::writeDivValue(uint8_t value)
 {
+    #ifdef DEBUG
+        Serial.print("Writing division value : ");
+        Serial.println(value);
+    #endif
+
     eeprom0.writeByte(c_divValueAddress, value);
 }
 
 int Memory::readDivIntervalValue()
 {
-    int value = eeprom0.readByte(c_divIntervalAddress);
+    int value = eeprom0.readInt(c_divIntervalAddress);
 
     #ifdef DEBUG
         Serial.print("Reading division interval : ");
@@ -196,5 +241,10 @@ int Memory::readDivIntervalValue()
 
 void Memory::writeDivIntervalValue(int value)
 {
+    #ifdef DEBUG
+        Serial.print("Writing division interval : ");
+        Serial.println(value);
+    #endif
+
     eeprom0.writeInt(c_divIntervalAddress, value);
 }

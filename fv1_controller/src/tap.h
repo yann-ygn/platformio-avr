@@ -27,7 +27,7 @@ class Tap
         uint8_t m_timesTapped = 0;
         const uint8_t c_maxTaps = 3; // The number of taps before the mean value is calculated
         int m_interval = 0;
-        const int c_maxInterval = 1000; // The absolute maximum delay value
+        int m_maxInterval = 1000; // The absolute maximum delay value in ms
         const uint8_t c_debounceTime = 100; // Minimum time between two footswich press
 
         // Tap LED
@@ -107,6 +107,12 @@ class Tap
         void blinkTapLed(int interval = 0);
 
         /**
+         * @brief Turn off the tap LED
+         * 
+         */
+        void turnOffTapLed();
+
+        /**
          * @brief Read the footswitch state
          * 
          * @return true if the footswitch has been pressed for more than a second
@@ -184,6 +190,34 @@ class Tap
          * @param state 
          */
         void setDivState(uint8_t state);
+
+        /**
+         * @brief Get the Max Interval object
+         * 
+         * @return int 
+         */
+        int getMaxInterval();
+
+        /**
+         * @brief Set the Max Interval object
+         * 
+         * @param interval 
+         */
+        void setMaxInterval (int interval);
+
+        /**
+         * @brief Get the Mapped Interval object
+         * 
+         * @return int 
+         */
+        int getMappedInterval();
+
+        /**
+         * @brief Get the Mapped Div Interval object
+         * 
+         * @return int 
+         */
+        int getMappedDivInterval();
 
         unsigned long m_now = 0;
         bool m_newInterval = false;

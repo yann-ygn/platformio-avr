@@ -10,8 +10,8 @@ class Selector
 {
     private:
         // Pins delcarations
-        const uint8_t c_encoderPinA = 11; // Encoder CLK pin #, interrupt pin, to be set
-        const uint8_t c_encoderPinB = 10; // Encoder DT pin #, interrupt pin, to be set
+        const uint8_t c_encoderPinA = 10; // Encoder CLK pin #, interrupt pin, to be set
+        const uint8_t c_encoderPinB = 11; // Encoder DT pin #, interrupt pin, to be set
         const uint8_t c_switchPin = 17; // Encoder switch pin #, to be set
         const uint8_t c_latchPin = 18; // Shift register latch pin, to be set
 

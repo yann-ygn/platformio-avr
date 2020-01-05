@@ -31,11 +31,25 @@ class Pot
         void potSetup();
 
         /**
-         * @brief Get the stored pot current value
+         * @brief Get the Current Pot Value object
          * 
          * @return int 
          */
-        int getPotValue();
+        int getCurrentPotValue();
+        
+        /**
+         * @brief Get the Last Pot Value object
+         * 
+         * @return int 
+         */
+        int getLastPotValue();
+
+        /**
+         * @brief Get the Mapped Pot Value object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getMappedPotValue();
 
         /**
          * @brief Check if the pot value has changed since the last cycle

@@ -41,7 +41,7 @@ bool Tap::tapPressed()
 
 bool Tap::tapTimeout()
 {
-    if (m_timesTapped > 0 && (m_now - m_lastTaptime) > c_maxInterval * 1.5)
+    if (m_timesTapped > 0 && (m_now - m_lastTaptime) > m_maxInterval * 1.2)
     {
         return true;
     }
@@ -75,7 +75,9 @@ void Tap::setTapCount()
 
     if (m_timesTapped == c_maxTaps)
     {
+        m_tapState = 1;
         m_newInterval = true;
+        tapReset();
     }
 
     #ifdef DEBUG            
@@ -94,7 +96,6 @@ void Tap::calculateInterval()
     if (m_newInterval)
     {
         m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
-        m_tapState = 1;
         m_newInterval = false;
         
         if (m_divState)
@@ -138,9 +139,9 @@ void Tap::setInterval(int interval)
     m_interval = interval;
 }
 
-void Tap::blinkTapLed(int interval = 0)
+void Tap::blinkTapLed(int interval)
 {
-    if (interval != 0)
+    if (interval == 0)
     {
         if (m_divState)
         {
@@ -156,7 +157,12 @@ void Tap::blinkTapLed(int interval = 0)
         m_blinkValue = 128 + (127 * cos(2 * PI / interval * m_now)); // WIP try the whole range
     }
     analogWrite(c_ledPin, m_blinkValue);
-}    
+}
+
+void Tap::turnOffTapLed()
+{
+    analogWrite(c_ledPin, 0);
+}
 
 bool Tap::divPressed()
 {
@@ -203,6 +209,7 @@ void Tap::setDivision()
         m_divValue = 1;
         m_divState = 0;
         m_newDivInterval = true;
+        tapReset();
     }    
 }
 
@@ -267,4 +274,24 @@ uint8_t Tap::getDivState()
 void Tap::setDivState(uint8_t state)
 {
     m_divState = state;
+}
+
+int Tap::getMaxInterval()
+{
+    return m_maxInterval;
+}
+
+void Tap::setMaxInterval(int interval)
+{
+    m_maxInterval = interval;
+}
+
+int Tap::getMappedInterval()
+{
+    return map(m_interval, 0, m_maxInterval, 0, 255);
+}
+
+int Tap::getMappedDivInterval()
+{
+    return map(m_interval, 0, m_maxInterval, 0, 255);
 }

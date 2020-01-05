@@ -11,9 +11,19 @@ void Pot::potSetup()
     m_lastPotValue = m_currPotValue;
 }
 
-int Pot::getPotValue()
+uint8_t Pot::getMappedPotValue()
+{
+    return map(m_lastPotValue, 0, 1024, 0, 255);
+}
+
+int Pot::getCurrentPotValue()
 {
     return m_currPotValue;
+}
+
+int Pot::getLastPotValue()
+{
+    return m_lastPotValue;
 }
 
 bool Pot::potTurned()

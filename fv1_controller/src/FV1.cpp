@@ -33,15 +33,15 @@ void FV1::sendProgramChange(uint8_t program)
 
 void FV1::sendPot0Value(int value)
 {
-    analogWrite(c_pot0Pin, map(value, 0, 1024, 0, 255));
+    analogWrite(c_pot0Pin, value);
 }
 
 void FV1::sendPot1Value(int value)
 {
-    analogWrite(c_pot1Pin, map(value, 0, 1024, 0, 255));
+    analogWrite(c_pot1Pin, value);
 }
 
 void FV1::sendPot2Value(int value)
 {
-    analogWrite(c_pot2Pin, map(value, 0, 1024, 0, 255));
+    analogWrite(c_pot2Pin, value);
 }
