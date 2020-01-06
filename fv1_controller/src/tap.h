@@ -27,7 +27,8 @@ class Tap
         uint8_t m_timesTapped = 0;
         const uint8_t c_maxTaps = 3; // The number of taps before the mean value is calculated
         int m_interval = 0;
-        int m_maxInterval = 1000; // The absolute maximum delay value in ms
+        int m_mininterval = 0; // The absolute minimum delay value in ms, set by the current program
+        int m_maxInterval = 1000; // The absolute maximum delay value in ms, set by the current program
         const uint8_t c_debounceTime = 100; // Minimum time between two footswich press
 
         // Tap LED
