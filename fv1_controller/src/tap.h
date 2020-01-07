@@ -26,20 +26,20 @@ class Tap
         unsigned long m_lastTaptime = 0;
         uint8_t m_timesTapped = 0;
         const uint8_t c_maxTaps = 3; // The number of taps before the mean value is calculated
-        int m_interval = 0;
-        int m_mininterval = 0; // The absolute minimum delay value in ms, set by the current program
-        int m_maxInterval = 1000; // The absolute maximum delay value in ms, set by the current program
+        uint16_t m_interval = 0;
+        uint16_t m_minInterval = 0; // The absolute minimum delay value in ms, set by the current program
+        uint16_t m_maxInterval = 1000; // The absolute maximum delay value in ms, set by the current program
         const uint8_t c_debounceTime = 100; // Minimum time between two footswich press
 
         // Tap LED
-        int m_blinkValue = 0;
+        uint8_t m_blinkValue = 0;
 
         // Switch -> Division
         bool m_divState = 0; // Is div enabled
         bool m_longTapPress = false;
         uint8_t m_divValue = 1;
-        const unsigned int c_divDebounceTime = 1000; //
-        int m_divInterval = 0;
+        const uint16_t c_divDebounceTime = 1000; // Minimum time between 2 long footswitch press
+        uint16_t m_divInterval = 0;
 
     public:
         /**
@@ -91,7 +91,7 @@ class Tap
          * 
          * @return int 
          */
-        int getInterval();
+        uint16_t getInterval();
 
         /**
          * @brief Set the Interval object
@@ -136,7 +136,7 @@ class Tap
          * 
          * @return int 
          */
-        int getDivInterval();
+        uint16_t getDivInterval();
 
         /**
          * @brief Get the Div Value object
@@ -197,7 +197,7 @@ class Tap
          * 
          * @return int 
          */
-        int getMaxInterval();
+        uint16_t getMaxInterval();
 
         /**
          * @brief Set the Max Interval object
@@ -211,14 +211,14 @@ class Tap
          * 
          * @return int 
          */
-        int getMappedInterval();
+        uint8_t getMappedInterval();
 
         /**
          * @brief Get the Mapped Div Interval object
          * 
          * @return int 
          */
-        int getMappedDivInterval();
+        uint8_t getMappedDivInterval();
 
         unsigned long m_now = 0;
         bool m_newInterval = false;

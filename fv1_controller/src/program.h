@@ -7,7 +7,8 @@ struct program
 {
     const uint8_t m_id;
     const uint8_t m_delayEffect;
-    const int m_maxInterval;
+    const uint16_t m_minInterval;
+    const uint16_t m_maxInterval;
     const uint8_t m_tapEnabled;
     const uint8_t m_pot0Enabled;
     const uint8_t m_pot1Enabled;

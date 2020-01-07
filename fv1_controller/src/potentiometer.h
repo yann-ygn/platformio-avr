@@ -10,9 +10,9 @@
 class Pot
 {
     private:
-        byte m_pin;
-        int m_currPotValue = 0;
-        int m_lastPotValue = 0;
+        uint8_t m_pin;
+        uint16_t m_currPotValue = 0;
+        uint16_t m_lastPotValue = 0;
 
     public:
         /**
@@ -20,7 +20,7 @@ class Pot
          * 
          * @param pin The potentiometer pin #
          */     
-        Pot(byte pin) : m_pin(pin)
+        Pot(uint8_t pin) : m_pin(pin)
         {
 
         }
@@ -35,14 +35,14 @@ class Pot
          * 
          * @return int 
          */
-        int getCurrentPotValue();
+        uint16_t getCurrentPotValue();
         
         /**
          * @brief Get the Last Pot Value object
          * 
          * @return int 
          */
-        int getLastPotValue();
+        uint16_t getLastPotValue();
 
         /**
          * @brief Get the Mapped Pot Value object

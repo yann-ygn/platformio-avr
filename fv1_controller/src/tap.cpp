@@ -41,7 +41,7 @@ bool Tap::tapPressed()
 
 bool Tap::tapTimeout()
 {
-    if (m_timesTapped > 0 && (m_now - m_lastTaptime) > m_maxInterval * 1.2)
+    if (m_timesTapped > 0 && (m_now - m_lastTaptime) > (m_maxInterval + 200))
     {
         return true;
     }
@@ -97,6 +97,11 @@ void Tap::calculateInterval()
     {
         m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
         m_newInterval = false;
+
+        #ifdef DEBUG
+            Serial.print("Interval : ");
+            Serial.println(m_interval);
+        #endif
         
         if (m_divState)
         {
@@ -105,13 +110,50 @@ void Tap::calculateInterval()
             #ifdef DEBUG
                 Serial.print("Division : ");
                 Serial.println(m_divValue);
+                Serial.print("Interval : ");
+                Serial.println(m_divInterval);
+            #endif
+
+            if (m_divInterval > m_maxInterval)
+            {
+                m_divInterval = m_maxInterval;
+
+                #ifdef DEBUG
+                    Serial.print("Corrected div interval : ");
+                    Serial.println(m_divInterval);
+                #endif
+            }
+            
+            if(m_divInterval < m_minInterval)
+            {
+                m_divInterval = m_minInterval;
+
+                #ifdef DEBUG
+                    Serial.print("Corrected div interval : ");
+                    Serial.println(m_divInterval);
+                #endif
+            }
+        }
+
+        if (m_interval > m_maxInterval)
+        {
+            m_interval = m_maxInterval;
+
+            #ifdef DEBUG
+                Serial.print("Corrected interval : ");
+                Serial.println(m_interval);
             #endif
         }
 
-        #ifdef DEBUG
-            Serial.print("Interval : ");
-            Serial.println(m_interval);
-        #endif
+        if (m_interval < m_minInterval)
+        {
+            m_interval = m_minInterval;
+
+            #ifdef DEBUG
+                Serial.print("Corrected interval : ");
+                Serial.println(m_interval);
+            #endif
+        }
     }
     
     if(m_newDivInterval)
@@ -126,10 +168,30 @@ void Tap::calculateInterval()
             Serial.print("Interval : ");
             Serial.println(m_divInterval);
         #endif
+
+        if (m_divInterval > m_maxInterval)
+        {
+            m_divInterval = m_maxInterval;
+
+            #ifdef DEBUG
+                Serial.print("Corrected div interval : ");
+                Serial.println(m_divInterval);
+            #endif
+        }
+        
+        if(m_divInterval < m_minInterval)
+        {
+            m_divInterval = m_minInterval;
+
+            #ifdef DEBUG
+                Serial.print("Corrected div interval : ");
+                Serial.println(m_divInterval);
+            #endif
+        }
     }
 }
 
-int Tap::getInterval()
+uint16_t Tap::getInterval()
 {
     return m_interval;
 }
@@ -161,7 +223,9 @@ void Tap::blinkTapLed(int interval)
 
 void Tap::turnOffTapLed()
 {
-    analogWrite(c_ledPin, 0);
+    m_blinkValue = 0;
+
+    analogWrite(c_ledPin, m_blinkValue);
 }
 
 bool Tap::divPressed()
@@ -218,7 +282,7 @@ void Tap::setDivInterval(int interval)
     m_divInterval = interval;
 }
 
-int Tap::getDivInterval()
+uint16_t Tap::getDivInterval()
 {
     return m_divInterval;
 }
@@ -276,7 +340,7 @@ void Tap::setDivState(uint8_t state)
     m_divState = state;
 }
 
-int Tap::getMaxInterval()
+uint16_t Tap::getMaxInterval()
 {
     return m_maxInterval;
 }
@@ -286,12 +350,12 @@ void Tap::setMaxInterval(int interval)
     m_maxInterval = interval;
 }
 
-int Tap::getMappedInterval()
+uint8_t Tap::getMappedInterval()
 {
-    return map(m_interval, 0, m_maxInterval, 0, 255);
+    return map(m_interval, m_minInterval, m_maxInterval, 0, 255);
 }
 
-int Tap::getMappedDivInterval()
+uint8_t Tap::getMappedDivInterval()
 {
-    return map(m_interval, 0, m_maxInterval, 0, 255);
+    return map(m_interval, m_minInterval, m_maxInterval, 0, 255);
 }

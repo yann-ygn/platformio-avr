@@ -147,7 +147,7 @@ void loop()
 
               dsp0.sendPot0Value(tap0.getMappedDivInterval());
             }
-            else // No division set, send the interval to the DSP
+            else // No division set, send the tap interval to the DSP
             {
               dsp0.sendPot0Value(tap0.getMappedInterval());
             }
@@ -199,7 +199,7 @@ void loop()
         {
           tap0.blinkTapLed();
         }
-        else // Tap isn't used, blibk the LED using the pot0 value
+        else // Tap isn't used, blink the LED using the pot0 value
         {
           tap0.blinkTapLed(pot0.getLastPotValue());
         }

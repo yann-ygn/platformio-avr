@@ -13,15 +13,15 @@ void Pot::potSetup()
 
 uint8_t Pot::getMappedPotValue()
 {
-    return map(m_lastPotValue, 0, 1024, 0, 255);
+    return map(m_lastPotValue, 0, 1023, 0, 255);
 }
 
-int Pot::getCurrentPotValue()
+uint16_t Pot::getCurrentPotValue()
 {
     return m_currPotValue;
 }
 
-int Pot::getLastPotValue()
+uint16_t Pot::getLastPotValue()
 {
     return m_lastPotValue;
 }

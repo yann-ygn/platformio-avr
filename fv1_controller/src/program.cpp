@@ -8,26 +8,29 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
+        .m_minInterval = 0,
         .m_maxInterval = 1000,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
         .m_pot1Enabled = 1,
         .m_pot2Enabled = 1
     },
-    //programs[1] : 
+    //programs[1] : dark digital delay
     {
         .m_id = 0,
         .m_delayEffect = 1,
+        .m_minInterval = 0,
         .m_maxInterval = 1000,
         .m_tapEnabled = 0,
         .m_pot0Enabled = 1,
         .m_pot1Enabled = 1,
         .m_pot2Enabled = 1
     },
-    //programs[2] : 
+    //programs[2] : modulated digital delay
     {
         .m_id = 0,
         .m_delayEffect = 1,
+        .m_minInterval = 0,
         .m_maxInterval = 1000,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
@@ -38,6 +41,7 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
+        .m_minInterval = 0,
         .m_maxInterval = 1000,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
@@ -48,6 +52,7 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
+        .m_minInterval = 0,
         .m_maxInterval = 1000,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
@@ -58,6 +63,7 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
+        .m_minInterval = 0,
         .m_maxInterval = 1000,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
@@ -68,6 +74,7 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
+        .m_minInterval = 0,
         .m_maxInterval = 1000,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
@@ -78,6 +85,7 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
+        .m_minInterval = 0,
         .m_maxInterval = 1000,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
