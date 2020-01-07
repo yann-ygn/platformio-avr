@@ -98,14 +98,14 @@ class Tap
          * 
          * @param interval 
          */
-        void setInterval (int interval);
+        void setInterval(uint16_t interval);
 
         /**
          * @brief Blink the LED according to the set interval
          * 
          * @param interval Optional if the tap interval is not used
          */
-        void blinkTapLed(int interval = 0);
+        void blinkTapLed(uint16_t interval = 0);
 
         /**
          * @brief Turn off the tap LED
@@ -204,7 +204,7 @@ class Tap
          * 
          * @param interval 
          */
-        void setMaxInterval (int interval);
+        void setMaxInterval(uint16_t interval);
 
         /**
          * @brief Get the Mapped Interval object
@@ -219,6 +219,20 @@ class Tap
          * @return int 
          */
         uint8_t getMappedDivInterval();
+
+        /**
+         * @brief Get the Min Interval object
+         * 
+         * @return uint16_t 
+         */
+        uint16_t getMinInterval();
+
+        /**
+         * @brief Get the Min Interval object
+         * 
+         * @param interval 
+         */
+        void setMinInterval(uint16_t interval);
 
         unsigned long m_now = 0;
         bool m_newInterval = false;

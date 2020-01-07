@@ -73,17 +73,19 @@ void Tap::setTapCount()
         m_timesTapped++;
     }
 
+    #ifdef DEBUG            
+        Serial.print("Tap count : ");
+        Serial.println(m_timesTapped);
+        Serial.print("Now : ");
+        Serial.println(m_now);
+    #endif    
+
     if (m_timesTapped == c_maxTaps)
     {
         m_tapState = 1;
         m_newInterval = true;
         tapReset();
     }
-
-    #ifdef DEBUG            
-        Serial.print("Tap count : ");
-        Serial.println(m_timesTapped);
-    #endif    
 }
 
 uint8_t Tap::getTapCount()
@@ -95,7 +97,7 @@ void Tap::calculateInterval()
 {    
     if (m_newInterval)
     {
-        m_interval = ((m_lastTaptime - m_firstTapTime) / c_maxTaps);
+        m_interval = ((m_lastTaptime - m_firstTapTime) / (c_maxTaps - 1));
         m_newInterval = false;
 
         #ifdef DEBUG
@@ -196,12 +198,12 @@ uint16_t Tap::getInterval()
     return m_interval;
 }
 
-void Tap::setInterval(int interval)
+void Tap::setInterval(uint16_t interval)
 {
     m_interval = interval;
 }
 
-void Tap::blinkTapLed(int interval)
+void Tap::blinkTapLed(uint16_t interval)
 {
     if (interval == 0)
     {
@@ -345,17 +347,27 @@ uint16_t Tap::getMaxInterval()
     return m_maxInterval;
 }
 
-void Tap::setMaxInterval(int interval)
+void Tap::setMaxInterval(uint16_t interval)
 {
     m_maxInterval = interval;
 }
 
 uint8_t Tap::getMappedInterval()
 {
-    return map(m_interval, m_minInterval, m_maxInterval, 0, 255);
+    return map(m_interval, 0, 1000, 0, 255);
 }
 
 uint8_t Tap::getMappedDivInterval()
 {
     return map(m_interval, m_minInterval, m_maxInterval, 0, 255);
+}
+
+uint16_t Tap::getMinInterval()
+{
+    return m_minInterval;
+}
+
+void Tap::setMinInterval(uint16_t interval)
+{
+    m_minInterval = interval;
 }

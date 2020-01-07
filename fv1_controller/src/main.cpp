@@ -65,6 +65,7 @@ void setup()
     if (programs[selector0.getCounter()].m_delayEffect == 1) // Stored program is a delay, set the max interval
     {
       tap0.setMaxInterval(programs[selector0.getCounter()].m_maxInterval);
+      tap0.setMinInterval(programs[selector0.getCounter()].m_minInterval);
 
       if (programs[selector0.getCounter()].m_tapEnabled == 1) // Tap is available, check if it was being used
       {
@@ -112,6 +113,7 @@ void setup()
 void loop()
 {
   selector0.m_now = millis();
+  
   if(selector0.selectorSwitch()) // Preset / Program switch
   {
     selector0.switchPresetMode();
@@ -136,6 +138,7 @@ void loop()
       if (programs[selector0.getCounter()].m_delayEffect == 1) // If it's a delay effect set the max interval
       {
         tap0.setMaxInterval(programs[selector0.getCounter()].m_maxInterval);
+        tap0.setMinInterval(programs[selector0.getCounter()].m_minInterval);
 
         if (programs[selector0.getCounter()].m_tapEnabled == 1) // New program has tap available
         {
@@ -239,7 +242,7 @@ void loop()
 
           dsp0.sendPot0Value(tap0.getMappedDivInterval());
         }
-
+        
         if (pot0.potTurned())
         {
           if (tap0.getTapState() == 1)
@@ -271,7 +274,7 @@ void loop()
         dsp0.sendPot0Value(pot0.getMappedPotValue());
       }
     }
-
+    
     if (pot1.potTurned())
     {
       dsp0.sendPot1Value(pot1.getMappedPotValue());
@@ -282,7 +285,7 @@ void loop()
       dsp0.sendPot2Value(pot2.getMappedPotValue());
     }
   }
-
+  
   if (midi0.completeMidiMessage())
   {
     midiHandler(midi0.getCommandCode(), midi0.getDataByte1(), midi0.getDataByte2());

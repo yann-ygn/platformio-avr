@@ -8,7 +8,7 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
-        .m_minInterval = 0,
+        .m_minInterval = 100,
         .m_maxInterval = 1000,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
@@ -19,7 +19,7 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
-        .m_minInterval = 0,
+        .m_minInterval = 100,
         .m_maxInterval = 1000,
         .m_tapEnabled = 0,
         .m_pot0Enabled = 1,
@@ -30,8 +30,8 @@ program programs[8] =
     {
         .m_id = 0,
         .m_delayEffect = 1,
-        .m_minInterval = 0,
-        .m_maxInterval = 1000,
+        .m_minInterval = 480,
+        .m_maxInterval = 960,
         .m_tapEnabled = 1,
         .m_pot0Enabled = 1,
         .m_pot1Enabled = 1,
