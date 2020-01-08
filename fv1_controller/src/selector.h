@@ -19,7 +19,7 @@ class Selector
         uint8_t m_switchState = 0;
         uint8_t m_lastSwitchState = 0;
         unsigned long m_lastSwitchTime = 0;
-        const unsigned int c_debounceTime = 300;
+        const uint16_t c_debounceTime = 300;
 
         // Encoder
         uint8_t m_selectorState = 0;
@@ -63,6 +63,18 @@ class Selector
         void switchPresetMode();
 
         /**
+         * @brief Manage the LEDs reflecting the current program or preset
+         */
+        void lightSelectorLed();
+
+        /**
+         * @brief Sends a value to the shift register
+         * 
+         * @param value 
+         */
+        void shiftReg(uint8_t value);
+
+        /**
          * @brief Get the Preset Mode object
          * 
          * @return uint8_t 
@@ -75,11 +87,6 @@ class Selector
         void setPresetMode(uint8_t mode);
 
         /**
-         * @brief Manage the LEDs reflecting the current program or preset
-         */
-        void lightSelectorLed();
-
-        /**
          * @brief Get the Counter object
          * 
          * @return uint8_t 
@@ -90,13 +97,6 @@ class Selector
          * @brief Set the Counter object
          */
         void setCounter(uint8_t counter);
-
-        /**
-         * @brief Sends a value to the shift register
-         * 
-         * @param value 
-         */
-        void shiftReg(uint8_t value);
 
         bool m_newProgram = false;
         unsigned long m_now = 0;

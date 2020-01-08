@@ -154,16 +154,16 @@ void Tap::blinkTapLed(uint16_t interval)
     {
         if (m_divState) // Division is active, use the divided interval
         {
-            m_blinkValue = 128 + (127 * cos(2 * PI / m_divInterval * m_now)); // WIP try the whole range
+            m_blinkValue = 128 + (127 * cos(2 * PI / m_divInterval * m_now));
         }
         else // Division not active
         {
-            m_blinkValue = 128 + (127 * cos(2 * PI / m_interval * m_now)); // WIP try the whole range
+            m_blinkValue = 128 + (127 * cos(2 * PI / m_interval * m_now));
         }
     }
     else // Argument, use it and map the value against the program min and max interval
     {
-        m_blinkValue = 128 + (127 * cos(2 * PI / (map(interval, 0, 1024, m_minInterval, m_maxInterval)) * m_now)); // WIP try the whole range
+        m_blinkValue = 128 + (127 * cos(2 * PI / (map(interval, 0, 1024, m_minInterval, m_maxInterval)) * m_now));
     }
     analogWrite(c_ledPin, m_blinkValue);
 }

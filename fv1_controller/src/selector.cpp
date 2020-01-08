@@ -86,16 +86,6 @@ void Selector::switchPresetMode()
     #endif
 }
 
-uint8_t Selector::getPresetMode()
-{
-    return m_presetMode;
-}
-
-void Selector::setPresetMode(uint8_t mode)
-{
-    m_presetMode = mode;
-}
-
 void Selector::lightSelectorLed()
 {
     if (m_presetMode == 0)
@@ -111,16 +101,6 @@ void Selector::lightSelectorLed()
     
 }
 
-uint8_t Selector::getCounter()
-{
-    return m_counter;
-}
-
-void Selector::setCounter(uint8_t counter)
-{
-    m_counter = counter;
-}
-
 void Selector::shiftReg(uint8_t value)
 {
     SPI.beginTransaction(SPISettings(30000000, MSBFIRST, SPI_MODE0));
@@ -129,4 +109,24 @@ void Selector::shiftReg(uint8_t value)
     digitalWrite(c_latchPin, HIGH);
     digitalWrite(c_latchPin, LOW);
     SPI.endTransaction();
+}
+
+uint8_t Selector::getPresetMode()
+{
+    return m_presetMode;
+}
+
+void Selector::setPresetMode(uint8_t mode)
+{
+    m_presetMode = mode;
+}
+
+uint8_t Selector::getCounter()
+{
+    return m_counter;
+}
+
+void Selector::setCounter(uint8_t counter)
+{
+    m_counter = counter;
 }

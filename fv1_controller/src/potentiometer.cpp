@@ -13,9 +13,9 @@ void Pot::potSetup()
 
 bool Pot::potTurned()
 {
-    m_currPotValue = analogRead(m_pin);
+    m_currPotValue = analogRead(m_pin); // Read the current pot value
 
-    if (abs(m_currPotValue - m_lastPotValue) > 3)
+    if (abs(m_currPotValue - m_lastPotValue) > 3) // Slight noise debounce, if true save the value
     {
         #ifdef DEBUG
             Serial.print("Pot ");
@@ -35,7 +35,7 @@ bool Pot::potTurned()
 
 uint8_t Pot::getMappedPotValue()
 {
-    return map(m_lastPotValue, 0, 1023, 0, 255);
+    return map(m_lastPotValue, 0, 1023, 0, 255); // Map to the 8 bits PWM res
 }
 
 uint16_t Pot::getCurrentPotValue()

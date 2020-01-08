@@ -14,9 +14,8 @@ class Bypass
         const uint8_t c_relayPin = 22; // Relay pin #, to be set.
         const uint8_t c_okPin = 21; // Optical relay pin #, to be set.
         const uint8_t c_switchPin = 2; // Footswitch pin #, to be set.
+        unsigned long m_now = 0;
         unsigned long m_lastPressTime = 0;
-        //uint8_t m_switchState = 0;
-        //uint8_t m_lastSwitchState = 0;
         uint8_t m_bypassState = 0;
         const unsigned int c_debounceTime = 300; // Minimum delay between 2 footswitch press, in ms.
 
@@ -29,13 +28,13 @@ class Bypass
         /**
          * @brief Read the footswitch state.
          * 
-         * @return true if LOW and if the debounce delay has passed and if its state changed since the last cycle.
+         * @return true if the conditions are met to trigger a bypass
          * @return false 
          */
         bool bypassPressed();
 
         /**
-         * @brief Switch the relay/LED state.
+         * @brief Switch the relay/OK/LED state.
          */
         void switchRelay();
 
@@ -52,8 +51,6 @@ class Bypass
          * @param state 
          */
         void setBypassState(uint8_t state);
-
-        unsigned long m_now = 0;
 };
 
 #endif
