@@ -50,23 +50,21 @@ class Tap
         /**
          * @brief Read the footswitch state
          * 
-         * @return true if LOW and if the debounce delay has passed and if its state changed since the last cycle.
+         * @return true if the conditions are met to trigger a tap count
          * @return false 
          */
         bool tapPressed();
 
         /**
-         * @brief Check for timeouts
+         * @brief Check for tap tempo timeouts
          * 
-         * @return true if the tap counter is > 0 and if if the switch hasn't been pressed 
-         * in the maximum absolute value * 1.5
-         * 
+         * @return true if the conditions are met to trigger a tap count reset
          * @return false 
          */
         bool tapTimeout();
 
         /**
-         * @brief Resets the tap counter 
+         * @brief Resets the tap tempo counter 
          */
         void tapReset();
 
@@ -76,29 +74,14 @@ class Tap
         void setTapCount();
 
         /**
-         * @brief Get the Tap counter
-         * @return byte 
-         */
-        uint8_t getTapCount();
-
-        /**
-         * @brief Calculate the mean value between the first and last tap time 
+         * @brief Calculate the delay interval based on the average tap tempo time
          */
         void calculateInterval();
 
         /**
-         * @brief Get the current calculated interval
-         * 
-         * @return int 
+         * @brief Calculate the divided interval value based on the current delay interval and divider
          */
-        uint16_t getInterval();
-
-        /**
-         * @brief Set the Interval object
-         * 
-         * @param interval 
-         */
-        void setInterval(uint16_t interval);
+        void calculateDivInterval();
 
         /**
          * @brief Blink the LED according to the set interval
@@ -116,25 +99,39 @@ class Tap
         /**
          * @brief Read the footswitch state
          * 
-         * @return true if the footswitch has been pressed for more than a second
+         * @return true if the conditions are met to trigger a division change
          * @return false 
          */
         bool divPressed();
 
         /**
-         * @brief Set the division value
+         * @brief Set the divider value
          */
         void setDivision();
 
         /**
-         * @brief Set the interval when div is enabled
+         * @brief Light the correct LED according to the current set divider 
          */
-        void setDivInterval(int interval);
+        void lightDivLed();
+
+        /**
+         * @brief Sends a value to the shift register
+         * 
+         * @param value 
+         */
+        void shiftReg(uint8_t value);
+
+        /**
+         * @brief Set the Div Interval object
+         * 
+         * @param interval 
+         */
+        void setDivInterval(uint16_t interval);
 
         /**
          * @brief Get the Div Interval object
          * 
-         * @return int 
+         * @return uint16_t 
          */
         uint16_t getDivInterval();
 
@@ -153,16 +150,18 @@ class Tap
         void setDivValue(uint8_t value);
 
         /**
-         * @brief Light the correct LED according to the current division 
+         * @brief Get the current calculated interval
+         * 
+         * @return uint16_t 
          */
-        void lightDivLed();
+        uint16_t getInterval();
 
         /**
-         * @brief Sends a value to the shift register
+         * @brief Set the Interval object
          * 
-         * @param value 
+         * @param interval 
          */
-        void shiftReg(uint8_t value);
+        void setInterval(uint16_t interval);
 
         /**
          * @brief Get the Tap State object
@@ -195,7 +194,7 @@ class Tap
         /**
          * @brief Get the Max Interval object
          * 
-         * @return int 
+         * @return uint16_t 
          */
         uint16_t getMaxInterval();
 
@@ -209,14 +208,14 @@ class Tap
         /**
          * @brief Get the Mapped Interval object
          * 
-         * @return int 
+         * @return uint8_t 
          */
         uint8_t getMappedInterval();
 
         /**
          * @brief Get the Mapped Div Interval object
          * 
-         * @return int 
+         * @return uint8_t 
          */
         uint8_t getMappedDivInterval();
 

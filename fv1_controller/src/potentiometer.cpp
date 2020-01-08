@@ -11,21 +11,6 @@ void Pot::potSetup()
     m_lastPotValue = m_currPotValue;
 }
 
-uint8_t Pot::getMappedPotValue()
-{
-    return map(m_lastPotValue, 0, 1023, 0, 255);
-}
-
-uint16_t Pot::getCurrentPotValue()
-{
-    return m_currPotValue;
-}
-
-uint16_t Pot::getLastPotValue()
-{
-    return m_lastPotValue;
-}
-
 bool Pot::potTurned()
 {
     m_currPotValue = analogRead(m_pin);
@@ -46,4 +31,19 @@ bool Pot::potTurned()
     {
         return false;
     }
+}
+
+uint8_t Pot::getMappedPotValue()
+{
+    return map(m_lastPotValue, 0, 1023, 0, 255);
+}
+
+uint16_t Pot::getCurrentPotValue()
+{
+    return m_currPotValue;
+}
+
+uint16_t Pot::getLastPotValue()
+{
+    return m_lastPotValue;
 }

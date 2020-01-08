@@ -162,7 +162,7 @@ void loop()
         }
         else // New program doesn't have tap available
         {
-          if (tap0.getTapState() == 1) // Tap was on, stop it
+          if (tap0.getTapState() == 1) // Tap was enabled, disable it
           {
             tap0.setTapState(0);
             mem0.writeTapState(0);
@@ -198,7 +198,7 @@ void loop()
 
       if (programs[selector0.getCounter()].m_tapEnabled == 1) // Current program has tap available
       {
-        if (tap0.getTapState() == 1) // Tap is used, blink the LED using tap interval
+        if (tap0.getTapState() == 1) // Tap is used, blink the LED according to the current interval
         {
           tap0.blinkTapLed();
         }
@@ -212,17 +212,17 @@ void loop()
           tap0.tapReset();
         }
 
-        if (tap0.tapPressed())
+        if (tap0.tapPressed()) // Tap press, set tap tempo count
         {
           tap0.setTapCount();
         }
         
-        if (tap0.divPressed())
+        if (tap0.divPressed()) // Div press, set divider
         {
           tap0.setDivision();
         }
 
-        if (tap0.m_newInterval)
+        if (tap0.m_newInterval) // New interval calculation trigger, calculate, write to memory and send to DSP
         {
           tap0.calculateInterval();
 
@@ -234,7 +234,8 @@ void loop()
 
         if (tap0.m_newDivInterval)
         {
-          tap0.calculateInterval();
+          tap0.calculateDivInterval();
+          tap0.lightDivLed();
 
           mem0.writeDivState(tap0.getDivState());
           mem0.writeDivValue(tap0.getDivValue());
