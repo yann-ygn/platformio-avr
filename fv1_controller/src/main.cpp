@@ -21,6 +21,8 @@ Midi midi0;
 Pot pot0(A0);
 Pot pot1(A1);
 Pot pot2(A2);
+Pot pot3(A3);
+DigitalPot dpot0(1);
 Expr expr0(A4, 0);
 
 void setup()
@@ -42,6 +44,9 @@ void setup()
   pot0.potSetup();
   pot1.potSetup();
   pot2.potSetup();
+  pot3.potSetup();
+
+  dpot0.digitalPotSetup();
 
   expr0.exprSetup();
 
@@ -107,6 +112,9 @@ void setup()
     // Read and send the value for the other pots to the DSP
     dsp0.sendPot1Value(pot1.getMappedPotValue());
     dsp0.sendPot2Value(pot2.getMappedPotValue());
+
+    // Read the mix pot value and send it to the digital pot
+    dpot0.setPotValue(pot3.getMappedPotValue());
   } 
 }
 
@@ -284,6 +292,11 @@ void loop()
     if (pot2.potTurned())
     {
       dsp0.sendPot2Value(pot2.getMappedPotValue());
+    }
+
+    if (pot3.potTurned())
+    {
+      dpot0.setPotValue(pot3.getMappedPotValue());
     }
   }
   

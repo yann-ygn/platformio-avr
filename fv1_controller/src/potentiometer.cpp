@@ -1,6 +1,7 @@
 #define DEBUG 1
 
 #include <Arduino.h>
+#include <SPI.h>
 
 #include "potentiometer.h"
 
@@ -46,4 +47,20 @@ uint16_t Pot::getCurrentPotValue()
 uint16_t Pot::getLastPotValue()
 {
     return m_lastPotValue;
+}
+
+void DigitalPot::digitalPotSetup()
+{
+    pinMode(m_latchPin, OUTPUT);
+
+    SPI.begin();
+}
+
+void DigitalPot::setPotValue(uint8_t value)
+{
+    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+    digitalWrite(m_latchPin, LOW);
+    SPI.transfer(value);
+    digitalWrite(m_latchPin, HIGH);
+    SPI.endTransaction();
 }

@@ -60,4 +60,20 @@ class Pot
         bool potTurned();
 };
 
+class DigitalPot
+{
+    private:
+        uint8_t m_latchPin = 1;
+
+    public:
+        DigitalPot(uint8_t pin) : m_latchPin(pin)
+        {
+
+        }
+
+        void digitalPotSetup();
+
+        void setPotValue(uint8_t value);
+};
+
 #endif
