@@ -12,7 +12,7 @@ void M95256::setup()
 
 void M95256::select()
 {
-	SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
+	SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
 	digitalWrite(m_csPin,LOW);
 }
 

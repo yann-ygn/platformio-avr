@@ -103,7 +103,7 @@ void Selector::lightSelectorLed()
 
 void Selector::shiftReg(uint8_t value)
 {
-    SPI.beginTransaction(SPISettings(30000000, MSBFIRST, SPI_MODE0));
+    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
     digitalWrite(c_latchPin, LOW);
     SPI.transfer(value);
     digitalWrite(c_latchPin, HIGH);
