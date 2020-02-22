@@ -151,6 +151,7 @@ uint8_t Memory::readTapState()
     return value;
 }
 
+
 void Memory::writeTapState(uint8_t state)
 {
     #ifdef DEBUG
