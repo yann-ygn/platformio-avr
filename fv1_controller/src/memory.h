@@ -26,7 +26,7 @@ class Memory
     
 
     public:
-        Memory() : eeprom0(23) {}
+        Memory() : eeprom0(22) {}
 
         void memorySetup();
         void memoryInitialization();

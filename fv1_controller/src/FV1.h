@@ -6,10 +6,9 @@
 class FV1
 {
     private:
-        const uint8_t c_latchPin = 16; // Latch pin for the shift register, to be set
-        const uint8_t c_pot0Pin = 12; // PWM pin connected to the P0 input, to be set
+        const uint8_t c_pot0Pin = 14; // PWM pin connected to the P0 input, to be set
         const uint8_t c_pot1Pin = 13; // PWM pin connected to the P1 input, to be set
-        const uint8_t c_pot2Pin = 14; // PWM pin connected to the P2 input, to be set
+        const uint8_t c_pot2Pin = 12; // PWM pin connected to the P2 input, to be set
 
     public:
         /**

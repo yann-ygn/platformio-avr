@@ -18,12 +18,12 @@ Tap tap0;
 Selector selector0;
 FV1 dsp0;
 Midi midi0;
-Pot pot0(A0);
+Pot pot0(A3);
 Pot pot1(A1);
 Pot pot2(A2);
-Pot pot3(A3);
+Pot pot3(A4);
 DigitalPot dpot0(1);
-Expr expr0(A4, 0);
+Expr expr0(A2, 23);
 
 void setup()
 {
@@ -35,7 +35,7 @@ void setup()
 
   bypass0.setBypassState(mem0.readBypassState());
   bypass0.bypassSetup();
-  attachInterrupt(digitalPinToInterrupt(2), bypassInterrupt, FALLING);
+  attachInterrupt(digitalPinToInterrupt(11), bypassInterrupt, FALLING);
 
   dsp0.FV1Setup();
   

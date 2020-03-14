@@ -11,9 +11,9 @@
 class Bypass
 {
     private:
-        const uint8_t c_relayPin = 22; // Relay pin #, to be set.
-        const uint8_t c_okPin = 21; // Optical relay pin #, to be set.
-        const uint8_t c_switchPin = 2; // Footswitch pin #, to be set.
+        const uint8_t c_relayPin = 2; // Relay pin #, to be set.
+        const uint8_t c_okPin = 1; // Optical relay pin #, to be set.
+        const uint8_t c_switchPin = 11; // Footswitch pin #, to be set.
         unsigned long m_now = 0;
         unsigned long m_lastPressTime = 0;
         uint8_t m_bypassState = 0;

@@ -14,9 +14,9 @@ class Tap
 {
     private:
         // Pins declarations
-        const uint8_t c_swPin = 20; // Footswitch pin #, to be set.
+        const uint8_t c_swPin = 19; // Footswitch pin #, to be set.
         const uint8_t c_ledPin = 15; // LED pin #, to be set.
-        const uint8_t c_latchPin = 19; // Shift register latch pin, to be set. 
+        const uint8_t c_latchPin = 21; // Shift register latch pin, to be set. 
 
         // Switch -> Tap
         uint8_t m_tapState = 0; // Is tap enabled
