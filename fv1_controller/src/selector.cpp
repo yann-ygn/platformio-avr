@@ -30,9 +30,9 @@ uint8_t Selector::readRotaryState()
 
 void Selector::selectorMove()
 {
-    uint8_t test = readRotaryState();
+    uint8_t state = readRotaryState();
 
-    if (test == 0x10)
+    if (state == 0x10)
     {
         m_counter --;
         if (m_counter == 255)
@@ -46,7 +46,8 @@ void Selector::selectorMove()
 
         m_newProgram = true;
     }
-    if (test == 0x20)
+    
+    if (state == 0x20)
     {
         m_counter ++;
         if(m_counter == 8)
@@ -60,7 +61,6 @@ void Selector::selectorMove()
 
         m_newProgram = true;
     }
-    
 }
 
 bool Selector::selectorSwitch()
