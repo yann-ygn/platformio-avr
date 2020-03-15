@@ -10,6 +10,10 @@ class FV1
         const uint8_t c_pot1Pin = 13; // PWM pin connected to the P1 input, to be set
         const uint8_t c_pot2Pin = 12; // PWM pin connected to the P2 input, to be set
 
+        const uint8_t c_s0Pin = 16; // pin connected to the S0 input
+        const uint8_t c_s1Pin = 17; // pin connected to the S1 input
+        const uint8_t c_s2Pin = 18; // pin connected to the S2 input
+
     public:
         /**
          * @brief Setup the µC's pins
