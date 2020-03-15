@@ -12,42 +12,55 @@ void Selector::selectorSetup()
     pinMode(c_switchPin, INPUT_PULLUP);
     pinMode(c_latchPin, OUTPUT);
 
-    //digitalWrite(c_encoderPinA, HIGH);
-    //digitalWrite(c_encoderPinB, HIGH);
+    digitalWrite(c_encoderPinA, HIGH);
+    digitalWrite(c_encoderPinB, HIGH);
     digitalWrite(c_latchPin, LOW);
 
     SPI.begin();
     
 }
 
-void Selector::selectorMove()
+uint8_t Selector::readRotaryState()
 {
     m_lastSelectorState = (digitalRead(c_encoderPinB) << 1) | digitalRead(c_encoderPinA);
     m_selectorState = c_encoderStates[m_selectorState & 0xf][m_lastSelectorState];
 
-    if (m_selectorState == 0x10)
+    return m_selectorState & 0x30;
+}
+
+void Selector::selectorMove()
+{
+    uint8_t test = readRotaryState();
+
+    if (test == 0x10)
     {
         m_counter --;
         if (m_counter == 255)
         {
             m_counter = 7;
         }
+        #ifdef DEBUG
+            Serial.print("Selector counter : ");
+            Serial.println(m_counter);
+        #endif
+
+        m_newProgram = true;
     }
-    if (m_selectorState == 0x20)
+    if (test == 0x20)
     {
         m_counter ++;
         if(m_counter == 8)
         {
             m_counter = 0;
         }
+        #ifdef DEBUG
+            Serial.print("Selector counter : ");
+            Serial.println(m_counter);
+        #endif
+
+        m_newProgram = true;
     }
-
-    #ifdef DEBUG
-        Serial.print("Selector counter : ");
-        Serial.println(m_counter);
-    #endif
-
-    m_newProgram = true;
+    
 }
 
 bool Selector::selectorSwitch()
@@ -95,7 +108,7 @@ void Selector::lightSelectorLed()
     }
     else
     {
-        shiftReg(1 << m_counter);
+        shiftReg(0);
         shiftReg(1 << m_counter);
     }
     

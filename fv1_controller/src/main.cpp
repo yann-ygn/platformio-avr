@@ -12,16 +12,16 @@
 #include "midi.h"
 #include "expression.h"
 
-Memory mem0;
-Bypass bypass0;
-Tap tap0;
-Selector selector0;
-FV1 dsp0;
 Midi midi0;
+Memory mem0;
+Selector selector0;
+Tap tap0;
+Bypass bypass0;
+FV1 dsp0;
 Pot pot0(A3);
 Pot pot1(A1);
-Pot pot2(A2);
-Pot pot3(A4);
+Pot pot2(A4);
+Pot pot3(A0);
 DigitalPot dpot0(1);
 Expr expr0(A2, 23);
 
@@ -29,8 +29,7 @@ void setup()
 {
   midi0.midiSetup();
   mem0.memorySetup();
-  //mem0.memoryInitialization();
-
+  
   midi0.setMidiChannel(mem0.readMidiChannel());
 
   bypass0.setBypassState(mem0.readBypassState());
@@ -51,8 +50,6 @@ void setup()
   expr0.exprSetup();
 
   selector0.selectorSetup();
-  attachInterrupt(digitalPinToInterrupt(10), selectorInterrupt, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(11), selectorInterrupt, CHANGE);
 
   if (mem0.readPresetMode() == 1) // preset mode
   {
@@ -115,12 +112,13 @@ void setup()
 
     // Read the mix pot value and send it to the digital pot
     dpot0.setPotValue(pot3.getMappedPotValue());
-  } 
+  }
 }
 
 void loop()
 {
   selector0.m_now = millis();
+  selector0.selectorMove();
   
   if(selector0.selectorSwitch()) // Preset / Program switch
   {
@@ -304,14 +302,6 @@ void loop()
   {
     midiHandler(midi0.getCommandCode(), midi0.getDataByte1(), midi0.getDataByte2());
     midi0.resetMidiMessage();
-  }
-}
-
-void selectorInterrupt()
-{
-  if (bypass0.getBypassState() == 1)
-  {
-    selector0.selectorMove();
   }
 }
 

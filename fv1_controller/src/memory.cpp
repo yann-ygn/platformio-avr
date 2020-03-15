@@ -16,6 +16,10 @@ void Memory::memorySetup()
 
 void Memory::memoryInitialization()
 {
+    #ifdef DEBUG
+        Serial.println("Doing memory initialization");
+    #endif
+
     writeMidiChannel(0);
     writeBypassState(0);
     writePresetMode(0);

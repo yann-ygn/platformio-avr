@@ -10,9 +10,9 @@ class Selector
 {
     private:
         // Pins delcarations
-        const uint8_t c_encoderPinA = 29; // Encoder CLK pin #, interrupt pin, to be set
-        const uint8_t c_encoderPinB = 30; // Encoder DT pin #, interrupt pin, to be set
-        const uint8_t c_switchPin = 31; // Encoder switch pin #, to be set
+        const uint8_t c_encoderPinA = A6; // Encoder CLK pin #, interrupt pin, to be set
+        const uint8_t c_encoderPinB = A5; // Encoder DT pin #, interrupt pin, to be set
+        const uint8_t c_switchPin = A7; // Encoder switch pin #, to be set
         const uint8_t c_latchPin = 20; // Shift register latch pin, to be set
 
         // Switch
@@ -97,6 +97,8 @@ class Selector
          * @brief Set the Counter object
          */
         void setCounter(uint8_t counter);
+
+        uint8_t readRotaryState();
 
         bool m_newProgram = false;
         unsigned long m_now = 0;
