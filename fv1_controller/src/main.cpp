@@ -22,7 +22,7 @@ Pot pot0(A3);
 Pot pot1(A1);
 Pot pot2(A4);
 Pot pot3(A0);
-DigitalPot dpot0(1);
+DigitalPot dpot0(3);
 Expr expr0(A2, 23);
 
 void setup()
@@ -111,7 +111,7 @@ void setup()
     dsp0.sendPot2Value(pot2.getMappedPotValue());
 
     // Read the mix pot value and send it to the digital pot
-    dpot0.setPotValue(pot3.getMappedPotValue());
+    dpot0.setPotValue(pot3.getCurrentPotValue());
   }
 }
 
@@ -294,7 +294,7 @@ void loop()
 
     if (pot3.potTurned())
     {
-      dpot0.setPotValue(pot3.getMappedPotValue());
+      dpot0.setPotValue(pot3.getCurrentPotValue());
     }
   }
   

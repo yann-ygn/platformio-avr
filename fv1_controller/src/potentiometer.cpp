@@ -54,13 +54,38 @@ void DigitalPot::digitalPotSetup()
     pinMode(m_latchPin, OUTPUT);
 
     SPI.begin();
+
+    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
+    digitalWrite(m_latchPin, LOW);
+    SPI.transfer(0b00011000);
+    SPI.transfer(0b00000010);
+    digitalWrite(m_latchPin, HIGH);
+    SPI.endTransaction();
 }
 
-void DigitalPot::setPotValue(uint8_t value)
-{
-    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+void DigitalPot::setPotValue(uint16_t value)
+{    
+    if (value < 5)
+    {
+        value = 0;
+    }
+
+    uint8_t highByte = (value >> 8) + 0x04;
+    uint8_t lowByte = (value & 0xFF);
+
+    #ifdef DEBUG
+            Serial.print("Dpot : ");
+            Serial.println(value);
+            Serial.print("HB : ");
+            Serial.println(highByte);
+            Serial.print("LB : ");
+            Serial.println(lowByte);
+    #endif
+
+    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
     digitalWrite(m_latchPin, LOW);
-    SPI.transfer(value);
+    SPI.transfer(highByte);
+    SPI.transfer(lowByte);
     digitalWrite(m_latchPin, HIGH);
     SPI.endTransaction();
 }

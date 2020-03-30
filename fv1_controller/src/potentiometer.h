@@ -63,7 +63,7 @@ class Pot
 class DigitalPot
 {
     private:
-        uint8_t m_latchPin = 1;
+        uint8_t m_latchPin;
 
     public:
         DigitalPot(uint8_t pin) : m_latchPin(pin)
@@ -73,7 +73,7 @@ class DigitalPot
 
         void digitalPotSetup();
 
-        void setPotValue(uint8_t value);
+        void setPotValue(uint16_t value);
 };
 
 #endif
