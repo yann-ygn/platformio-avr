@@ -111,7 +111,7 @@ void setup()
     dsp0.sendPot2Value(pot2.getMappedPotValue());
 
     // Read the mix pot value and send it to the digital pot
-    dpot0.setPotValue(pot3.getCurrentPotValue());
+    dpot0.setPotValue(pot3.getLastPotValue());
   }
 }
 

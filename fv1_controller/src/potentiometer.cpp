@@ -64,22 +64,17 @@ void DigitalPot::digitalPotSetup()
 }
 
 void DigitalPot::setPotValue(uint16_t value)
-{    
-    if (value < 5)
-    {
-        value = 0;
-    }
-
+{
     uint8_t highByte = (value >> 8) + 0x04;
     uint8_t lowByte = (value & 0xFF);
 
     #ifdef DEBUG
-            Serial.print("Dpot : ");
-            Serial.println(value);
-            Serial.print("HB : ");
-            Serial.println(highByte);
-            Serial.print("LB : ");
-            Serial.println(lowByte);
+        Serial.print("Dpot : ");
+        Serial.println(value);
+        Serial.print("HB : ");
+        Serial.println(highByte);
+        Serial.print("LB : ");
+        Serial.println(lowByte);
     #endif
 
     SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
