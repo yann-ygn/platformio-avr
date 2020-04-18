@@ -1,1 +1,1 @@
-﻿ C:\Users\Yann\.platformio\penv\Scripts\platformio.exe run --target fuses 
+﻿ C:\Users\Yann\.platformio\penv\Scripts\platformio.exe run --target fuses  -v
