@@ -26,7 +26,7 @@ class Expr
         Expr(uint8_t epin, uint8_t cpin) : m_exprPin(epin), m_checkPin(cpin)
         {
 
-        }
+        };
 
         /**
          * @brief Setups the µC's pins.

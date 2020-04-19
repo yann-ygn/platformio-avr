@@ -2,19 +2,16 @@
 
 #include "bypass.h"
 
-Bypass Bypass0;
+Bypass Bypass0(9, 1, 1, 8, 0);
+Bypass Bypass1(10, 6, 7, 8, 5);
+
 
 void setup()
 {
-    Bypass0.bypassSetup();
+
 }
 
 void loop()
 {
-    Bypass0.m_now = millis();
 
-    if (Bypass0.bypassPressed())
-    {
-        Bypass0.switchRelay();
-    }
 }

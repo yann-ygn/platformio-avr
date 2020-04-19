@@ -4,21 +4,20 @@
 
 void Bypass::bypassSetup()
 {
-    pinMode(c_relayPin, OUTPUT);
-    pinMode(c_ledPin, OUTPUT);
-    pinMode(c_okPin, OUTPUT),
-    pinMode(c_switchPin, INPUT_PULLUP);
-    pinMode(c_startupPin, INPUT_PULLUP);
+    pinMode(m_relayPin, OUTPUT);
+    pinMode(m_ledPin, OUTPUT);
+    pinMode(m_led2Pin, OUTPUT);
+    pinMode(m_okPin, OUTPUT),
+    pinMode(m_switchPin, INPUT_PULLUP);
 
-    m_relayState = digitalRead(c_startupPin);
-    digitalWrite(c_okPin, LOW);
-    digitalWrite(c_ledPin, m_relayState);
-    digitalWrite(c_relayPin, m_relayState);
+    digitalWrite(m_okPin, LOW);
+    digitalWrite(m_ledPin, m_relayState);
+    digitalWrite(m_relayPin, m_relayState);
 }
 
 bool Bypass::bypassPressed()
 {
-    m_switchState = digitalRead(c_switchPin);
+    m_switchState = digitalRead(m_switchPin);
 
     if (m_switchState == LOW 
     && m_now - m_lastPressTime > c_debounceTime 
@@ -39,10 +38,30 @@ void Bypass::switchRelay()
 {
     m_relayState = !m_relayState;
 
-    digitalWrite(c_okPin, HIGH);            // OK on
+    digitalWrite(m_okPin, HIGH);            // OK on
     delay(10);                              // 5~10 ms depending on the OK
-    digitalWrite(c_relayPin, m_relayState);
-    digitalWrite(c_ledPin, m_relayState);
+    digitalWrite(m_relayPin, m_relayState);
+    digitalWrite(m_ledPin, m_relayState);
     delay(10);                              // 5~10 ms depending on the relay
-    digitalWrite(c_okPin, LOW);             // OK off
+    digitalWrite(m_okPin, LOW);             // OK off
+}
+
+void Bypass::switchActiveLed()
+{
+    m_activeLed = !m_activeLed;
+}
+
+void Bypass::lightActiveLed()
+{
+    if (m_activeLed)
+    {
+        digitalWrite(m_led2Pin, !m_relayState);
+        digitalWrite(m_ledPin, m_relayState);
+    }
+    else
+    {
+        digitalWrite(m_ledPin, !m_relayState);
+        digitalWrite(m_led2Pin, m_relayState);
+    }
+    
 }
