@@ -12,6 +12,7 @@ void Bypass::bypassSetup()
 
     digitalWrite(m_okPin, LOW);
     digitalWrite(m_ledPin, m_relayState);
+    digitalWrite(m_led2Pin, m_relayState);
     digitalWrite(m_relayPin, m_relayState);
 }
 
