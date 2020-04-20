@@ -100,6 +100,50 @@ void loop()
     }
     else // Flip flop mode
     {
-        
+        if (Bypass0.bypassPressed())
+        {
+            if (Bypass0.getRelayState() == 0) // Nothing on, switch the compressor on
+            {
+                Bypass0.switchRelay();
+                Bypass0.lightActiveLed();
+            }
+
+            if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 0) // Compressor on, Switch off
+            {
+                Bypass0.switchRelay();
+                Bypass0.turnOffLed();
+            }
+
+            if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 1) // Sustainer on, switch to compressor
+            {
+                Bypass1.switchRelay();
+                Bypass1.turnOffLed();
+                Bypass0.lightActiveLed();
+            }
+        }
+
+        if (Bypass1.bypassPressed())
+        {
+            if (Bypass0.getRelayState() == 0) // Nothing on, switch the sustainer on
+            {
+                Bypass0.switchRelay();
+                Bypass1.switchRelay();
+                Bypass1.lightActiveLed();
+            }
+
+            if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 1) // Sustainer on, switch off
+            {
+                Bypass1.switchRelay();
+                Bypass0.switchRelay();
+                Bypass1.turnOffLed();
+            }
+
+            if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 0) // Compressor on, switch to sustainer
+            {
+                Bypass1.switchRelay();
+                Bypass0.turnOffLed();
+                Bypass1.lightActiveLed();
+            }
+        }
     }
 }
