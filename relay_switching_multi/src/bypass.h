@@ -58,6 +58,18 @@ class Bypass
          */
         void lightActiveLed();
 
+        /**
+         * @brief Turn of the LED
+         */
+        void turnOffLed();
+
+        /**
+         * @brief Get the Relay State object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getRelayState();
+
         unsigned long m_now = 0;
 };
 

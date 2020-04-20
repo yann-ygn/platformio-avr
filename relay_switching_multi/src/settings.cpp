@@ -10,7 +10,7 @@ void Settings::modeSetup()
 
     m_startupState = digitalRead(c_startupStatePin);
     m_defaultEffect = digitalRead(c_defaultEffectPin);
-    m_startupState = digitalRead(c_startupStatePin);
+    m_switchMode = digitalRead(c_switchModePin);
 }
 
 uint8_t Settings::getStartupState()
