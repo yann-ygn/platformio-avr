@@ -107,19 +107,20 @@ void loop()
                 Bypass0.switchRelay();
                 Bypass0.lightActiveLed();
             }
-
-            if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 0) // Compressor on, Switch off
+            
+            else if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 0) // Compressor on, Switch off
             {
                 Bypass0.switchRelay();
                 Bypass0.turnOffLed();
             }
-
+            
             if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 1) // Sustainer on, switch to compressor
             {
                 Bypass1.switchRelay();
                 Bypass1.turnOffLed();
                 Bypass0.lightActiveLed();
             }
+            
         }
 
         if (Bypass1.bypassPressed())
@@ -131,7 +132,7 @@ void loop()
                 Bypass1.lightActiveLed();
             }
 
-            if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 1) // Sustainer on, switch off
+            else if (Bypass0.getRelayState() == 1 && Bypass1.getRelayState() == 1) // Sustainer on, switch off
             {
                 Bypass1.switchRelay();
                 Bypass0.switchRelay();
