@@ -12,6 +12,11 @@ class Hardware
          * @brief 
          */
         void hardwareSetup();
+        
+        /**
+         * @brief 
+         */
+        void hardwareInitialization();
 };
 
 #endif
