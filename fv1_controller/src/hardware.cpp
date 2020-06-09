@@ -50,3 +50,8 @@ void Hardware::hardwareSetup()
 
     selector0.selectorSetup();
 }
+
+void Hardware::hardwareInitialization()
+{
+    
+}
