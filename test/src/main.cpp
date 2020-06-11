@@ -13,21 +13,4 @@ void setup()
 void loop() 
 {
     fsw0.footswitchPoll();
-    
-    if (fsw0.footswitchSwitched())
-    {
-        Serial.println("Switched");
-    }
-    if (fsw0.footswitchPushed())
-    {
-        Serial.println("Pushed");
-    }
-    if (fsw0.footswitchReleased())
-    {
-        Serial.println("Released");
-    }
-    if(fsw0.footswitchLongPress())
-    {
-        Serial.println("Long Press");
-    }
 }

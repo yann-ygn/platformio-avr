@@ -1,5 +1,6 @@
-#include <Arduino.h>
+#define DEBUG 1
 
+#include <Arduino.h>
 #include "footswitch.h"
 
 void Footswitch::footswitchSetup()
@@ -43,21 +44,48 @@ void Footswitch::footswitchPoll()
     if (footswitchReleased())
     {
         m_longPressActive = false;
+
+        #ifdef DEBUG
+            Serial.print("Footswitch ");
+            Serial.print(m_pin);
+            Serial.println(" released");
+        #endif
     }
 
     if (!m_longPressActive)
     {
         m_footswitchLongPress = !footswitchSwitched() && footswitchOn() &&((m_now - m_lastPushedTime) > m_longPressPeriod);
         m_longPressActive = m_footswitchLongPress;
+
+        #ifdef DEBUG
+            if (footswitchLongPress())
+            {
+                Serial.print("Footswitch ");
+                Serial.print(m_pin);
+                Serial.println(" long press");
+            }
+        #endif
     }
 
     if (footswitchSwitched())
     {
         m_lastSwitchedTime = m_now;
 
+        #ifdef DEBUG
+            Serial.print("Footswitch ");
+            Serial.print(m_pin);
+            Serial.println(" switched");
+        #endif
+
         if (footswitchPushed())
         {
             m_lastPushedTime = m_now;
+
+            #ifdef DEBUG
+                Serial.print("Footswitch ");
+                Serial.print(m_pin);
+                Serial.println(" pushed");
+            #endif
         }
     }
 }
