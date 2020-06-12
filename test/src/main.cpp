@@ -1,16 +1,24 @@
 #include <Arduino.h>
 
 #include "footswitch.h"
+#include "leddriver.h"
 
-Footswitch fsw0(2, 1000);
+LedDriver16 test(2);
 
 void setup() 
 {
-    fsw0.footswitchSetup();
     Serial.begin(9600);
+
+    test.ledDriverSetup();
 }
 
 void loop() 
 {
-    fsw0.footswitchPoll();
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        test.lightLed2(i);
+        delay(500);
+        test.lightAllLedOff();
+        delay(500);
+    }
 }
