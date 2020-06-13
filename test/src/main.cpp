@@ -14,11 +14,5 @@ void setup()
 
 void loop() 
 {
-    for (uint8_t i = 0; i < 8; i++)
-    {
-        test.lightLed2(i);
-        delay(500);
-        test.lightAllLedOff();
-        delay(500);
-    }
+    
 }

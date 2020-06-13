@@ -58,3 +58,35 @@ void LedDriver16::lightAllLedOff()
     SPI.transfer16(0);
     deselect();
 }
+
+#ifdef DEBUG
+    void LedDriver8::testAllLed()
+    {
+        for (uint8_t i = 0; i < 8; i++)
+        {
+            lightLed(i);
+            delay(500);
+            lightAllLedOff();
+            delay(500);
+        }
+    }
+
+    void LedDriver16::testAllLed()
+    {
+        for (uint8_t i = 0; i < 16; i++)
+        {
+            lightLed(i);
+            delay(500);
+            lightAllLedOff();
+            delay(500);
+        }
+
+        for (uint8_t i = 0; i < 8; i++)
+        {
+            lightLed2(i);
+            delay(500);
+            lightAllLedOff();
+            delay(500);
+        }
+    }
+#endif

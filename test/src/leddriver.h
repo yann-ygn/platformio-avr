@@ -61,6 +61,13 @@ class LedDriver8 : public LedDriver
          * @brief Toggles all the LED off 
          */
         void lightAllLedOff(); 
+
+        #ifdef DEBUG
+            /**
+             * @brief Dummy test method
+             */
+            void testAllLed();
+        #endif
 };
 
 /**
@@ -94,6 +101,13 @@ class LedDriver16 : public LedDriver
          * @brief Toggles all the LED off 
          */
         void lightAllLedOff(); 
+
+        #ifdef DEBUG
+            /**
+             * @brief Dummy test method
+             */
+            void testAllLed();
+        #endif
 };
 
 #endif
