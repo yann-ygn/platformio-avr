@@ -45,7 +45,7 @@ class Eeprom
          * 
          * @param address 
          */
-        void sendAddres(uint16_t address);
+        void sendAddress(uint16_t address);
 
     public:
 };
