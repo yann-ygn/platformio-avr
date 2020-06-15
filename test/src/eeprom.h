@@ -45,9 +45,17 @@ class Eeprom
          * 
          * @param address 
          */
-        void sendAddress(uint16_t address);
+        void sendAddress(uint8_t address);
+
+        bool isWip();
 
     public:
+        Eeprom(uint8_t pin) : m_csPin(pin) { }
+
+        void eepromSetup();
+
+        uint8_t readByte(uint8_t addr);
+        void writeByte(uint8_t addr, uint8_t data);
 };
 
 #endif

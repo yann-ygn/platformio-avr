@@ -48,7 +48,7 @@ byte M95256::readStatus()
 	SPI.transfer(RDSR);
 	byte data = SPI.transfer(0x00);
 	deselect();
-    return data;
+	return data;
 }
 
 byte M95256::readByte(byte addr) 
