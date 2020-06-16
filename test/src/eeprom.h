@@ -34,6 +34,13 @@ class Eeprom
         void enableWrite();
 
         /**
+         * @brief Selects the memory address to write or read
+         * 
+         * @param address 
+         */
+        void sendAddress(uint32_t address);
+
+        /**
          * @brief Returns the status register
          * 
          * @return uint8_t 
@@ -41,21 +48,62 @@ class Eeprom
         uint8_t readStatusRegister();
 
         /**
-         * @brief 
+         * @brief Check the status of the WIP bit
          * 
-         * @param address 
+         * @return true if a read/write is still in progress
+         * @return false 
          */
-        void sendAddress(uint8_t address);
-
         bool isWip();
 
     public:
+        /**
+         * @brief Construct a new Eeprom object
+         * 
+         * @param pin CS pin #
+         */
         Eeprom(uint8_t pin) : m_csPin(pin) { }
 
+        /**
+         * @brief Setups the µC's pins and start the SPI bus
+         */
         void eepromSetup();
 
-        uint8_t readByte(uint8_t addr);
-        void writeByte(uint8_t addr, uint8_t data);
+        /**
+         * @brief Read a 8bit value from the select memory address
+         * 
+         * @param address 
+         * @return uint8_t 
+         */
+        uint8_t readInt8(uint32_t address);
+
+        /**
+         * @brief Writes a 8 bit value to the selected memory address
+         * 
+         * @param address 
+         * @param data 
+         */
+        void writeInt8(uint32_t address, uint8_t data);
+
+        /**
+         * @brief Read a 16bit value from the select memory address
+         * 
+         * @param address 
+         * @return uint16_t 
+         */
+        uint16_t readInt16(uint32_t address);
+
+        /**
+         * @brief Writes a 16 bit value to the selected memory address
+         * 
+         * @param address 
+         * @param data 
+         */
+        void writeInt16(uint32_t address, uint16_t data);
+
+        #ifdef DEBUG
+            void testInt8();
+            void testInt16();
+        #endif
 };
 
 #endif

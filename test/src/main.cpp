@@ -1,3 +1,5 @@
+#define DEBUG 1
+
 #include <Arduino.h>
 
 #include "footswitch.h"
@@ -14,13 +16,5 @@ void setup()
 
 void loop() 
 {
-    eeprom0.writeByte(0, 1);
-    Serial.println(eeprom0.readByte(0));
-
-    delay(500);
-
-    eeprom0.writeByte(0, 0);
-    Serial.println(eeprom0.readByte(0));
-
-    delay(500);
+    eeprom0.testInt16();
 }
