@@ -16,5 +16,5 @@ void setup()
 
 void loop() 
 {
-    eeprom0.testInt16();
+    eeprom0.testArray();
 }

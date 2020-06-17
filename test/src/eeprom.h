@@ -85,7 +85,7 @@ class Eeprom
         void writeInt8(uint32_t address, uint8_t data);
 
         /**
-         * @brief Read a 16bit value from the select memory address
+         * @brief Read a 16bit value from the selected memory address
          * 
          * @param address 
          * @return uint16_t 
@@ -100,9 +100,28 @@ class Eeprom
          */
         void writeInt16(uint32_t address, uint16_t data);
 
+        /**
+         * @brief Read an array of 8 bits integer starting at the selected memory address
+         * 
+         * @param address 
+         * @param data 
+         * @param length 
+         */
+        void readArray(uint32_t address, uint8_t * data, uint8_t length);
+
+        /**
+         * @brief Write an array of 8 bits integer starting at the selected memory address
+         * 
+         * @param address 
+         * @param data 
+         * @param length 
+         */
+        void writeArray(uint32_t address, uint8_t * data, uint8_t length);
+
         #ifdef DEBUG
             void testInt8();
             void testInt16();
+            void testArray();
         #endif
 };
 
