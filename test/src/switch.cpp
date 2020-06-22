@@ -1,19 +1,19 @@
 #define DEBUG 1
 
 #include <Arduino.h>
-#include "footswitch.h"
+#include "switch.h"
 
-void Footswitch::footswitchSetup()
+void TemporarySwitch::tempSwitchSetup()
 {
     pinMode(m_pin, INPUT_PULLUP);
 }
 
-void Footswitch::footswitchPoll()
+void TemporarySwitch::tempSwitchPoll()
 {
-    m_footswitchState = digitalRead(m_pin);
+    m_tempSwitchState = digitalRead(m_pin);
     m_now = millis();
 
-    if (m_footswitchState == m_lastFootswithState)
+    if (m_tempSwitchState == m_lasttempswithState)
     {
         m_rawState = 1;
     }
@@ -25,28 +25,28 @@ void Footswitch::footswitchPoll()
     
     if (m_rawState && ((m_now - m_deglitchTime) > m_deglitchPeriod))
     {
-        m_deglitchedState = m_footswitchState;
+        m_deglitchedState = m_tempSwitchState;
         m_deglitchTime = m_now;
     }
 
-    m_lastFootswithState = m_footswitchState;
+    m_lasttempswithState = m_tempSwitchState;
 
-    m_footswitchSwitched = 0;
+    m_tempSwitchSwitched = 0;
 
     if ((m_deglitchedState != m_debouncedState) && (m_now - m_lastSwitchedTime) > m_debouncePeriod)
     {
         m_debouncedState = m_deglitchedState;
-        m_footswitchSwitched = 1;
+        m_tempSwitchSwitched = 1;
     }
 
-    m_footswitchLongPress = 0;
+    m_tempSwitchLongPress = 0;
 
-    if (footswitchReleased())
+    if (tempSwitchReleased())
     {
         m_longPressActive = false;
 
         #ifdef DEBUG
-            Serial.print("Footswitch ");
+            Serial.print("tempSwitch ");
             Serial.print(m_pin);
             Serial.println(" released");
         #endif
@@ -54,35 +54,35 @@ void Footswitch::footswitchPoll()
 
     if (!m_longPressActive)
     {
-        m_footswitchLongPress = !footswitchSwitched() && footswitchOn() &&((m_now - m_lastPushedTime) > m_longPressPeriod);
-        m_longPressActive = m_footswitchLongPress;
+        m_tempSwitchLongPress = !tempSwitchSwitched() && tempSwitchOn() &&((m_now - m_lastPushedTime) > m_longPressPeriod);
+        m_longPressActive = m_tempSwitchLongPress;
 
         #ifdef DEBUG
-            if (footswitchLongPress())
+            if (tempSwitchLongPress())
             {
-                Serial.print("Footswitch ");
+                Serial.print("tempSwitch ");
                 Serial.print(m_pin);
                 Serial.println(" long press");
             }
         #endif
     }
 
-    if (footswitchSwitched())
+    if (tempSwitchSwitched())
     {
         m_lastSwitchedTime = m_now;
 
         #ifdef DEBUG
-            Serial.print("Footswitch ");
+            Serial.print("tempSwitch ");
             Serial.print(m_pin);
             Serial.println(" switched");
         #endif
 
-        if (footswitchPushed())
+        if (tempSwitchPushed())
         {
             m_lastPushedTime = m_now;
 
             #ifdef DEBUG
-                Serial.print("Footswitch ");
+                Serial.print("tempSwitch ");
                 Serial.print(m_pin);
                 Serial.println(" pushed");
             #endif
@@ -90,27 +90,27 @@ void Footswitch::footswitchPoll()
     }
 }
 
-bool Footswitch::footswitchSwitched()
+bool TemporarySwitch::tempSwitchSwitched()
 {
-    return m_footswitchSwitched;
+    return m_tempSwitchSwitched;
 }
 
-bool Footswitch::footswitchOn()
+bool TemporarySwitch::tempSwitchOn()
 {
     return !m_debouncedState;
 }
 
-bool Footswitch::footswitchPushed()
+bool TemporarySwitch::tempSwitchPushed()
 {
-    return m_footswitchSwitched && !m_debouncedState;
+    return m_tempSwitchSwitched && !m_debouncedState;
 }
 
-bool Footswitch::footswitchReleased()
+bool TemporarySwitch::tempSwitchReleased()
 {
-    return m_footswitchSwitched && m_debouncedState;
+    return m_tempSwitchSwitched && m_debouncedState;
 }
 
-bool Footswitch::footswitchLongPress()
+bool TemporarySwitch::tempSwitchLongPress()
 {
-    return m_footswitchLongPress;
+    return m_tempSwitchLongPress;
 }

@@ -2,19 +2,23 @@
 
 #include <Arduino.h>
 
-#include "footswitch.h"
+#include "switch.h"
 #include "leddriver.h"
 #include "eeprom.h"
+#include "encoder.h"
 
-Eeprom eeprom0(2);
+Encoder encoder0(2, 3, 0, 7);
+TemporarySwitch encoder0Switch(4, 1000);
 
 void setup() 
 {
     Serial.begin(9600);
-    eeprom0.eepromSetup();
+    encoder0.encoderSetup();
+    encoder0Switch.tempSwitchSetup();
 }
 
 void loop() 
 {
-    eeprom0.testArray();
+    encoder0.encoderMove();
+    encoder0Switch.tempSwitchPoll();
 }

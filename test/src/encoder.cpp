@@ -14,15 +14,58 @@ void Encoder::encoderSetup()
 
 uint8_t Encoder::readEncoderState()
 {
-    m_lastSelectorState = (digitalRead(m_encoderPinB) << 1) | digitalRead(m_encoderPinA);
-    m_selectorState = c_encoderStates[m_selectorState & 0xf][m_lastSelectorState];
+    m_lastEncoderState = (digitalRead(m_encoderPinB) << 1) | digitalRead(m_encoderPinA);
+    m_encoderState = c_encoderStates[m_encoderState & 0xf][m_lastEncoderState];
 
-    return m_selectorState & 0x30;
+    return m_encoderState & 0x30;
 }
 
 bool Encoder::encoderMove()
 {
     uint8_t state = readEncoderState();
 
+    if (state == 0x10)
+    {
+        m_counter --;
+        if (m_counter == 255)
+        {
+            m_counter = 7;
+        }
+        #ifdef DEBUG
+            Serial.print("Encoder counter decrement : ");
+            Serial.println(m_counter);
+        #endif
+
+        return true;
+    }
     
+    else if (state == 0x20)
+    {
+        m_counter ++;
+        if(m_counter == 8)
+        {
+            m_counter = 0;
+        }
+        #ifdef DEBUG
+            Serial.print("Selector counter increment : ");
+            Serial.println(m_counter);
+        #endif
+
+        return  true;
+    }
+
+    else
+    {
+        return false;
+    }
+}
+
+uint8_t Encoder::getCounter()
+{
+    return m_counter;
+}
+
+void Encoder::setCounter(uint8_t counter)
+{
+    m_counter = counter;
 }

@@ -11,11 +11,11 @@ class Encoder
     private:
         uint8_t m_encoderPinA; // Encoder CLK pin #
         uint8_t m_encoderPinB; // Encoder DT pin #
-        uint8_t m_maxCounterValue; // Max counter value
         uint8_t m_minCounterValue; // Min counter value
-        uint8_t m_couter = 0; // Encoder counter
-        uint8_t m_selectorState = 0;
-        uint8_t m_lastSelectorState = 0;
+        uint8_t m_maxCounterValue; // Max counter value
+        uint8_t m_counter = 0; // Encoder counter
+        uint8_t m_encoderState = 0;
+        uint8_t m_lastEncoderState = 0;
         const uint8_t c_encoderStates[7][4] = 
         {
             {0x0, 0x2, 0x4, 0x0},
@@ -44,7 +44,7 @@ class Encoder
          * @param maxvalue // Max counter value
          */
         Encoder (uint8_t pina, uint8_t pinb, uint8_t minvalue, uint8_t maxvalue) : 
-        m_encoderPinA(pina), m_encoderPinB(pinb), m_minCounterValue(minvalue), m_maxCounterValue(maxvalue) { }
+        m_encoderPinA(pina), m_encoderPinB(pinb),  m_minCounterValue(minvalue), m_maxCounterValue(maxvalue) { };
 
         /**
          * @brief Setup the µC's pins
@@ -58,6 +58,20 @@ class Encoder
          * @return false 
          */
         bool encoderMove();
+
+        /**
+         * @brief Get the Counter object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getCounter();
+
+        /**
+         * @brief Set the Counter object
+         * 
+         * @param counter 
+         */
+        void setCounter(uint8_t counter);
 };
 
 #endif
