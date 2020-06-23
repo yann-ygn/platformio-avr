@@ -7,7 +7,73 @@
 #include "memory.h"
 #include "potentiometer.h"
 #include "switch.h"
+#include "midi.h"
+#include "hardware.h"
 
-Bypass byp(2, 1);
-TemporarySwitch bypfsw(11, 1000);
-Led bypled(10);
+Memory mem(22); // EEPROM
+
+Midi midi; // MIDI
+
+Bypass bypass(2, 1); // Relay + OK
+TemporarySwitch bypassFsw(11, 1000); // Bypass footswitch
+Led bypassLed(10); // Bypass LED
+
+Encoder selector(A5, A6, 0, 7); // Program selector
+TemporarySwitch selectorSw(A7, 1000); // Selector switch
+LedDriver16 selectorLed(20); // Program LED
+
+void Hardware::hardwareSetup()
+{
+    midi.midiSetup();
+    mem.memorySetup();
+    bypass.bypassSetup();
+    bypassFsw.tempSwitchSetup();
+    bypassLed.ledSetup();
+    selector.encoderSetup();
+    selectorSw.tempSwitchSetup();
+    selectorLed.ledDriverSetup();
+}
+
+void Hardware::hardwareInitialization()
+{
+    if (! mem.readInitialSetupState()) // Memory hasn't been initialized
+    {
+        mem.memoryInitialization();
+    }
+
+    midi.setMidiChannel(mem.readMidiChannel()); // Restore the stored MIDI channel
+
+    bypass.setBypassState(mem.readBypassState()); // Read the bypass state from memory
+    if (bypass.getBypassState()) // Restore if on
+    {
+        bypass.bypassSwitchOn();
+        bypassLed.ledTurnOn();
+    }
+    else // If off
+    {
+        bypass.bypassSwitchOff();
+        bypassLed.ledTurnOff();
+    }
+
+    m_currentProgram = mem.readCurrentPreset(); // Read the stored current program
+    selector.setCounter(m_currentProgram); // Set the encoder counter
+    m_presetMode = mem.readPresetMode(); // Read the stored preset mode
+    if (m_presetMode) // Light up the LED, preset mode
+    {
+        selectorLed.lightLed2(m_currentProgram);
+    }
+    else // program mode
+    {
+        selectorLed.lightLed(m_currentProgram);
+    }
+}
+
+uint8_t Hardware::getCurrentProgram()
+{
+    return m_currentProgram;
+}
+
+uint8_t Hardware::getPresetMode()
+{
+    return m_presetMode;
+}

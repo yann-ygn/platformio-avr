@@ -26,7 +26,7 @@ class Memory
     
 
     public:
-        Memory() : eeprom0(2) {}
+        Memory(uint8_t pin) : eeprom0(pin) {}
 
         void memorySetup();
         void memoryInitialization();

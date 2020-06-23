@@ -28,9 +28,19 @@ class Bypass
         void bypassSetup();
 
         /**
-         * @brief Switch the bypass state
+         * @brief Switch the bypass On
          */
-        void bypassSwitch();
+        void bypassSwitchOn();
+
+        /**
+         * @brief Switch the bypass Off
+         */
+        void bypassSwitchOff();
+
+        /**
+         * @brief Switch yhe bypass state
+         */
+        void BypassSwitch();
 
         /**
          * @brief Get the Bypass State object
