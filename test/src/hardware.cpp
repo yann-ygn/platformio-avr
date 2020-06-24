@@ -68,6 +68,13 @@ void Hardware::hardwareInitialization()
     }
 }
 
+void Hardware::hardwarePoll()
+{
+    bypassFsw.tempSwitchPoll(); // Poll the bypass footswitch
+    selector.encoderPoll(); // Poll the program selector
+    selectorSw.tempSwitchPoll(); // Poll the selector switch
+}
+
 uint8_t Hardware::getCurrentProgram()
 {
     return m_currentProgram;

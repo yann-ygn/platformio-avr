@@ -14,7 +14,7 @@ class Hardware
 
     public:
         /**
-         * @brief Setup the hardware peripherals
+         * @brief Setup the hardware devices
          */
         void hardwareSetup();
 
@@ -22,6 +22,11 @@ class Hardware
          * @brief Restore the stored hardware state
          */
         void hardwareInitialization();
+
+        /**
+         * @brief Poll the various devices
+         */
+        void hardwarePoll();
 
         /**
          * @brief Get the Current Program object

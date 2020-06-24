@@ -20,7 +20,7 @@ uint8_t Encoder::readEncoderState()
     return m_encoderState & 0x30;
 }
 
-bool Encoder::encoderMove()
+bool Encoder::encoderPoll()
 {
     uint8_t state = readEncoderState();
 

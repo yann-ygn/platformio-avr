@@ -57,7 +57,7 @@ class Encoder
          * @return true 
          * @return false 
          */
-        bool encoderMove();
+        bool encoderPoll();
 
         /**
          * @brief Get the Counter object

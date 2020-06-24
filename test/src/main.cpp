@@ -9,9 +9,20 @@ Hardware hardware;
 void setup() 
 {
     hardware.hardwareSetup();
+    hardware.hardwareInitialization();
+
+    if (hardware.getPresetMode())
+    {
+
+    }
+    else
+    {
+        
+    }
+    
 }
 
 void loop() 
 {
-
+    hardware.hardwarePoll();
 }
