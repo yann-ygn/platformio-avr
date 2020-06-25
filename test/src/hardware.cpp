@@ -63,8 +63,33 @@ void Hardware::hardwareInitialization()
 void Hardware::hardwarePoll()
 {
     bypassFsw.tempSwitchPoll(); // Poll the bypass footswitch
-    selector.encoderPoll(); // Poll the program selector
     selectorSw.tempSwitchPoll(); // Poll the program selector switch
+
+    if (selector.encoderPoll()) // Poll the program selector
+    {
+        m_selectorMove = true; // Set the trigger
+    }
+
+    if (bypassFsw.tempSwitchPushed()) // Bypass switch press
+    {
+        m_bypassSwitchPress = true; // Set the trigger
+    }
+
+    if (selectorSw.tempSwitchPushed()) // Selector switch press
+    {
+        m_selectorSwitchPress = true; // Set the trigger
+    }
+
+    if (selectorSw.tempSwitchLongPress()) // Selector switch long press
+    {
+        m_selectorSwitchLongPress = true; // Set the trigger
+    }
+}
+
+void Hardware::bypassSwitch()
+{
+    m_bypassState = !m_bypassState;
+    bypass.BypassSwitch(m_bypassState);
 }
 
 uint8_t Hardware::getCurrentProgram()
@@ -75,4 +100,24 @@ uint8_t Hardware::getCurrentProgram()
 uint8_t Hardware::getPresetMode()
 {
     return m_presetMode;
+}
+
+bool Hardware::getBypassSwitchPress()
+{
+    return m_bypassSwitchPress;
+}
+
+bool Hardware::getSelectorMove()
+{
+    return m_selectorMove;
+}
+
+bool Hardware::getSelectorSwitchPress()
+{
+    return m_selectorSwitchPress;
+}
+
+bool Hardware::getSelectorSwitchLongPress()
+{
+    return m_selectorSwitchLongPress;
 }

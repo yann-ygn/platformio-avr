@@ -25,4 +25,9 @@ void setup()
 void loop() 
 {
     hardware.hardwarePoll();
+
+    if (hardware.getBypassSwitchPress())
+    {
+        hardware.bypassSwitch();
+    }
 }
