@@ -43,17 +43,9 @@ void Hardware::hardwareInitialization()
 
     midi.setMidiChannel(mem.readMidiChannel()); // Restore the stored MIDI channel
 
-    bypass.setBypassState(mem.readBypassState()); // Read the bypass state from memory
-    if (bypass.getBypassState()) // Restore if on
-    {
-        bypass.bypassSwitchOn();
-        bypassLed.ledTurnOn();
-    }
-    else // If off
-    {
-        bypass.bypassSwitchOff();
-        bypassLed.ledTurnOff();
-    }
+    m_bypassState = mem.readBypassState(); // Read the bypass state from memory
+    bypass.BypassSwitch(m_bypassState); // Restore the bypass state
+    bypassLed.setLedState(m_bypassState); // Restore the bypass LED state
 
     m_currentProgram = mem.readCurrentPreset(); // Read the stored current program
     selector.setCounter(m_currentProgram); // Set the encoder counter
@@ -72,7 +64,7 @@ void Hardware::hardwarePoll()
 {
     bypassFsw.tempSwitchPoll(); // Poll the bypass footswitch
     selector.encoderPoll(); // Poll the program selector
-    selectorSw.tempSwitchPoll(); // Poll the selector switch
+    selectorSw.tempSwitchPoll(); // Poll the program selector switch
 }
 
 uint8_t Hardware::getCurrentProgram()

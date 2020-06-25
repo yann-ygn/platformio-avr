@@ -31,9 +31,16 @@ class Led
         void ledTurnOn();
 
         /**
-         * @brief Tur the LED off
+         * @brief Turn the LED off
          */
         void ledTurnOff();
+
+        /**
+         * @brief Set the LED to a desired state
+         * 
+         * @param state 
+         */
+        void ledSetState(uint8_t state);
 
         /**
          * @brief Switch the LED state off/on or on/off

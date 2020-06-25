@@ -11,7 +11,6 @@ class Bypass
     private:
         uint8_t m_relayPin; // Relay pin #
         uint8_t m_okPin; // Optical relay pin #
-        uint8_t m_bypassState = 0;
 
     public:
         /**
@@ -28,33 +27,9 @@ class Bypass
         void bypassSetup();
 
         /**
-         * @brief Switch the bypass On
+         * @brief Switch the bypass state
          */
-        void bypassSwitchOn();
-
-        /**
-         * @brief Switch the bypass Off
-         */
-        void bypassSwitchOff();
-
-        /**
-         * @brief Switch yhe bypass state
-         */
-        void BypassSwitch();
-
-        /**
-         * @brief Get the Bypass State object
-         * 
-         * @return uint8_t 
-         */
-        uint8_t getBypassState();
-
-        /**
-         * @brief Set the Bypass State object
-         * 
-         * @param state 
-         */
-        void setBypassState(uint8_t state);
+        void BypassSwitch(uint8_t state);
 };
 
 #endif

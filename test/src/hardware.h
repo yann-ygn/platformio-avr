@@ -9,6 +9,7 @@
 class Hardware
 {
     private:
+        uint8_t m_bypassState = 0;
         uint8_t m_currentProgram = 0;
         uint8_t m_presetMode = 0;
 
