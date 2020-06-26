@@ -51,16 +51,25 @@ void Hardware::restoreLastState()
     bypass.BypassSwitch(m_bypassState); // Restore the bypass state
     bypassLed.setLedState(m_bypassState); // Restore the bypass LED state
 
+    m_tapState = mem.readTapState(); // Read the tap state from memory
+    m_divState = mem.readDivState(); // Read the div state from memory
+    m_divValue = mem.readDivValue(); // Read the division value from memory
+    m_interval = mem.readIntervalValue(); // Read the interval value from memory
+    m_divInterval = mem.readDivIntervalValue(); // Read the divided interval value from memory
+
     m_currentProgram = mem.readCurrentPreset(); // Read the stored current program
     selector.setCounter(m_currentProgram); // Set the encoder counter
     m_presetMode = mem.readPresetMode(); // Read the stored preset mode
+
     if (m_presetMode) // Light up the selector LED, preset mode
     {
         selectorLed.lightLed2(m_currentProgram);
+        loadPreset();
     }
     else // program mode
     {
         selectorLed.lightLed(m_currentProgram);
+        loadProgram();
     }
 }
 
@@ -110,7 +119,44 @@ void Hardware::loadPreset()
 
 void Hardware::loadProgram()
 {
+    m_effectIsDelay = programs[m_currentProgram].m_delayEffect;
 
+    if (m_effectIsDelay) // Efect is a delay
+    {
+        m_effectMinInterval = programs[m_currentProgram].m_minInterval; // Load delay parameters
+        m_effectMaxInterval = programs[m_currentProgram].m_maxInterval; // Load delay parameters
+        m_effectHasTapEnabled = programs[m_currentProgram].m_tapEnabled; // Load delay parameters
+
+        if (m_effectHasTapEnabled) // Effect has tap enabled
+        {
+            if (m_tapState) // Tap was active
+            {
+                if (m_divState) // Div was active
+                {
+
+                }
+                else // Div wasn't active
+                {
+                    
+                }
+                
+            }
+            else // Tap wasn't active
+            {
+                
+            }
+        }
+        else // Effect doesn't have tap enabled
+        {
+            
+        }
+    }
+    else
+    {
+        m_effectMinInterval = 0;
+        m_effectMaxInterval = 0;
+        m_effectHasTapEnabled = false;
+    }    
 }
 
 uint8_t Hardware::getCurrentProgram()
