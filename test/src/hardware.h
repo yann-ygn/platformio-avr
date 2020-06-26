@@ -13,6 +13,20 @@ class Hardware
         uint8_t m_currentProgram = 0;
         uint8_t m_presetMode = 0;
 
+        bool m_effectIsDelay = false;
+        uint16_t m_effectMinInterval = 0;
+        uint16_t m_effectMaxInterval = 0;
+        bool m_effectHasTapEnabled = false;
+        bool m_effectHasPot0Enabled = false;
+        bool m_effectHasPot1Enabled = false;
+        bool m_effectHasPot2Enabled = false;
+
+        uint8_t m_tapState = 0;
+        uint8_t m_divState = 0;
+        uint8_t m_divValue = 0;
+        uint16_t m_interval = 0;
+        uint16_t m_divInterval = 0;
+
         bool m_bypassSwitchPress = false;
         bool m_selectorMove = false;
         bool m_selectorSwitchPress = false;
@@ -25,9 +39,14 @@ class Hardware
         void hardwareSetup();
 
         /**
-         * @brief Restore the stored hardware state
+         * @brief Initialize the memory and set the midi channel
          */
         void hardwareInitialization();
+
+        /**
+         * @brief Restore the last stored pedal state
+         */
+        void restoreLastState();
 
         /**
          * @brief Poll the various devices
@@ -38,6 +57,21 @@ class Hardware
          * @brief Switch the pedal on/off
          */
         void bypassSwitch();
+
+        /**
+         * @brief Change between preset and program mode
+         */
+        void presetModeSwitch();
+
+        /**
+         * @brief Load a program from memory
+         */
+        void loadProgram();
+
+        /**
+         * @brief Load a preset from memory
+         */
+        void loadPreset();
 
         /**
          * @brief Get the Current Program object
@@ -84,6 +118,13 @@ class Hardware
          * @return false 
          */
         bool getSelectorSwitchLongPress();
+
+        /**
+         * @brief Get the Bypass State object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getBypassState();  
 };
 
 #endif

@@ -9,6 +9,7 @@
 #include "switch.h"
 #include "midi.h"
 #include "hardware.h"
+#include "programs.h"
 
 Memory mem(22); // EEPROM
 
@@ -36,13 +37,16 @@ void Hardware::hardwareSetup()
 
 void Hardware::hardwareInitialization()
 {
-    if (! mem.readInitialSetupState()) // Memory hasn't been initialized
+    if (!mem.readInitialSetupState()) // Memory hasn't been initialized
     {
         mem.memoryInitialization();
     }
 
     midi.setMidiChannel(mem.readMidiChannel()); // Restore the stored MIDI channel
+}
 
+void Hardware::restoreLastState()
+{
     m_bypassState = mem.readBypassState(); // Read the bypass state from memory
     bypass.BypassSwitch(m_bypassState); // Restore the bypass state
     bypassLed.setLedState(m_bypassState); // Restore the bypass LED state
@@ -50,7 +54,7 @@ void Hardware::hardwareInitialization()
     m_currentProgram = mem.readCurrentPreset(); // Read the stored current program
     selector.setCounter(m_currentProgram); // Set the encoder counter
     m_presetMode = mem.readPresetMode(); // Read the stored preset mode
-    if (m_presetMode) // Light up the LED, preset mode
+    if (m_presetMode) // Light up the selector LED, preset mode
     {
         selectorLed.lightLed2(m_currentProgram);
     }
@@ -67,6 +71,7 @@ void Hardware::hardwarePoll()
 
     if (selector.encoderPoll()) // Poll the program selector
     {
+        m_currentProgram = selector.getCounter(); // Change the current program
         m_selectorMove = true; // Set the trigger
     }
 
@@ -90,6 +95,22 @@ void Hardware::bypassSwitch()
 {
     m_bypassState = !m_bypassState;
     bypass.BypassSwitch(m_bypassState);
+    bypassLed.setLedState(m_bypassState);
+}
+
+void Hardware::presetModeSwitch()
+{
+    m_presetMode = !m_presetMode;
+}
+
+void Hardware::loadPreset()
+{
+
+}
+
+void Hardware::loadProgram()
+{
+
 }
 
 uint8_t Hardware::getCurrentProgram()
@@ -120,4 +141,9 @@ bool Hardware::getSelectorSwitchPress()
 bool Hardware::getSelectorSwitchLongPress()
 {
     return m_selectorSwitchLongPress;
+}
+
+uint8_t Hardware::getBypassState()
+{
+    return m_bypassState;
 }
