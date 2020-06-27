@@ -24,7 +24,7 @@ void loop()
 
     if (hardware.getBypassState()) // Is the pedal on
     {
-        if (hardware.getSelectorSwitchLongPress()) // Selector switch long press
+        if (hardware.getSelectorSwitchPress()) // Selector switch long press
         {
             hardware.presetModeSwitch(); // Switch the preset/program mode
         }

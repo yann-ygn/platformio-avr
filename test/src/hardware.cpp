@@ -1,3 +1,5 @@
+#define DEBUG 1
+
 #include <Arduino.h>
 #include "bypass.h"
 #include "encoder.h"
@@ -22,6 +24,8 @@ Led bypassLed(10); // Bypass LED
 Encoder selector(A5, A6, 0, 7); // Program selector
 TemporarySwitch selectorSw(A7, 1000); // Selector switch
 LedDriver16 selectorLed(20); // Program LED
+
+FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
 
 void Hardware::hardwareSetup()
 {
@@ -121,7 +125,7 @@ void Hardware::loadProgram()
 {
     m_effectIsDelay = programs[m_currentProgram].m_delayEffect;
 
-    if (m_effectIsDelay) // Efect is a delay
+    if (m_effectIsDelay) // Effect is a delay
     {
         m_effectMinInterval = programs[m_currentProgram].m_minInterval; // Load delay parameters
         m_effectMaxInterval = programs[m_currentProgram].m_maxInterval; // Load delay parameters

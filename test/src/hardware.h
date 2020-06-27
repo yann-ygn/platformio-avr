@@ -9,10 +9,12 @@
 class Hardware
 {
     private:
+        //Hardware state
         uint8_t m_bypassState = 0;
         uint8_t m_currentProgram = 0;
         uint8_t m_presetMode = 0;
 
+        // Current effect parameters
         bool m_effectIsDelay = false;
         uint16_t m_effectMinInterval = 0;
         uint16_t m_effectMaxInterval = 0;
@@ -21,12 +23,14 @@ class Hardware
         bool m_effectHasPot1Enabled = false;
         bool m_effectHasPot2Enabled = false;
 
+        // Stored state
         uint8_t m_tapState = 0;
         uint8_t m_divState = 0;
         uint8_t m_divValue = 0;
         uint16_t m_interval = 0;
         uint16_t m_divInterval = 0;
 
+        // Hardware triggers
         bool m_bypassSwitchPress = false;
         bool m_selectorMove = false;
         bool m_selectorSwitchPress = false;
