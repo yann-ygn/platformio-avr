@@ -58,6 +58,11 @@ class Hardware
         void hardwarePoll();
 
         /**
+         * @brief Reset the hardware trigger at the end of a cycle
+         */
+        void resetTriggers();
+
+        /**
          * @brief Switch the pedal on/off
          */
         void bypassSwitch();

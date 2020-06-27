@@ -25,7 +25,7 @@ Encoder selector(A5, A6, 0, 7); // Program selector
 TemporarySwitch selectorSw(A7, 1000); // Selector switch
 LedDriver16 selectorLed(20); // Program LED
 
-FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
+//FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
 
 void Hardware::hardwareSetup()
 {
@@ -80,40 +80,62 @@ void Hardware::restoreLastState()
 void Hardware::hardwarePoll()
 {
     bypassFsw.tempSwitchPoll(); // Poll the bypass footswitch
-    selectorSw.tempSwitchPoll(); // Poll the program selector switch
-
-    if (selector.encoderPoll()) // Poll the program selector
-    {
-        m_currentProgram = selector.getCounter(); // Change the current program
-        m_selectorMove = true; // Set the trigger
-    }
 
     if (bypassFsw.tempSwitchPushed()) // Bypass switch press
     {
         m_bypassSwitchPress = true; // Set the trigger
     }
 
-    if (selectorSw.tempSwitchPushed()) // Selector switch press
+    if (m_bypassState)
     {
-        m_selectorSwitchPress = true; // Set the trigger
-    }
+        selectorSw.tempSwitchPoll(); // Poll the program selector switch
 
-    if (selectorSw.tempSwitchLongPress()) // Selector switch long press
-    {
-        m_selectorSwitchLongPress = true; // Set the trigger
+        if (selector.encoderPoll()) // Poll the program selector
+        {
+            m_currentProgram = selector.getCounter(); // Change the current program
+            m_selectorMove = true; // Set the trigger
+        }
+
+        if (selectorSw.tempSwitchPushed()) // Selector switch press
+        {
+            m_selectorSwitchPress = true; // Set the trigger
+        }
+
+        if (selectorSw.tempSwitchLongPress()) // Selector switch long press
+        {
+            m_selectorSwitchLongPress = true; // Set the trigger
+        }
     }
+}
+
+void Hardware::resetTriggers()
+{
+    m_bypassSwitchPress = false;
+    m_selectorMove = false;
+    m_selectorSwitchPress = false;
+    m_selectorSwitchLongPress = false;
 }
 
 void Hardware::bypassSwitch()
 {
-    m_bypassState = !m_bypassState;
-    bypass.BypassSwitch(m_bypassState);
-    bypassLed.setLedState(m_bypassState);
+    m_bypassState = !m_bypassState; // Switch the state
+    bypass.BypassSwitch(m_bypassState); // Send the state to the bypass object
+    bypassLed.setLedState(m_bypassState); // Send the state to the LED object
+
+    #ifdef DEBUG
+        Serial.print("Bypass state switch, new state : ");
+        Serial.println(m_bypassState);
+    #endif
 }
 
 void Hardware::presetModeSwitch()
 {
     m_presetMode = !m_presetMode;
+
+    #ifdef DEBUG
+        Serial.print("Preset mode : ");
+        Serial.println(m_presetMode);
+    #endif
 }
 
 void Hardware::loadPreset()

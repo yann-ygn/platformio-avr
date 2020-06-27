@@ -16,12 +16,12 @@ void setup()
 void loop() 
 {
     hardware.hardwarePoll(); // Poll the moving parts
-
+    
     if (hardware.getBypassSwitchPress()) // Bypass switch Press
     {
         hardware.bypassSwitch(); // Turn the pedal on/off
     }
-
+    
     if (hardware.getBypassState()) // Is the pedal on
     {
         if (hardware.getSelectorSwitchPress()) // Selector switch long press
@@ -44,4 +44,6 @@ void loop()
             }
         }
     }
+
+    hardware.resetTriggers();
 }
