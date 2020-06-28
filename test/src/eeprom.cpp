@@ -138,7 +138,7 @@ void Eeprom::writeArray(uint32_t address, uint8_t * data, uint8_t length)
 #ifdef DEBUG
 	void Eeprom::testInt8()
 	{
-		for (uint32_t i = 256; i < 260; i++)
+		for (uint32_t i = 1; i < 20; i++)
 		{
 			writeInt8(i, 1);
 			Serial.print("Reading address : ");

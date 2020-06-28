@@ -35,6 +35,30 @@ class Hardware
         bool m_selectorMove = false;
         bool m_selectorSwitchPress = false;
         bool m_selectorSwitchLongPress = false;
+        bool m_tapSwitchPress = false;
+        bool m_tapSwitchLongPress = false;
+
+        // Tap logic
+        uint32_t m_firstTapTime = 0;
+        uint32_t m_lastTapTime = 0;
+        uint8_t m_timesTapped = 0;
+        const uint8_t c_maxTaps = 3;
+        uint8_t m_tapLedBlinkValue = 0;
+
+        /**
+         * @brief Apply the bypass state
+         */
+        void turnPedalOnOff();
+
+        /**
+         * @brief Calculate the interval
+         */
+        void calculateInterval();
+
+        /**
+         * @brief Calculate the divided interval
+         */
+        void calculateDivInterval();
 
     public:
         /**
@@ -63,7 +87,7 @@ class Hardware
         void resetTriggers();
 
         /**
-         * @brief Switch the pedal on/off
+         * @brief Switch the bypass state
          */
         void bypassSwitch();
 
@@ -81,6 +105,21 @@ class Hardware
          * @brief Load a preset from memory
          */
         void loadPreset();
+
+        /**
+         * @brief Tap logic
+         */
+        void processTap();
+
+        /**
+         * @brief Div logic
+         */
+        void processDiv();
+
+        /**
+         * @brief Blink tap led to the interval
+         */
+        void blinkTapLed();
 
         /**
          * @brief Get the Current Program object
@@ -129,11 +168,27 @@ class Hardware
         bool getSelectorSwitchLongPress();
 
         /**
+         * @brief Get the Tap Switch Press object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getTapSwitchPress();
+
+        /**
+         * @brief Get the Tap Switch Long Press object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getTapSwitchLongPress();
+
+        /**
          * @brief Get the Bypass State object
          * 
          * @return uint8_t 
          */
-        uint8_t getBypassState();  
+        uint8_t getBypassState();
 };
 
 #endif

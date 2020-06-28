@@ -25,6 +25,10 @@ Encoder selector(A5, A6, 0, 7); // Program selector
 TemporarySwitch selectorSw(A7, 1000); // Selector switch
 LedDriver16 selectorLed(20); // Program LED
 
+TemporarySwitch tapFsw(19, 1000); // Tap footswitch
+LedDriver16 tapDivLed(21); // Tap LED
+PwmLed tapLed(15);
+
 //FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
 
 void Hardware::hardwareSetup()
@@ -37,44 +41,41 @@ void Hardware::hardwareSetup()
     selector.encoderSetup();
     selectorSw.tempSwitchSetup();
     selectorLed.ledDriverSetup();
+    tapFsw.tempSwitchSetup();
+    tapDivLed.ledDriverSetup();
+    tapLed.ledSetup();
 }
 
 void Hardware::hardwareInitialization()
 {
-    if (!mem.readInitialSetupState()) // Memory hasn't been initialized
-    {
-        mem.memoryInitialization();
-    }
-
-    midi.setMidiChannel(mem.readMidiChannel()); // Restore the stored MIDI channel
+    //midi.setMidiChannel(mem.readMidiChannel()); // Restore the stored MIDI channel
 }
 
 void Hardware::restoreLastState()
 {
-    m_bypassState = mem.readBypassState(); // Read the bypass state from memory
-    bypass.BypassSwitch(m_bypassState); // Restore the bypass state
-    bypassLed.setLedState(m_bypassState); // Restore the bypass LED state
+    //m_tapState = mem.readTapState(); // Read the tap state from memory
+    //m_divState = mem.readDivState(); // Read the div state from memory
+    //m_divValue = mem.readDivValue(); // Read the division value from memory
+    //m_interval = mem.readIntervalValue(); // Read the interval value from memory
+    //m_divInterval = mem.readDivIntervalValue(); // Read the divided interval value from memory
 
-    m_tapState = mem.readTapState(); // Read the tap state from memory
-    m_divState = mem.readDivState(); // Read the div state from memory
-    m_divValue = mem.readDivValue(); // Read the division value from memory
-    m_interval = mem.readIntervalValue(); // Read the interval value from memory
-    m_divInterval = mem.readDivIntervalValue(); // Read the divided interval value from memory
-
-    m_currentProgram = mem.readCurrentPreset(); // Read the stored current program
+    //m_currentProgram = mem.readCurrentPreset(); // Read the stored current program
     selector.setCounter(m_currentProgram); // Set the encoder counter
-    m_presetMode = mem.readPresetMode(); // Read the stored preset mode
+    //m_presetMode = mem.readPresetMode(); // Read the stored preset mode
 
     if (m_presetMode) // Light up the selector LED, preset mode
     {
-        selectorLed.lightLed2(m_currentProgram);
         loadPreset();
     }
     else // program mode
     {
-        selectorLed.lightLed(m_currentProgram);
         loadProgram();
     }
+
+    //m_bypassState = mem.readBypassState(); // Read the bypass state from memory
+    bypass.BypassSwitch(m_bypassState); // Restore the bypass state
+    bypassLed.setLedState(m_bypassState); // Restore the bypass LED state
+    turnPedalOnOff();   
 }
 
 void Hardware::hardwarePoll()
@@ -105,6 +106,21 @@ void Hardware::hardwarePoll()
         {
             m_selectorSwitchLongPress = true; // Set the trigger
         }
+
+        if (m_effectHasTapEnabled)
+        {
+            tapFsw.tempSwitchPoll(); // Poll the tap footswitch
+
+            if (tapFsw.tempSwitchPushed()) // Tap switch press
+            {
+                m_tapSwitchPress = true; // Set the trigger
+            }
+
+            if(tapFsw.tempSwitchLongPress()) // Tap switch long press
+            {
+                m_tapSwitchLongPress = true; // Set the trigger
+            }
+        }
     }
 }
 
@@ -114,23 +130,60 @@ void Hardware::resetTriggers()
     m_selectorMove = false;
     m_selectorSwitchPress = false;
     m_selectorSwitchLongPress = false;
+    m_tapSwitchPress = false;
+    m_tapSwitchLongPress = false;
 }
 
 void Hardware::bypassSwitch()
 {
     m_bypassState = !m_bypassState; // Switch the state
-    bypass.BypassSwitch(m_bypassState); // Send the state to the bypass object
-    bypassLed.setLedState(m_bypassState); // Send the state to the LED object
 
     #ifdef DEBUG
         Serial.print("Bypass state switch, new state : ");
         Serial.println(m_bypassState);
     #endif
+
+    mem.writeBypassState(m_bypassState);
+    turnPedalOnOff();
+}
+
+void Hardware::turnPedalOnOff()
+{
+    bypass.BypassSwitch(m_bypassState); // Send the state to the bypass object
+    bypassLed.setLedState(m_bypassState); // Send the state to the LED object
+
+    if (m_bypassState)
+    {
+        if (m_presetMode)
+        {
+            selectorLed.lightLed(m_currentProgram);
+        }
+        else
+        {
+            selectorLed.lightLed(m_currentProgram + 8);
+        }
+    }
+    else
+    {
+        selectorLed.lightAllLedOff();
+        tapLed.ledTurnOff();
+    }   
 }
 
 void Hardware::presetModeSwitch()
 {
     m_presetMode = !m_presetMode;
+    m_currentProgram = 0;
+    selector.setCounter(0);
+
+    if (m_presetMode) // Light up the selector LED, preset mode
+    {
+        loadPreset();
+    }
+    else // program mode
+    {
+        loadProgram();
+    }
 
     #ifdef DEBUG
         Serial.print("Preset mode : ");
@@ -140,7 +193,7 @@ void Hardware::presetModeSwitch()
 
 void Hardware::loadPreset()
 {
-
+    selectorLed.lightLed(m_currentProgram);
 }
 
 void Hardware::loadProgram()
@@ -182,7 +235,156 @@ void Hardware::loadProgram()
         m_effectMinInterval = 0;
         m_effectMaxInterval = 0;
         m_effectHasTapEnabled = false;
-    }    
+    }
+    selectorLed.lightLed(m_currentProgram + 8);
+}
+
+void Hardware::processTap()
+{
+    if ((m_timesTapped > 0) && ((millis() - m_lastTapTime) > (m_effectMaxInterval + 200))) // Timeout
+    {
+        m_timesTapped = 0; // Reset the tap count
+
+        #ifdef DEBUG
+            Serial.println("Tap timeout, reset");
+        #endif
+    }
+
+    m_lastTapTime = tapFsw.getLastPushedTimes(); // Get the switch time
+
+    if (m_timesTapped == 0) // First tap
+    {
+        m_firstTapTime = m_lastTapTime; // set the initial tap time
+        m_timesTapped++; // Increment the counter
+
+        #ifdef DEBUG
+            Serial.print("Tap ");
+            Serial.print(m_timesTapped);
+            Serial.print(" : ");
+            Serial.println(m_lastTapTime);
+        #endif
+    }
+    else // Consecutive taps
+    {
+        m_timesTapped++; // Increment the counter
+
+        #ifdef DEBUG
+            Serial.print("Tap ");
+            Serial.print(m_timesTapped);
+            Serial.print(" : ");
+            Serial.println(m_lastTapTime);
+        #endif
+    }
+
+    if (m_timesTapped == c_maxTaps) // Tap count threshold
+    {
+        m_tapState = 1; // Enable tap
+        m_timesTapped = 0; // Reset the tap count
+        calculateInterval(); // Trigger the interval calculation
+
+        #ifdef DEBUG
+            Serial.println("Tap threshold");
+        #endif
+    }
+}
+
+void Hardware::processDiv()
+{
+    m_divState = 1;
+    m_timesTapped = 0; // Reset the tap count
+
+    if (m_divValue < 4) // Circle thru the division values
+    {
+        m_divValue ++;
+        tapDivLed.lightLed(1 << (m_divValue -3));
+    }
+    else // Until the /1 then disable and reset
+    {
+        m_divValue = 1;
+        m_divState = 0;
+        tapDivLed.lightAllLedOff();
+    }
+
+    calculateDivInterval(); // Calculate the divided interval
+
+    #ifdef DEBUG
+        Serial.print("Div value : ");
+        Serial.println(m_divValue);
+    #endif
+}
+
+void Hardware::blinkTapLed()
+{
+    if (m_effectIsDelay)
+    {
+        if (m_divState) // Division is active, use the divided interval
+        {
+            m_tapLedBlinkValue = 128 + (127 * cos(2 * PI / m_divInterval * millis()));
+        }
+        else // Division not active
+        {
+            m_tapLedBlinkValue = 128 + (127 * cos(2 * PI / m_interval * millis()));
+        }
+
+        tapLed.setPwmLedState(m_tapLedBlinkValue);
+    }
+}
+
+void Hardware::calculateInterval()
+{
+    m_interval = ((m_lastTapTime - m_firstTapTime) / (c_maxTaps - 1)); // Calculate the average tap value
+
+    #ifdef DEBUG
+        Serial.print("Interval : ");
+        Serial.println(m_interval);
+    #endif
+
+    if (m_interval > m_effectMaxInterval) // Check against the program max interval and correct if necessary
+    {
+        m_interval = m_effectMaxInterval;
+
+        #ifdef DEBUG
+            Serial.print("Corrected interval : ");
+            Serial.println(m_interval);
+        #endif
+    }
+
+    if (m_interval < m_effectMinInterval) // Check against the program min interval and correct if necessary
+    {
+        m_interval = m_effectMinInterval;
+
+        #ifdef DEBUG
+            Serial.print("Corrected interval : ");
+            Serial.println(m_interval);
+        #endif
+    }
+    
+    if (m_divState) // Division is enabled trigger the div calculation
+    {
+        calculateDivInterval();
+    }
+}
+
+void Hardware::calculateDivInterval()
+{
+    m_divInterval = m_interval / m_divValue; // Current interval divided by current divider
+
+    #ifdef DEBUG
+        Serial.print("Division : ");
+        Serial.println(m_divValue);
+        Serial.print("Interval : ");
+        Serial.println(m_divInterval);
+    #endif
+    
+    if (m_divInterval < m_effectMinInterval) // Check against the program min interval and correct if necessary
+    {
+        m_divInterval = m_effectMinInterval;
+
+        #ifdef DEBUG
+            Serial.print("Corrected div interval : ");
+            Serial.println(m_divInterval);
+        #endif
+    }
 }
 
 uint8_t Hardware::getCurrentProgram()
@@ -213,6 +415,16 @@ bool Hardware::getSelectorSwitchPress()
 bool Hardware::getSelectorSwitchLongPress()
 {
     return m_selectorSwitchLongPress;
+}
+
+bool Hardware::getTapSwitchPress()
+{
+    return m_tapSwitchPress;
+}
+
+bool Hardware::getTapSwitchLongPress()
+{
+    return m_tapSwitchLongPress;
 }
 
 uint8_t Hardware::getBypassState()

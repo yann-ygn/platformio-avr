@@ -13,16 +13,16 @@ class Memory
     private:
         Eeprom eeprom0;
 
-        const uint8_t c_initialSetupStateAddress = 0;
-        const uint8_t c_midiChannelAddress = 1;
-        const uint8_t c_bypassStateAddress = 2;
-        const uint8_t c_presetModeAddress = 3;
-        const uint8_t c_currentPresetAddress = 4;
-        const uint8_t c_tapStateAddress = 5;
-        const uint8_t c_divStateAddress = 6;
-        const uint8_t c_divValueAddress = 7;
-        const uint16_t c_intervalAddress = 8;
-        const uint16_t c_divIntervalAddress = 10;
+        const uint8_t c_initialSetupStateAddress = 20;
+        const uint8_t c_midiChannelAddress = 21;
+        const uint8_t c_bypassStateAddress = 22;
+        const uint8_t c_presetModeAddress = 23;
+        const uint8_t c_currentPresetAddress = 24;
+        const uint8_t c_tapStateAddress = 25;
+        const uint8_t c_divStateAddress = 26;
+        const uint8_t c_divValueAddress = 27;
+        const uint16_t c_intervalAddress = 28;
+        const uint16_t c_divIntervalAddress = 30;
     
 
     public:
@@ -30,6 +30,7 @@ class Memory
 
         void memorySetup();
         void memoryInitialization();
+        void memoryReset();
         
         uint8_t readInitialSetupState();
         void writeInitialSetupState(uint8_t state);

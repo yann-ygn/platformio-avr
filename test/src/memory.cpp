@@ -10,7 +10,7 @@ void Memory::memorySetup()
 
     if (readInitialSetupState() != 1) // First startup, need to initialize
     {
-         memoryInitialization();
+        memoryInitialization();
     }
 }
 
@@ -31,6 +31,25 @@ void Memory::memoryInitialization()
     writeIntervalValue(0);
 
     writeInitialSetupState(1); // Initialization done
+}
+
+void Memory::memoryReset()
+{
+    eeprom0.testArray();
+
+    #ifdef DEBUG
+        Serial.println("Doing memory reset");
+    #endif/**
+    writeInitialSetupState(0);
+    writeMidiChannel(0);
+    writeBypassState(0);
+    writePresetMode(0);
+    writeCurrentPreset(0);
+    writeTapState(0);
+    writeDivState(0);
+    writeDivValue(0);
+    writeIntervalValue(0);
+    writeDivIntervalValue(0);**/
 }
 
 uint8_t Memory::readInitialSetupState()

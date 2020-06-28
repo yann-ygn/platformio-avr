@@ -8,7 +8,7 @@
  */
 class Led
 {
-    private:
+    protected:
         uint8_t m_pin; // LED pin #
         uint8_t m_ledState = 0;
 
@@ -18,7 +18,7 @@ class Led
          * 
          * @param pin LED pin #
          */
-        Led(uint8_t pin) : m_pin(pin) { };
+        Led(uint8_t pin) : m_pin(pin) { }
 
         /**
          * @brief Setup the µC's pins and set the LED to its startup state
@@ -60,6 +60,24 @@ class Led
          * @param state 
          */
         void setLedState(uint8_t state);
+};
+
+class PwmLed : public Led
+{
+    public:
+    /**
+     * @brief Construct a new Pwm Led object
+     * 
+     * @param cspin 
+     */
+    PwmLed(uint8_t pin) : Led(pin) { }
+
+    /**
+     * @brief Set the Pwm Led State object
+     * 
+     * @param state 
+     */
+    void setPwmLedState(uint8_t state);
 };
 
 #endif

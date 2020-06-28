@@ -48,7 +48,7 @@ class LedDriver8 : public LedDriver
          * 
          * @param cspin CS pin #
          */
-        LedDriver8(uint8_t cspin) : LedDriver(cspin) { };
+        LedDriver8(uint8_t cspin) : LedDriver(cspin) { }
 
         /**
          * @brief Light the selected LED

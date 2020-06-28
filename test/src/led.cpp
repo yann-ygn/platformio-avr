@@ -68,3 +68,9 @@ void Led::setLedState(uint8_t state)
 {
     m_ledState = state;
 }
+
+void PwmLed::setPwmLedState(uint8_t state)
+{
+    m_ledState = state;
+    analogWrite(m_pin, m_ledState);
+}

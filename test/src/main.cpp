@@ -24,6 +24,8 @@ void loop()
     
     if (hardware.getBypassState()) // Is the pedal on
     {
+        hardware.blinkTapLed();
+
         if (hardware.getSelectorSwitchPress()) // Selector switch long press
         {
             hardware.presetModeSwitch(); // Switch the preset/program mode
@@ -41,6 +43,16 @@ void loop()
             if (hardware.getSelectorMove()) // The selector moved
             {
                 hardware.loadProgram(); // Load the selected program
+            }
+
+            if (hardware.getTapSwitchPress()) // Tap switch press
+            {
+                hardware.processTap(); // Process it
+            }
+
+            if(hardware.getTapSwitchLongPress()) // Tap switch long press
+            {
+                hardware.processDiv(); // Process it
             }
         }
     }

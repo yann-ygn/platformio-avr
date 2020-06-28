@@ -7,7 +7,7 @@
 void LedDriver::ledDriverSetup()
 {
     pinMode(m_csPin, OUTPUT);
-    digitalWrite(m_csPin, HIGH);
+    digitalWrite(m_csPin, LOW);
 
     SPI.begin();
 }
@@ -21,6 +21,7 @@ void LedDriver::select()
 void LedDriver::deselect()
 {
     digitalWrite(m_csPin, HIGH);
+    digitalWrite(m_csPin, LOW);
     SPI.endTransaction();
 }
 
