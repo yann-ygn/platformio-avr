@@ -35,10 +35,8 @@ void Memory::memoryInitialization()
 
 void Memory::memoryReset()
 {
-    eeprom0.testArray();
-
     #ifdef DEBUG
-        Serial.println("Doing memory reset");
+        Serial.println(eeprom0.test());
     #endif/**
     writeInitialSetupState(0);
     writeMidiChannel(0);

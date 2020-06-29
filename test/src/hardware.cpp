@@ -34,15 +34,15 @@ PwmLed tapLed(15);
 void Hardware::hardwareSetup()
 {
     midi.midiSetup();
+    selectorLed.ledDriverSetup();
+    tapDivLed.ledDriverSetup();
     mem.memorySetup();
     bypass.bypassSetup();
-    bypassFsw.tempSwitchSetup();
-    bypassLed.ledSetup();
     selector.encoderSetup();
+    bypassFsw.tempSwitchSetup();
     selectorSw.tempSwitchSetup();
-    selectorLed.ledDriverSetup();
     tapFsw.tempSwitchSetup();
-    tapDivLed.ledDriverSetup();
+    bypassLed.ledSetup();
     tapLed.ledSetup();
 }
 
@@ -72,9 +72,7 @@ void Hardware::restoreLastState()
         loadProgram();
     }
 
-    //m_bypassState = mem.readBypassState(); // Read the bypass state from memory
-    bypass.BypassSwitch(m_bypassState); // Restore the bypass state
-    bypassLed.setLedState(m_bypassState); // Restore the bypass LED state
+    m_bypassState = mem.readBypassState(); // Read the bypass state from memory
     turnPedalOnOff();   
 }
 
@@ -144,6 +142,7 @@ void Hardware::bypassSwitch()
     #endif
 
     mem.writeBypassState(m_bypassState);
+    mem.readBypassState();
     turnPedalOnOff();
 }
 
@@ -172,17 +171,17 @@ void Hardware::turnPedalOnOff()
 
 void Hardware::presetModeSwitch()
 {
-    m_presetMode = !m_presetMode;
-    m_currentProgram = 0;
-    selector.setCounter(0);
+    m_presetMode = !m_presetMode; // Switch the preset mode
+    m_currentProgram = 0; // Reset the program counter
+    selector.setCounter(0); // Set the selector counter
 
-    if (m_presetMode) // Light up the selector LED, preset mode
+    if (m_presetMode)
     {
-        loadPreset();
+        loadPreset(); // Load the preset
     }
-    else // program mode
+    else
     {
-        loadProgram();
+        loadProgram(); // Load the program
     }
 
     #ifdef DEBUG

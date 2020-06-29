@@ -202,4 +202,9 @@ void Eeprom::writeArray(uint32_t address, uint8_t * data, uint8_t length)
 
 		delay(1000); 
 	}
+
+	uint8_t Eeprom::test()
+	{
+		return readStatusRegister();
+	}
 #endif

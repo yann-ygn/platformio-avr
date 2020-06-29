@@ -122,6 +122,7 @@ class Eeprom
             void testInt8();
             void testInt16();
             void testArray();
+            uint8_t test();
         #endif
 };
 
