@@ -41,7 +41,7 @@ class AnalogPot
         uint16_t getLastPotValue();
 
         /**
-         * @brief Get the Mapped Current Pot Value object
+         * @brief Get the current value mapped to 8bits
          * 
          * @return uint8_t 
          */

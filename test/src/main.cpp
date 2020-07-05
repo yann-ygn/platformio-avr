@@ -54,6 +54,26 @@ void loop()
             {
                 hardware.processDiv(); // Process it
             }
+
+            if (hardware.getPot0Turned())
+            {
+                hardware.processPot0();
+            }
+
+            if (hardware.getPot1Turned())
+            {
+                hardware.processPot1();
+            }
+
+            if (hardware.getPot2Turned())
+            {
+                hardware.processPot2();
+            }
+
+            if (hardware.getPot3Turned())
+            {
+                hardware.processPot3();
+            }
         }
     }
 

@@ -45,21 +45,21 @@ class FV1
          * 
          * @param value 
          */
-        void sendPot0Value(int value);
+        void sendPot0Value(uint8_t value);
 
         /**
          * @brief Sends a PWM pulse to the FV1's P1 input
          * 
          * @param value 
          */
-        void sendPot1Value(int value);
+        void sendPot1Value(uint8_t value);
 
         /**
          * @brief Sends a PWM pulse to the FV1's P2 input
          * 
          * @param value 
          */
-        void sendPot2Value(int value);
+        void sendPot2Value(uint8_t value);
 };
 
 #endif

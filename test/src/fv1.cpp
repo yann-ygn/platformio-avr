@@ -31,17 +31,17 @@ void FV1::sendProgramChange(uint8_t program)
     digitalWrite(m_s2Pin, HIGH && (program & 0x4));
 }
 
-void FV1::sendPot0Value(int value)
+void FV1::sendPot0Value(uint8_t value)
 {
     analogWrite(m_p0Pin, value);
 }
 
-void FV1::sendPot1Value(int value)
+void FV1::sendPot1Value(uint8_t value)
 {
     analogWrite(m_p1Pin, value);
 }
 
-void FV1::sendPot2Value(int value)
+void FV1::sendPot2Value(uint8_t value)
 {
     analogWrite(m_p2Pin, value);
 }

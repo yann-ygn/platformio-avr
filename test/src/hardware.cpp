@@ -26,10 +26,15 @@ TemporarySwitch selectorSw(A7, 1000); // Selector switch
 LedDriver16 selectorLed(20); // Program LED
 
 TemporarySwitch tapFsw(19, 1000); // Tap footswitch
-LedDriver16 tapDivLed(21); // Tap LED
-PwmLed tapLed(15);
+LedDriver16 tapDivLed(21); // Tap Div LED
+PwmLed tapLed(15); // Blinking tap LED
 
-//FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
+AnalogPot pot0(A4);
+AnalogPot pot1(A0);
+AnalogPot pot2(A3);
+AnalogPot pot3(A1);
+
+FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
 
 void Hardware::hardwareSetup()
 {
@@ -119,6 +124,26 @@ void Hardware::hardwarePoll()
                 m_tapSwitchLongPress = true; // Set the trigger
             }
         }
+
+        if (pot0.analogPotTurned()) // Pot0 moved
+        {
+            m_pot0Turned = true; // Set the trigger
+        }
+
+        if (pot1.analogPotTurned()) // Pot 1 moved
+        {
+            m_pot1Turned = true; // Set the trigger
+        }
+
+        if (pot2.analogPotTurned()) // Pot 2 moved
+        {
+            m_pot2Turned = true; // Set the trigger
+        }
+
+        if (pot2.analogPotTurned()) // Pot 3 moved
+        {
+            m_pot3Turned = true; // Set the trigger
+        }
     }
 }
 
@@ -130,6 +155,10 @@ void Hardware::resetTriggers()
     m_selectorSwitchLongPress = false;
     m_tapSwitchPress = false;
     m_tapSwitchLongPress = false;
+    m_pot0Turned = false;
+    m_pot1Turned = false;
+    m_pot2Turned = false;
+    m_pot3Turned = false;
 }
 
 void Hardware::bypassSwitch()
@@ -141,8 +170,8 @@ void Hardware::bypassSwitch()
         Serial.println(m_bypassState);
     #endif
 
-    mem.writeBypassState(m_bypassState);
-    mem.readBypassState();
+    //mem.writeBypassState(m_bypassState);
+    //mem.readBypassState();
     turnPedalOnOff();
 }
 
@@ -196,8 +225,14 @@ void Hardware::loadPreset()
 }
 
 void Hardware::loadProgram()
-{
+{    
     m_effectIsDelay = programs[m_currentProgram].m_delayEffect;
+    m_effectHasPot0Enabled = programs[m_currentProgram].m_pot0Enabled;
+    m_effectHasPot1Enabled = programs[m_currentProgram].m_pot1Enabled;
+    m_effectHasPot2Enabled = programs[m_currentProgram].m_pot2Enabled;
+
+    fv1.sendProgramChange(m_currentProgram);
+    // mem.writeCurrentPreset(m_currentProgram);
 
     if (m_effectIsDelay) // Effect is a delay
     {
@@ -211,30 +246,89 @@ void Hardware::loadProgram()
             {
                 if (m_divState) // Div was active
                 {
+                    tapDivLed.lightLed(m_divValue); // Light the div indicator
 
+                    if(m_divInterval > m_effectMaxInterval) // Current interval over the max program value
+                    {
+                        m_divInterval = m_effectMaxInterval; // Set it to the max value
+                    }
+                    
+                    if (m_divInterval < m_effectMinInterval) // Current interval under the min program value
+                    {
+                        m_divInterval = m_effectMinInterval; // Set it to the min value
+                    }
+
+                    fv1.sendPot0Value(getMappedDivInterval()); // Send the mapped interval value to the DSP
                 }
                 else // Div wasn't active
                 {
-                    
+                    if (m_interval > m_effectMaxInterval) // Current interval over the max program value
+                    {
+                        m_interval = m_effectMaxInterval; // Set it to the max value
+                    }
+
+                    if (m_interval < m_effectMinInterval) // Current interval under the min program value
+                    {
+                        m_interval = m_effectMinInterval; // Set it to the min value
+                    }
                 }
-                
+
+                fv1.sendPot0Value(getMappedInterval()); // Send the mapped interval value to the DSP         
             }
             else // Tap wasn't active
             {
-                
+                fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value tot he DSP
+                setIntervalFromPotValue(pot0.getCurrentPotValue()); // Set the interval according to pot0 value
             }
         }
         else // Effect doesn't have tap enabled
         {
-            
+            fv1.sendPot0Value(pot0.getMappedCurrentPotValue());
+        }
+
+        if (m_effectHasPot1Enabled)
+        {
+            fv1.sendPot1Value(pot1.getMappedCurrentPotValue());
+        }
+
+        if (m_effectHasPot2Enabled)
+        {
+            fv1.sendPot2Value(pot2.getMappedCurrentPotValue());
         }
     }
-    else
+    else // Effect isn't a delay
     {
-        m_effectMinInterval = 0;
-        m_effectMaxInterval = 0;
-        m_effectHasTapEnabled = false;
+        if (m_tapState) // Tap was enabled
+        {
+            m_tapState = 0; // Disable it
+            //mem.writeTapState(m_tapState); // Save it to memory
+
+            if (m_tapState) // Div was enabled
+            {
+                m_divState = 0; // Disable it
+                //mem.writeDivState(m_divState); // Save the state to memory
+                m_divValue = 0; // Reset the div value
+                //mem.writeDivValue(m_divValue); // Save the value to memory
+                tapDivLed.lightAllLedOff(); // Turn the LED off
+            }
+        }
+        
+        if(m_effectHasPot0Enabled)
+        {
+            fv1.sendPot0Value(pot0.getMappedCurrentPotValue());
+        }
+
+        if (m_effectHasPot1Enabled)
+        {
+            fv1.sendPot1Value(pot1.getMappedCurrentPotValue());
+        }
+
+        if (m_effectHasPot2Enabled)
+        {
+            fv1.sendPot2Value(pot2.getMappedCurrentPotValue());
+        }
     }
+
     selectorLed.lightLed(m_currentProgram + 8);
 }
 
@@ -386,6 +480,77 @@ void Hardware::calculateDivInterval()
     }
 }
 
+uint8_t Hardware::getMappedInterval()
+{
+    m_mappedInterval = map(m_interval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
+
+    return m_mappedInterval;
+}
+
+uint8_t Hardware::getMappedDivInterval()
+{
+    m_mappedDivInterval = map(m_divInterval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
+
+    return m_mappedDivInterval;
+}
+
+void Hardware::setIntervalFromPotValue(uint16_t value)
+{
+    m_interval = map(value, 0, 1023, m_effectMinInterval, m_effectMaxInterval);
+}
+
+void Hardware::processPot0()
+{
+    if (m_effectIsDelay) // Current effect is a delay
+    {
+        if (m_tapState) // Tap is enabled
+        {
+            m_tapState = 0; // Disable it
+            //mem.writeTapState(m_tapState); // Save it to memory
+
+            if (m_tapState) // Div is enabled
+            {
+                m_divState = 0; // Disable it
+                //mem.writeDivState(m_divState); // Save the state to memory
+                m_divValue = 0; // Reset the div value
+                //mem.writeDivValue(m_divValue); // Save the value to memory
+                tapDivLed.lightAllLedOff(); // Turn the LED off
+            }
+        }
+
+        fv1.sendPot0Value(pot0.getMappedCurrentPotValue());
+        setIntervalFromPotValue(pot0.getCurrentPotValue());
+    }
+    else // Current effect is not a delay
+    {
+        if (m_effectHasPot0Enabled)
+        {
+            fv1.sendPot0Value(pot0.getMappedCurrentPotValue());
+        }
+    }
+}
+
+void Hardware::processPot1()
+{
+    if (m_effectHasPot1Enabled)
+    {
+        fv1.sendPot1Value(pot1.getCurrentPotValue());
+    }
+}
+
+void Hardware::processPot2()
+{
+    if (m_effectHasPot2Enabled)
+    {
+        fv1.sendPot2Value(pot2.getCurrentPotValue());
+    }
+}
+
+void Hardware::processPot3()
+{
+
+}
+
 uint8_t Hardware::getCurrentProgram()
 {
     return m_currentProgram;
@@ -429,4 +594,24 @@ bool Hardware::getTapSwitchLongPress()
 uint8_t Hardware::getBypassState()
 {
     return m_bypassState;
+}
+
+bool Hardware::getPot0Turned()
+{
+    return m_pot0Turned;
+}
+
+bool Hardware::getPot1Turned()
+{
+    return m_pot1Turned;
+}
+
+bool Hardware::getPot2Turned()
+{
+    return m_pot2Turned;
+}
+
+bool Hardware::getPot3Turned()
+{
+    return m_pot3Turned;
 }

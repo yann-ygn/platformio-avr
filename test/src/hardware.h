@@ -37,6 +37,10 @@ class Hardware
         bool m_selectorSwitchLongPress = false;
         bool m_tapSwitchPress = false;
         bool m_tapSwitchLongPress = false;
+        bool m_pot0Turned = false;
+        bool m_pot1Turned = false;
+        bool m_pot2Turned = false;
+        bool m_pot3Turned = false;
 
         // Tap logic
         uint32_t m_firstTapTime = 0;
@@ -44,6 +48,8 @@ class Hardware
         uint8_t m_timesTapped = 0;
         const uint8_t c_maxTaps = 3;
         uint8_t m_tapLedBlinkValue = 0;
+        uint8_t m_mappedInterval = 0;
+        uint8_t m_mappedDivInterval = 0;
 
         /**
          * @brief Apply the bypass state
@@ -59,6 +65,23 @@ class Hardware
          * @brief Calculate the divided interval
          */
         void calculateDivInterval();
+
+        /**
+         * @brief Calculate the value of the current interval mapped to 8bits in the relation to the min ad max iterval
+         */
+        uint8_t getMappedInterval();
+
+        /**
+         * @brief Calculate the value of the current divied interval mapped to 8bits in the relation to the min ad max iterval
+         */
+        uint8_t getMappedDivInterval();
+
+        /**
+         * @brief Map the interval to the pot value in relation to the min and max interval
+         * 
+         * @param value 
+         */
+        void setIntervalFromPotValue(uint16_t value);
 
     public:
         /**
@@ -120,6 +143,26 @@ class Hardware
          * @brief Blink tap led to the interval
          */
         void blinkTapLed();
+
+        /**
+         * @brief Pot0 logic
+         */
+        void processPot0();
+
+        /**
+         * @brief Pot1 logic
+         */
+        void processPot1();
+
+        /**
+         * @brief Pot2 logic
+         */
+        void processPot2();
+
+        /**
+         * @brief Pot3 logic
+         */
+        void processPot3();
 
         /**
          * @brief Get the Current Program object
@@ -189,6 +232,38 @@ class Hardware
          * @return uint8_t 
          */
         uint8_t getBypassState();
+
+        /**
+         * @brief Get the Pot0 Turned object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getPot0Turned();
+
+        /**
+         * @brief Get the Pot1 Turned object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getPot1Turned();
+
+        /**
+         * @brief Get the Pot2 Turned object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getPot2Turned();
+
+        /**
+         * @brief Get the Pot3 Turned object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getPot3Turned();
 };
 
 #endif
