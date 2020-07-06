@@ -29,10 +29,10 @@ TemporarySwitch tapFsw(19, 1000); // Tap footswitch
 LedDriver16 tapDivLed(21); // Tap Div LED
 PwmLed tapLed(15); // Blinking tap LED
 
-AnalogPot pot0(A4);
-AnalogPot pot1(A0);
-AnalogPot pot2(A3);
-AnalogPot pot3(A1);
+AnalogPot pot0(A4); // P0
+AnalogPot pot1(A0); // P1
+AnalogPot pot2(A3); // P2
+AnalogPot pot3(A1); // Mix
 
 FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
 
@@ -49,6 +49,10 @@ void Hardware::hardwareSetup()
     tapFsw.tempSwitchSetup();
     bypassLed.ledSetup();
     tapLed.ledSetup();
+    pot0.analogPotSetup();
+    pot1.analogPotSetup();
+    pot2.analogPotSetup();
+    pot3.analogPotSetup();
 }
 
 void Hardware::hardwareInitialization()

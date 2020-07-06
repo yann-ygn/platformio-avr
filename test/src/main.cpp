@@ -55,24 +55,24 @@ void loop()
                 hardware.processDiv(); // Process it
             }
 
-            if (hardware.getPot0Turned())
+            if (hardware.getPot0Turned()) // Pot0 moved
             {
-                hardware.processPot0();
+                hardware.processPot0(); // Process it
             }
 
-            if (hardware.getPot1Turned())
+            if (hardware.getPot1Turned()) // Pot1 moved
             {
-                hardware.processPot1();
+                hardware.processPot1(); // Process it
             }
 
-            if (hardware.getPot2Turned())
+            if (hardware.getPot2Turned()) // Pot2 moved
             {
-                hardware.processPot2();
+                hardware.processPot2(); // Process it
             }
 
-            if (hardware.getPot3Turned())
+            if (hardware.getPot3Turned()) // Pot3 moved
             {
-                hardware.processPot3();
+                hardware.processPot3(); // Process it
             }
         }
     }
