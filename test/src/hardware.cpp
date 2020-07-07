@@ -287,17 +287,18 @@ void Hardware::loadProgram()
         }
         else // Effect doesn't have tap enabled
         {
-            fv1.sendPot0Value(pot0.getMappedCurrentPotValue());
+            fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value to the DSP
+            setIntervalFromPotValue(pot0.getCurrentPotValue()); // Set the interval according to pot0 value
         }
 
         if (m_effectHasPot1Enabled)
         {
-            fv1.sendPot1Value(pot1.getMappedCurrentPotValue());
+            fv1.sendPot1Value(pot1.getMappedCurrentPotValue()); // Send pot1 value to the DSP
         }
 
         if (m_effectHasPot2Enabled)
         {
-            fv1.sendPot2Value(pot2.getMappedCurrentPotValue());
+            fv1.sendPot2Value(pot2.getMappedCurrentPotValue()); // Send pot2 value to the DSP
         }
     }
     else // Effect isn't a delay
@@ -306,6 +307,7 @@ void Hardware::loadProgram()
         {
             m_tapState = 0; // Disable it
             //mem.writeTapState(m_tapState); // Save it to memory
+            tapLed.ledTurnOff(); // Turn the tap LED off
 
             if (m_tapState) // Div was enabled
             {
@@ -313,23 +315,23 @@ void Hardware::loadProgram()
                 //mem.writeDivState(m_divState); // Save the state to memory
                 m_divValue = 0; // Reset the div value
                 //mem.writeDivValue(m_divValue); // Save the value to memory
-                tapDivLed.lightAllLedOff(); // Turn the LED off
+                tapDivLed.lightAllLedOff(); // Turn the div LED off
             }
         }
         
         if(m_effectHasPot0Enabled)
         {
-            fv1.sendPot0Value(pot0.getMappedCurrentPotValue());
+            fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value to the DSP
         }
 
         if (m_effectHasPot1Enabled)
         {
-            fv1.sendPot1Value(pot1.getMappedCurrentPotValue());
+            fv1.sendPot1Value(pot1.getMappedCurrentPotValue()); // Send pot1 value to the DSP
         }
 
         if (m_effectHasPot2Enabled)
         {
-            fv1.sendPot2Value(pot2.getMappedCurrentPotValue());
+            fv1.sendPot2Value(pot2.getMappedCurrentPotValue()); // Send pot2 value to the DSP
         }
     }
 
@@ -501,6 +503,11 @@ uint8_t Hardware::getMappedDivInterval()
 void Hardware::setIntervalFromPotValue(uint16_t value)
 {
     m_interval = map(value, 0, 1023, m_effectMinInterval, m_effectMaxInterval);
+
+    #ifdef DEBUG
+        Serial.print("P0 interval : ");
+        Serial.println(m_interval);
+    #endif
 }
 
 void Hardware::processPot0()
