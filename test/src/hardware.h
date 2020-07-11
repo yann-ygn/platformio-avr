@@ -13,6 +13,7 @@ class Hardware
         uint8_t m_bypassState = 0;
         uint8_t m_currentProgram = 0;
         uint8_t m_presetMode = 0;
+        bool m_presetSaveMode = false;
 
         // Current effect parameters
         bool m_effectIsDelay = false;
@@ -128,6 +129,11 @@ class Hardware
          * @brief Load a preset from memory
          */
         void loadPreset();
+
+        /**
+         * @brief Save the current state as a preset
+         */
+        void savePreset();
 
         /**
          * @brief Tap logic

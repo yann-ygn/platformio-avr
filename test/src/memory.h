@@ -21,9 +21,16 @@ class Memory
         const uint8_t c_tapStateAddress = 25;
         const uint8_t c_divStateAddress = 26;
         const uint8_t c_divValueAddress = 27;
-        const uint16_t c_intervalAddress = 28;
-        const uint16_t c_divIntervalAddress = 30;
-    
+        const uint8_t c_intervalAddress = 28;
+        const uint8_t c_divIntervalAddress = 30;
+        const uint8_t c_preset0Address = 65;
+        const uint8_t c_preset1Address = 80;
+        const uint8_t c_preset2Address = 95;
+        const uint8_t c_preset3Address = 110;
+        const uint8_t c_preset4Address = 130;
+        const uint8_t c_preset5Address = 145;
+        const uint8_t c_preset6Address = 160;
+        const uint8_t c_preset7Address = 175;
 
     public:
         Memory(uint8_t pin) : eeprom0(pin) {}
@@ -61,6 +68,8 @@ class Memory
 
         uint16_t readDivIntervalValue();
         void writeDivIntervalValue(uint16_t value);
+
+        void
 };
 
 #endif

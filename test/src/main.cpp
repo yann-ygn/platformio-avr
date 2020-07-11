@@ -26,7 +26,12 @@ void loop()
     {
         hardware.blinkTapLed();
 
-        if (hardware.getSelectorSwitchPress()) // Selector switch long press
+        if (hardware.getSelectorSwitchLongPress()) // Selector switch long press
+        {
+
+        }
+
+        if (hardware.getSelectorSwitchPress()) // Selector switch press
         {
             hardware.presetModeSwitch(); // Switch the preset/program mode
         }

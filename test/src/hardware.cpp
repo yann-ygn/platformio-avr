@@ -223,11 +223,6 @@ void Hardware::presetModeSwitch()
     #endif
 }
 
-void Hardware::loadPreset()
-{
-    selectorLed.lightLed(m_currentProgram);
-}
-
 void Hardware::loadProgram()
 {    
     m_effectIsDelay = programs[m_currentProgram].m_delayEffect;
@@ -336,6 +331,16 @@ void Hardware::loadProgram()
     }
 
     selectorLed.lightLed(m_currentProgram + 8);
+}
+
+void Hardware::loadPreset()
+{
+    selectorLed.lightLed(m_currentProgram);
+}
+
+void Hardware::savePreset()
+{
+    
 }
 
 void Hardware::processTap()
