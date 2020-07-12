@@ -69,7 +69,8 @@ class Memory
         uint16_t readDivIntervalValue();
         void writeDivIntervalValue(uint16_t value);
 
-        void
+        void readPreset(uint8_t preset, uint8_t * data);
+        void writePreset(uint8_t preset, uint8_t * data);
 };
 
 #endif

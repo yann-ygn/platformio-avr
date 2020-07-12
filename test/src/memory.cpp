@@ -270,3 +270,13 @@ void Memory::writeDivIntervalValue(uint16_t value)
 
     eeprom0.writeInt16(c_divIntervalAddress, value);
 }
+
+void Memory::readPreset(uint8_t preset, uint8_t * data)
+{
+
+}
+
+void Memory::writePreset(uint8_t preset, uint8_t * data)
+{
+    
+}
