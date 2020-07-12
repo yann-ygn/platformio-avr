@@ -60,6 +60,33 @@ void LedDriver16::lightAllLedOff()
     deselect();
 }
 
+void LedDriver16::blinkLed(uint8_t led, uint8_t interval)
+{
+    m_blinkTime = millis();
+
+    if ((m_blinkTime - m_lastBlinkTime) >= interval)
+    {
+        if (m_lastBlinkState)
+        {
+            m_lastBlinkState = 0;
+            lightAllLedOff();
+        }
+        else
+        {
+            m_lastBlinkState = 1;
+            lightLed(led);
+        }
+
+        m_lastBlinkTime = m_blinkTime;
+    }
+}
+
+void LedDriver16::resetBlink()
+{
+    m_lastBlinkTime = 0;
+    m_lastBlinkState = 0;
+}
+
 #ifdef DEBUG
     void LedDriver8::testAllLed()
     {

@@ -12,6 +12,10 @@ class LedDriver
         uint8_t m_csPin; // CS pin #
 
     protected:
+        uint32_t m_blinkTime = 0;
+        uint32_t m_lastBlinkTime = 0;
+        uint8_t m_lastBlinkState = 0;
+
         /**
          * @brief Setup the SPI bus and select the chip
          */
@@ -101,6 +105,20 @@ class LedDriver16 : public LedDriver
          * @brief Toggles all the LED off 
          */
         void lightAllLedOff(); 
+
+        /**
+         * @brief Blink an LED with a given inrterval
+         * 
+         * @param led LED #
+         * @param interval Interval in ms
+         */
+        void blinkLed(uint8_t led, uint8_t interval);
+
+        /**
+         * @brief Reset the blink state
+         * 
+         */
+        void resetBlink();
 
         #ifdef DEBUG
             /**
