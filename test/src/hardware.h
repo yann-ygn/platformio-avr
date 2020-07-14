@@ -36,6 +36,7 @@ class Hardware
         bool m_selectorMove = false;
         bool m_selectorSwitchPress = false;
         bool m_selectorSwitchLongPress = false;
+        bool m_selectorSwitchRelease = false;
         bool m_tapSwitchPress = false;
         bool m_tapSwitchLongPress = false;
         bool m_pot0Turned = false;
@@ -215,6 +216,14 @@ class Hardware
          * @return false 
          */
         bool getSelectorSwitchLongPress();
+
+        /**
+         * @brief Get the Selector Switch Released object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getSelectorSwitchReleased();
 
         /**
          * @brief Get the Tap Switch Press object

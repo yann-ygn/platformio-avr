@@ -114,6 +114,11 @@ void Hardware::hardwarePoll()
             m_selectorSwitchLongPress = true; // Set the trigger
         }
 
+        if (selectorSw.tempSwitchReleased())
+        {
+            m_selectorSwitchRelease = true;
+        }
+
         if (m_effectHasTapEnabled)
         {
             tapFsw.tempSwitchPoll(); // Poll the tap footswitch
@@ -157,6 +162,7 @@ void Hardware::resetTriggers()
     m_selectorMove = false;
     m_selectorSwitchPress = false;
     m_selectorSwitchLongPress = false;
+    m_selectorSwitchRelease = false;
     m_tapSwitchPress = false;
     m_tapSwitchLongPress = false;
     m_pot0Turned = false;
@@ -340,7 +346,40 @@ void Hardware::loadPreset()
 
 void Hardware::savePreset()
 {
-    
+    while (! selectorSw.tempSwitchReleased()) // Wait for the selector switch to be released after the long press
+    {
+        selectorLed.blinkLed(m_currentProgram, 100);
+        selectorSw.tempSwitchPoll();
+    }
+
+    m_selectorSwitchRelease = false;
+    m_presetSaveMode = true; // Set the trigger
+
+    tapLed.ledTurnOff();  // Turn off the tap LED
+    selector.setCounter(0); // Reset the counter
+    m_currentProgram = 0; // Reset the counter
+
+    while (m_presetSaveMode)
+    {
+        selectorSw.tempSwitchPoll(); // Poll the selector switch
+
+        selectorLed.blinkLed(m_currentProgram, 100); // Blink the current program LED
+
+        if (selector.encoderPoll()) // Encoder poll
+        {
+            m_currentProgram = selector.getCounter(); // Adjust the counter
+            selectorLed.resetBlink(); // Reset the blink counter
+            selectorLed.blinkLed(m_currentProgram, 100); // Blink the current program LED
+        }
+
+        if (selectorSw.tempSwitchReleased())
+        {
+            m_presetSaveMode = false;
+            m_selectorSwitchRelease = false;
+            m_presetMode = 1;
+            loadPreset();
+        }
+    }
 }
 
 void Hardware::processTap()
@@ -595,6 +634,11 @@ bool Hardware::getSelectorSwitchPress()
 bool Hardware::getSelectorSwitchLongPress()
 {
     return m_selectorSwitchLongPress;
+}
+
+bool Hardware::getSelectorSwitchReleased()
+{
+    return m_selectorSwitchRelease;
 }
 
 bool Hardware::getTapSwitchPress()
