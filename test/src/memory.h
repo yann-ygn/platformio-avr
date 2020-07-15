@@ -69,6 +69,27 @@ class Memory
         uint16_t readDivIntervalValue();
         void writeDivIntervalValue(uint16_t value);
 
+        /**
+         * data[16]
+         * data[0] : m_currentProgram
+         * data[1] : m_tapState
+         * date[2] : m_divState
+         * data[3] : m_divValue
+         * data[4-5] : m_interval
+         * data[6-7] : m_divIntervak
+         * data[8-9] : pot0Value
+         * data[10-11] : pot1Value
+         * data[12-13] : pot2Value
+         * data[14-15] : pot3Value
+         * 
+         */
+
+        /**
+         * @brief 
+         * 
+         * @param preset 
+         * @param data 
+         */
         void readPreset(uint8_t preset, uint8_t * data);
         void writePreset(uint8_t preset, uint8_t * data);
 };

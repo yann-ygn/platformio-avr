@@ -44,6 +44,11 @@ uint16_t AnalogPot::getCurrentPotValue()
     return m_currPotValue;
 }
 
+void AnalogPot::setCurrentPotValue(uint16_t value)
+{
+    m_currPotValue = value;
+}
+
 uint16_t AnalogPot::getLastPotValue()
 {
     return m_lastPotValue;

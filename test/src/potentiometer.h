@@ -32,6 +32,11 @@ class AnalogPot
          * @return int 
          */
         uint16_t getCurrentPotValue();
+
+        /**
+         * @brief Set the Current Pot Value object
+         */
+        void setCurrentPotValue(uint16_t value);
         
         /**
          * @brief Get the Last Pot Value object

@@ -22,7 +22,7 @@ void loop()
         hardware.bypassSwitch(); // Turn the pedal on/off
     }
     
-    if (hardware.getBypassState()) // Is the pedal on
+    if (hardware.getBypassState()) // The pedal is on
     {
         hardware.blinkTapLed();
 
@@ -42,7 +42,7 @@ void loop()
         {
             if (hardware.getSelectorSwitchLongPress()) // Selector switch long press
             {
-                hardware.savePreset();
+                hardware.savePreset(); // Save the current program and parameters as a preset
             }
 
             if (hardware.getSelectorMove()) // The selector moved
