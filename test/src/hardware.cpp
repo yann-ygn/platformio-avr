@@ -352,7 +352,7 @@ void Hardware::savePreset()
         selectorSw.tempSwitchPoll();
     }
 
-    m_selectorSwitchRelease = false;
+    m_selectorSwitchRelease = false; // Reset the switch trigger
     m_presetSaveMode = true; // Set the trigger
 
     tapLed.ledTurnOff();  // Turn off the tap LED
@@ -374,10 +374,10 @@ void Hardware::savePreset()
 
         if (selectorSw.tempSwitchReleased())
         {
-            m_presetSaveMode = false;
-            m_selectorSwitchRelease = false;
-            m_presetMode = 1;
-            loadPreset();
+            m_presetSaveMode = false; // Reset the trigger
+            m_selectorSwitchRelease = false; // Reset the switch trigger
+            m_presetMode = 1; // Set the pedal in preset mode
+            loadPreset(); // Load the current preset
         }
     }
 }
