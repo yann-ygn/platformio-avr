@@ -273,6 +273,17 @@ void Memory::writeDivIntervalValue(uint16_t value)
 
 void Memory::readPreset(uint8_t preset, uint8_t * data)
 {
+    if (preset > 16)
+    {
+        preset = 16;
+    }
+
+    switch (preset)
+    {
+        case 0: eeprom0.writeArray(c_preset0Address, data, 16);
+                break;
+        
+    }
 
 }
 
