@@ -18,11 +18,12 @@ class Memory
         const uint8_t c_bypassStateAddress = 22;
         const uint8_t c_presetModeAddress = 23;
         const uint8_t c_currentPresetAddress = 24;
-        const uint8_t c_tapStateAddress = 25;
-        const uint8_t c_divStateAddress = 26;
-        const uint8_t c_divValueAddress = 27;
-        const uint8_t c_intervalAddress = 28;
-        const uint8_t c_divIntervalAddress = 30;
+        const uint8_t c_currentProgramAddress = 25;
+        const uint8_t c_tapStateAddress = 26;
+        const uint8_t c_divStateAddress = 27;
+        const uint8_t c_divValueAddress = 28;
+        const uint8_t c_intervalAddress = 29;
+        const uint8_t c_divIntervalAddress = 31;
         const uint8_t c_preset0Address = 65;
         const uint8_t c_preset1Address = 80;
         const uint8_t c_preset2Address = 95;
@@ -53,6 +54,9 @@ class Memory
 
         uint8_t readCurrentPreset();
         void writeCurrentPreset(uint8_t preset);
+
+        uint8_t readCurrentProgram();
+        void writeCurrentProgram(uint8_t program);
 
         uint8_t readTapState();
         void writeTapState(uint8_t state);
@@ -91,8 +95,8 @@ class Memory
          */
         void readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
                         uint16_t * divinterval, uint16_t * pot0, uint16_t * pot1, uint16_t * pot2, uint16_t * pot3);
-        void writePreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
-                        uint16_t * divinterval, uint16_t * pot0, uint16_t * pot1, uint16_t * pot2, uint16_t * pot3);
+        void writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t div, uint8_t divvalue, uint16_t interval, 
+                        uint16_t divinterval, uint16_t pot0, uint16_t pot1, uint16_t pot2, uint16_t pot3);
 };
 
 #endif

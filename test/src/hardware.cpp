@@ -68,16 +68,18 @@ void Hardware::restoreLastState()
     //m_interval = mem.readIntervalValue(); // Read the interval value from memory
     //m_divInterval = mem.readDivIntervalValue(); // Read the divided interval value from memory
 
-    //m_currentProgram = mem.readCurrentPreset(); // Read the stored current program
-    selector.setCounter(m_currentProgram); // Set the encoder counter
     //m_presetMode = mem.readPresetMode(); // Read the stored preset mode
 
     if (m_presetMode) // Light up the selector LED, preset mode
     {
+        selector.setCounter(m_currentPreset);
+        //m_currentPreset = mem.readCurrentPreset(); // Read the stored current preset
         loadPreset();
     }
     else // program mode
     {
+        selector.setCounter(m_currentProgram); // Set the encoder counter        
+        //m_currentProgram = mem.readCurrentProgram(); // Read the stored current program
         loadProgram();
     }
 
@@ -342,10 +344,15 @@ void Hardware::loadProgram()
 void Hardware::loadPreset()
 {
     selectorLed.lightLed(m_currentProgram);
+    // mem.writeCurrentPreset(m_currentProgram); // Save the state
 }
 
 void Hardware::savePreset()
 {
+    tapLed.ledTurnOff();  // Turn off the tap LED
+    selector.setCounter(0); // Reset the counter
+    m_currentPreset = 0; // Reset the counter
+
     while (! selectorSw.tempSwitchReleased()) // Wait for the selector switch to be released after the long press
     {
         selectorLed.blinkLed(m_currentProgram, 100);
@@ -355,21 +362,17 @@ void Hardware::savePreset()
     m_selectorSwitchRelease = false; // Reset the switch trigger
     m_presetSaveMode = true; // Set the trigger
 
-    tapLed.ledTurnOff();  // Turn off the tap LED
-    selector.setCounter(0); // Reset the counter
-    m_currentProgram = 0; // Reset the counter
-
     while (m_presetSaveMode)
     {
         selectorSw.tempSwitchPoll(); // Poll the selector switch
 
-        selectorLed.blinkLed(m_currentProgram, 100); // Blink the current program LED
+        selectorLed.blinkLed(m_currentPreset, 100); // Blink the current preset LED
 
         if (selector.encoderPoll()) // Encoder poll
         {
-            m_currentProgram = selector.getCounter(); // Adjust the counter
+            m_currentPreset = selector.getCounter(); // Adjust the counter
             selectorLed.resetBlink(); // Reset the blink counter
-            selectorLed.blinkLed(m_currentProgram, 100); // Blink the current program LED
+            selectorLed.blinkLed(m_currentPreset, 100); // Blink the current preset LED
         }
 
         if (selectorSw.tempSwitchReleased())
@@ -377,6 +380,11 @@ void Hardware::savePreset()
             m_presetSaveMode = false; // Reset the trigger
             m_selectorSwitchRelease = false; // Reset the switch trigger
             m_presetMode = 1; // Set the pedal in preset mode
+            // mem.writePresetMode(1); // Save the state
+
+            mem.writePreset(m_currentPreset, m_currentProgram, m_tapState, m_divState, m_divValue, m_interval, m_divInterval,
+                            pot0.getCurrentPotValue(), pot1.getCurrentPotValue(), pot2.getCurrentPotValue(), pot3.getCurrentPotValue());
+
             loadPreset(); // Load the current preset
         }
     }

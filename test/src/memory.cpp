@@ -160,6 +160,28 @@ void Memory::writeCurrentPreset(uint8_t preset)
     eeprom0.writeInt8(c_currentPresetAddress, preset);
 }
 
+uint8_t Memory::readCurrentProgram()
+{
+    uint8_t value = eeprom0.readInt8(c_currentProgramAddress);
+
+    #ifdef DEBUG
+        Serial.print("Reading current program : ");
+        Serial.println(value);
+    #endif
+
+    return value;
+}
+
+void Memory::writeCurrentProgram(uint8_t program)
+{
+    #ifdef DEBUG
+        Serial.print("Writing current preset : ");
+        Serial.println(program);
+    #endif
+
+    eeprom0.writeInt8(c_currentProgramAddress, program);
+}
+
 uint8_t Memory::readTapState()
 {
     uint8_t value = eeprom0.readInt8(c_tapStateAddress);
@@ -171,7 +193,6 @@ uint8_t Memory::readTapState()
 
     return value;
 }
-
 
 void Memory::writeTapState(uint8_t state)
 {
@@ -305,8 +326,8 @@ void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_
     * pot3 = (data[15] << 8) + data[14];
 }
 
-void Memory::writePreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
-                        uint16_t * divinterval, uint16_t * pot0, uint16_t * pot1, uint16_t * pot2, uint16_t * pot3)
+void Memory::writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t div, uint8_t divvalue, uint16_t interval, 
+                        uint16_t divinterval, uint16_t pot0, uint16_t pot1, uint16_t pot2, uint16_t pot3)
 {
     if (preset > 16)
     {
@@ -315,22 +336,22 @@ void Memory::writePreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8
 
     uint8_t data[16] = {};
 
-    data[0] = * program; // m_currentProgram
-    data[1] = * tap; // m_tapState
-    data[2] = * div; // m_divState
-    data[3] = * divvalue; // m_divValue
-    data[4] = lowByte(* interval); // m_interval
-    data[5] = highByte(* interval); // m_interval
-    data[6] = lowByte(* divinterval); // m_divInterval
-    data[7] = highByte(* divinterval); // m_divInterval
-    data[8] = lowByte(* pot0); // pot0Value
-    data[9] = highByte(* pot0); // pot0Value
-    data[10] = lowByte(* pot1); // pot1Value
-    data[11] = highByte(* pot1); // pot1Value
-    data[12] = lowByte(* pot2); // pot1Value
-    data[13] = highByte(* pot2); // pot1Value
-    data[14] = lowByte(* pot3); // pot3Value
-    data[15] = highByte(* pot3); // pot3Value
+    data[0] = program; // m_currentProgram
+    data[1] = tap; // m_tapState
+    data[2] = div; // m_divState
+    data[3] = divvalue; // m_divValue
+    data[4] = lowByte(interval); // m_interval
+    data[5] = highByte(interval); // m_interval
+    data[6] = lowByte(divinterval); // m_divInterval
+    data[7] = highByte(divinterval); // m_divInterval
+    data[8] = lowByte(pot0); // pot0Value
+    data[9] = highByte(pot0); // pot0Value
+    data[10] = lowByte(pot1); // pot1Value
+    data[11] = highByte(pot1); // pot1Value
+    data[12] = lowByte(pot2); // pot1Value
+    data[13] = highByte(pot2); // pot1Value
+    data[14] = lowByte(pot3); // pot3Value
+    data[15] = highByte(pot3); // pot3Value
 
     switch (preset)
     {

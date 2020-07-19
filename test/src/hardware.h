@@ -12,6 +12,7 @@ class Hardware
         //Hardware state
         uint8_t m_bypassState = 0;
         uint8_t m_currentProgram = 0;
+        uint8_t m_currentPreset = 0;
         uint8_t m_presetMode = 0;
         bool m_presetSaveMode = false;
 
