@@ -73,7 +73,7 @@ class Memory
          * data[16]
          * data[0] : m_currentProgram
          * data[1] : m_tapState
-         * date[2] : m_divState
+         * data[2] : m_divState
          * data[3] : m_divValue
          * data[4-5] : m_interval
          * data[6-7] : m_divInterval
@@ -89,8 +89,10 @@ class Memory
          * @param preset 
          * @param data 
          */
-        void readPreset(uint8_t preset, uint8_t * data);
-        void writePreset(uint8_t preset, uint8_t * data);
+        void readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
+                        uint16_t * divinterval, uint16_t * pot0, uint16_t * pot1, uint16_t * pot2, uint16_t * pot3);
+        void writePreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
+                        uint16_t * divinterval, uint16_t * pot0, uint16_t * pot1, uint16_t * pot2, uint16_t * pot3);
 };
 
 #endif
