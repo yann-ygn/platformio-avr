@@ -67,19 +67,18 @@ void Hardware::restoreLastState()
     //m_divValue = mem.readDivValue(); // Read the division value from memory
     //m_interval = mem.readIntervalValue(); // Read the interval value from memory
     //m_divInterval = mem.readDivIntervalValue(); // Read the divided interval value from memory
-
     //m_presetMode = mem.readPresetMode(); // Read the stored preset mode
+    //m_currentPreset = mem.readCurrentPreset(); // Read the stored current preset
+    //m_currentProgram = mem.readCurrentProgram(); // Read the stored current program
 
     if (m_presetMode) // Light up the selector LED, preset mode
     {
         selector.setCounter(m_currentPreset);
-        //m_currentPreset = mem.readCurrentPreset(); // Read the stored current preset
         loadPreset();
     }
     else // program mode
     {
         selector.setCounter(m_currentProgram); // Set the encoder counter        
-        //m_currentProgram = mem.readCurrentProgram(); // Read the stored current program
         loadProgram();
     }
 
