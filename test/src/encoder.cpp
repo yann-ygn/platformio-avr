@@ -27,9 +27,9 @@ bool Encoder::encoderPoll()
     if (state == 0x10)
     {
         m_counter --;
-        if (m_counter == 255)
+        if (m_counter == 255 || m_counter < m_minCounterValue)
         {
-            m_counter = 7;
+            m_counter = m_maxCounterValue;
         }
         #ifdef DEBUG
             Serial.print("Encoder counter decrement : ");
@@ -42,9 +42,9 @@ bool Encoder::encoderPoll()
     else if (state == 0x20)
     {
         m_counter ++;
-        if(m_counter == 8)
+        if(m_counter == m_maxCounterValue)
         {
-            m_counter = 0;
+            m_counter = m_minCounterValue;
         }
         #ifdef DEBUG
             Serial.print("Selector counter increment : ");
