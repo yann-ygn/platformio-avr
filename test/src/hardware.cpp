@@ -170,6 +170,7 @@ void Hardware::resetTriggers()
     m_pot1Turned = false;
     m_pot2Turned = false;
     m_pot3Turned = false;
+    m_bothSwitchPress = false;
 }
 
 void Hardware::bypassSwitch()

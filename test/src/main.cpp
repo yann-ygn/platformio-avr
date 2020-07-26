@@ -17,11 +17,6 @@ void loop()
 {
     hardware.hardwarePoll(); // Poll the moving parts
     
-    if (hardware.getBypassSwitchPress()) // Bypass switch Press
-    {
-        hardware.bypassSwitch(); // Turn the pedal on/off
-    }
-    
     if (hardware.getBypassState()) // The pedal is on
     {
         hardware.blinkTapLed();
@@ -80,6 +75,11 @@ void loop()
                 hardware.processPot3(); // Process it
             }
         }
+    }
+    
+    if (hardware.getBypassSwitchPress()) // Bypass switch Press
+    {
+        hardware.bypassSwitch(); // Turn the pedal on/off
     }
 
     hardware.resetTriggers();

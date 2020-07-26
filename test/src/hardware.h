@@ -40,6 +40,7 @@ class Hardware
         bool m_selectorSwitchRelease = false;
         bool m_tapSwitchPress = false;
         bool m_tapSwitchLongPress = false;
+        bool m_bothSwitchPress = false;
         bool m_pot0Turned = false;
         bool m_pot1Turned = false;
         bool m_pot2Turned = false;
