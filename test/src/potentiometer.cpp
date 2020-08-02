@@ -57,21 +57,15 @@ uint16_t AnalogPot::getLastPotValue()
 void DigitalPot::digitalPotSetup()
 {
     pinMode(m_latchPin, OUTPUT);
+    digitalWrite(m_latchPin, HIGH);
 
     SPI.begin();
-
-    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
-    digitalWrite(m_latchPin, LOW);
-    SPI.transfer(0b00011000);
-    SPI.transfer(0b00000010);
-    digitalWrite(m_latchPin, HIGH);
-    SPI.endTransaction();
 }
 
 void DigitalPot::setPotValue(uint16_t value)
 {
-    uint8_t highByte = (value >> 8) + 0x04;
-    uint8_t lowByte = (value & 0xFF);
+    uint8_t highByte = highByte(value);
+    uint8_t lowByte = lowByte(value);
 
     #ifdef DEBUG
         Serial.print("Dpot : ");

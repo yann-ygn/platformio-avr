@@ -24,6 +24,7 @@ class Hardware
         bool m_effectHasPot0Enabled = false;
         bool m_effectHasPot1Enabled = false;
         bool m_effectHasPot2Enabled = false;
+        bool m_effectHasPot3Enabled = false;
 
         // Stored state
         uint8_t m_tapState = 0;
@@ -40,7 +41,6 @@ class Hardware
         bool m_selectorSwitchRelease = false;
         bool m_tapSwitchPress = false;
         bool m_tapSwitchLongPress = false;
-        bool m_bothSwitchPress = false;
         bool m_pot0Turned = false;
         bool m_pot1Turned = false;
         bool m_pot2Turned = false;

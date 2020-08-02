@@ -13,7 +13,8 @@ program programs[8] =
         .m_tapEnabled = true,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true
+        .m_pot2Enabled = true,
+        .m_pot3Enabled = true
     },
     //programs[1] : dark digital delay
     {
@@ -24,7 +25,8 @@ program programs[8] =
         .m_tapEnabled = 0,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true
+        .m_pot2Enabled = true,
+        .m_pot3Enabled = true
     },
     //programs[2] : modulated digital delay
     {
@@ -35,7 +37,8 @@ program programs[8] =
         .m_tapEnabled = true,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true
+        .m_pot2Enabled = true,
+        .m_pot3Enabled = true
     },
     //programs[3] : 
     {
@@ -46,7 +49,8 @@ program programs[8] =
         .m_tapEnabled = true,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true
+        .m_pot2Enabled = true,
+        .m_pot3Enabled = true
     },
     //programs[4] : 
     {
@@ -57,7 +61,8 @@ program programs[8] =
         .m_tapEnabled = true,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true
+        .m_pot2Enabled = true,
+        .m_pot3Enabled = true
     },
     //programs[5] : 
     {
@@ -68,7 +73,8 @@ program programs[8] =
         .m_tapEnabled = true,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true
+        .m_pot2Enabled = true,
+        .m_pot3Enabled = true
     },
     //programs[6] : 
     {
@@ -79,7 +85,8 @@ program programs[8] =
         .m_tapEnabled = true,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true
+        .m_pot2Enabled = true,
+        .m_pot3Enabled = true
     },
     //programs[7] : 
     {
@@ -90,6 +97,7 @@ program programs[8] =
         .m_tapEnabled = true,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true
+        .m_pot2Enabled = true,
+        .m_pot3Enabled = true
     },
 };

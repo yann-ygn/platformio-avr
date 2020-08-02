@@ -13,6 +13,7 @@ struct program
     const bool m_pot0Enabled;
     const bool m_pot1Enabled;
     const bool m_pot2Enabled;
+    const bool m_pot3Enabled;
 };
 
 extern program programs[8];

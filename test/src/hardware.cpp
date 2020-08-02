@@ -34,6 +34,8 @@ AnalogPot pot1(A0); // P1
 AnalogPot pot2(A3); // P2
 AnalogPot pot3(A1); // Mix
 
+DigitalPot dpot0(3); // Digital mix pot
+
 FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
 
 void Hardware::hardwareSetup()
@@ -57,21 +59,21 @@ void Hardware::hardwareSetup()
 
 void Hardware::hardwareInitialization()
 {
-    //midi.setMidiChannel(mem.readMidiChannel()); // Restore the stored MIDI channel
+    midi.setMidiChannel(mem.readMidiChannel()); // Restore the stored MIDI channel
 }
 
 void Hardware::restoreLastState()
 {
-    //m_tapState = mem.readTapState(); // Read the tap state from memory
-    //m_divState = mem.readDivState(); // Read the div state from memory
-    //m_divValue = mem.readDivValue(); // Read the division value from memory
-    //m_interval = mem.readIntervalValue(); // Read the interval value from memory
-    //m_divInterval = mem.readDivIntervalValue(); // Read the divided interval value from memory
-    //m_presetMode = mem.readPresetMode(); // Read the stored preset mode
-    //m_currentPreset = mem.readCurrentPreset(); // Read the stored current preset
-    //m_currentProgram = mem.readCurrentProgram(); // Read the stored current program
+    m_tapState = mem.readTapState(); // Read the tap state from memory
+    m_divState = mem.readDivState(); // Read the div state from memory
+    m_divValue = mem.readDivValue(); // Read the division value from memory
+    m_interval = mem.readIntervalValue(); // Read the interval value from memory
+    m_divInterval = mem.readDivIntervalValue(); // Read the divided interval value from memory
+    m_presetMode = mem.readPresetMode(); // Read the stored preset mode
+    m_currentPreset = mem.readCurrentPreset(); // Read the stored current preset
+    m_currentProgram = mem.readCurrentProgram(); // Read the stored current program
 
-    if (m_presetMode) // Light up the selector LED, preset mode
+    if (m_presetMode) // preset mode
     {
         selector.setCounter(m_currentPreset);
         loadPreset();
@@ -170,20 +172,18 @@ void Hardware::resetTriggers()
     m_pot1Turned = false;
     m_pot2Turned = false;
     m_pot3Turned = false;
-    m_bothSwitchPress = false;
 }
 
 void Hardware::bypassSwitch()
 {
     m_bypassState = !m_bypassState; // Switch the state
+    mem.writeBypassState(m_bypassState); // Save to memory
 
     #ifdef DEBUG
         Serial.print("Bypass state switch, new state : ");
         Serial.println(m_bypassState);
     #endif
 
-    //mem.writeBypassState(m_bypassState);
-    //mem.readBypassState();
     turnPedalOnOff();
 }
 
@@ -216,6 +216,8 @@ void Hardware::presetModeSwitch()
     m_currentProgram = 0; // Reset the program counter
     selector.setCounter(0); // Set the selector counter
 
+    mem.writePresetMode (m_presetMode); // Save to memory
+
     if (m_presetMode)
     {
         loadPreset(); // Load the preset
@@ -233,13 +235,14 @@ void Hardware::presetModeSwitch()
 
 void Hardware::loadProgram()
 {    
-    m_effectIsDelay = programs[m_currentProgram].m_delayEffect;
-    m_effectHasPot0Enabled = programs[m_currentProgram].m_pot0Enabled;
-    m_effectHasPot1Enabled = programs[m_currentProgram].m_pot1Enabled;
-    m_effectHasPot2Enabled = programs[m_currentProgram].m_pot2Enabled;
+    m_effectIsDelay = programs[m_currentProgram].m_delayEffect; // Load program parameters
+    m_effectHasPot0Enabled = programs[m_currentProgram].m_pot0Enabled; // Load program parameters
+    m_effectHasPot1Enabled = programs[m_currentProgram].m_pot1Enabled; // Load program parameters
+    m_effectHasPot2Enabled = programs[m_currentProgram].m_pot2Enabled; // Load program parameters
+    m_effectHasPot3Enabled = programs[m_currentProgram].m_pot3Enabled; // Load program parameters
 
     fv1.sendProgramChange(m_currentProgram);
-    // mem.writeCurrentPreset(m_currentProgram);
+    mem.writeCurrentPreset(m_currentProgram);
 
     if (m_effectIsDelay) // Effect is a delay
     {
@@ -293,49 +296,44 @@ void Hardware::loadProgram()
             fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value to the DSP
             setIntervalFromPotValue(pot0.getCurrentPotValue()); // Set the interval according to pot0 value
         }
-
-        if (m_effectHasPot1Enabled)
-        {
-            fv1.sendPot1Value(pot1.getMappedCurrentPotValue()); // Send pot1 value to the DSP
-        }
-
-        if (m_effectHasPot2Enabled)
-        {
-            fv1.sendPot2Value(pot2.getMappedCurrentPotValue()); // Send pot2 value to the DSP
-        }
     }
     else // Effect isn't a delay
     {
         if (m_tapState) // Tap was enabled
         {
             m_tapState = 0; // Disable it
-            //mem.writeTapState(m_tapState); // Save it to memory
+            mem.writeTapState(m_tapState); // Save it to memory
             tapLed.ledTurnOff(); // Turn the tap LED off
 
-            if (m_tapState) // Div was enabled
+            if (m_divState) // Div was enabled
             {
                 m_divState = 0; // Disable it
-                //mem.writeDivState(m_divState); // Save the state to memory
-                m_divValue = 0; // Reset the div value
-                //mem.writeDivValue(m_divValue); // Save the value to memory
+                mem.writeDivState(m_divState); // Save the state to memory
+                m_divValue = 1; // Reset the div value
+                mem.writeDivValue(m_divValue); // Save the value to memory
                 tapDivLed.lightAllLedOff(); // Turn the div LED off
             }
         }
         
-        if(m_effectHasPot0Enabled)
+        if (m_effectHasPot0Enabled)
         {
             fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value to the DSP
         }
+    }
 
-        if (m_effectHasPot1Enabled)
-        {
-            fv1.sendPot1Value(pot1.getMappedCurrentPotValue()); // Send pot1 value to the DSP
-        }
+    if (m_effectHasPot1Enabled)
+    {
+        fv1.sendPot1Value(pot1.getMappedCurrentPotValue()); // Send pot1 value to the DSP
+    }
 
-        if (m_effectHasPot2Enabled)
-        {
-            fv1.sendPot2Value(pot2.getMappedCurrentPotValue()); // Send pot2 value to the DSP
-        }
+    if (m_effectHasPot2Enabled)
+    {
+        fv1.sendPot2Value(pot2.getMappedCurrentPotValue()); // Send pot2 value to the DSP
+    }
+
+    if (m_effectHasPot3Enabled)
+    {
+        dpot0.setPotValue(pot3.getMappedCurrentPotValue());
     }
 
     selectorLed.lightLed(m_currentProgram + 8);
@@ -597,7 +595,7 @@ void Hardware::processPot1()
 {
     if (m_effectHasPot1Enabled)
     {
-        fv1.sendPot1Value(pot1.getCurrentPotValue());
+        fv1.sendPot1Value(pot1.getMappedCurrentPotValue());
     }
 }
 
@@ -605,13 +603,16 @@ void Hardware::processPot2()
 {
     if (m_effectHasPot2Enabled)
     {
-        fv1.sendPot2Value(pot2.getCurrentPotValue());
+        fv1.sendPot2Value(pot2.getMappedCurrentPotValue());
     }
 }
 
 void Hardware::processPot3()
 {
-
+    if (m_effectHasPot3Enabled)
+    {
+        dpot0.setPotValue(pot3.getMappedCurrentPotValue());
+    }
 }
 
 uint8_t Hardware::getCurrentProgram()
