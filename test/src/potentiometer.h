@@ -74,7 +74,7 @@ class DigitalPot
 
         void digitalPotSetup();
 
-        void setPotValue(uint16_t value);
+        void setPotValue(uint8_t value);
 };
 
 #endif

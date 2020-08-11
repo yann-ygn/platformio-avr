@@ -55,6 +55,8 @@ void Hardware::hardwareSetup()
     pot1.analogPotSetup();
     pot2.analogPotSetup();
     pot3.analogPotSetup();
+    dpot0.digitalPotSetup();
+    fv1.FV1Setup();
 }
 
 void Hardware::hardwareInitialization()
@@ -152,7 +154,7 @@ void Hardware::hardwarePoll()
             m_pot2Turned = true; // Set the trigger
         }
 
-        if (pot2.analogPotTurned()) // Pot 3 moved
+        if (pot3.analogPotTurned()) // Pot 3 moved
         {
             m_pot3Turned = true; // Set the trigger
         }
@@ -206,6 +208,7 @@ void Hardware::turnPedalOnOff()
     else
     {
         selectorLed.lightAllLedOff();
+        tapDivLed.lightAllLedOff();
         tapLed.ledTurnOff();
     }   
 }
@@ -569,7 +572,7 @@ void Hardware::processPot0()
             m_tapState = 0; // Disable it
             //mem.writeTapState(m_tapState); // Save it to memory
 
-            if (m_tapState) // Div is enabled
+            if (m_divState) // Div is enabled
             {
                 m_divState = 0; // Disable it
                 //mem.writeDivState(m_divState); // Save the state to memory

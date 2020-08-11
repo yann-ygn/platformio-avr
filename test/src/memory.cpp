@@ -36,8 +36,8 @@ void Memory::memoryInitialization()
 void Memory::memoryReset()
 {
     #ifdef DEBUG
-        Serial.println(eeprom0.test());
-    #endif/**
+        Serial.println("Reset");
+    #endif/
     writeInitialSetupState(0);
     writeMidiChannel(0);
     writeBypassState(0);
@@ -47,7 +47,7 @@ void Memory::memoryReset()
     writeDivState(0);
     writeDivValue(0);
     writeIntervalValue(0);
-    writeDivIntervalValue(0);**/
+    writeDivIntervalValue(0);
 }
 
 uint8_t Memory::readInitialSetupState()
