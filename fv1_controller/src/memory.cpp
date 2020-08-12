@@ -8,6 +8,24 @@ void Memory::memorySetup()
 {
     eeprom0.eepromSetup();
 
+    uint8_t statusRegister = eeprom0.readStatusRegister();
+
+    #ifdef DEBUG
+        Serial.print("Status register : ");
+        Serial.println(statusRegister);
+    #endif
+
+    if ((statusRegister & B10000000) == 1 || // SRWD is set
+    (statusRegister & B00001000) == 1 || // BP1 is set
+    (statusRegister & B00000100) == 1)   // BP0 is set
+    {
+        #ifdef DEBUG
+            Serial.println("Doing status register reinitialization");
+        #endif
+
+        eeprom0.writeStatusRegister(); // Reset the status register
+    }
+
     if (readInitialSetupState() != 1) // First startup, need to initialize
     {
         memoryInitialization();
@@ -21,41 +39,15 @@ void Memory::memoryInitialization()
     #endif
 
     writeMidiChannel(0);
-    #ifdef DEBUG
-        Serial.println(readMidiChannel());
-    #endif
     writeBypassState(0);
-    #ifdef DEBUG
-        Serial.println(readBypassState());
-    #endif
     writePresetMode(0);
-    #ifdef DEBUG
-        Serial.println(readPresetMode());
-    #endif
     writeCurrentPreset(0);
-    #ifdef DEBUG
-        Serial.println(readMidiChannel());
-    #endif
+    writeCurrentProgram(0);
     writeTapState(0);
-    #ifdef DEBUG
-        Serial.println(readTapState());
-    #endif
     writeDivState(0);
-    #ifdef DEBUG
-        Serial.println(readDivState());
-    #endif
     writeDivValue(1);
-    #ifdef DEBUG
-        Serial.println(readDivValue());
-    #endif
     writeDivIntervalValue(0);
-    #ifdef DEBUG
-        Serial.println(readDivIntervalValue());
-    #endif
     writeIntervalValue(0);
-    #ifdef DEBUG
-        Serial.println(readIntervalValue());
-    #endif
 
     writeInitialSetupState(1); // Initialization done
     #ifdef DEBUG
@@ -68,16 +60,16 @@ void Memory::memoryReset()
     #ifdef DEBUG
         Serial.println("Reset");
     #endif
-    writeInitialSetupState(0);
     writeMidiChannel(0);
     writeBypassState(0);
     writePresetMode(0);
     writeCurrentPreset(0);
+    writeCurrentProgram(0);
     writeTapState(0);
     writeDivState(0);
-    writeDivValue(0);
-    writeIntervalValue(0);
+    writeDivValue(1);
     writeDivIntervalValue(0);
+    writeIntervalValue(0);
 }
 
 uint8_t Memory::readInitialSetupState()
@@ -394,4 +386,9 @@ void Memory::writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t d
         case 6 : eeprom0.writeArray(c_preset6Address, data, 16); break;
         case 7 : eeprom0.writeArray(c_preset7Address, data, 16); break;
     }
+}
+
+void Memory::memoryTest()
+{
+    eeprom0.testInt8();
 }

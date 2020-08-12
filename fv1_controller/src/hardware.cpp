@@ -105,7 +105,15 @@ void Hardware::hardwarePoll()
 
         if (selector.encoderPoll()) // Poll the program selector
         {
-            m_currentProgram = selector.getCounter(); // Change the current program
+            if (m_presetMode)
+            {
+                m_currentPreset = selector.getCounter(); // Change the current program
+            }
+            else
+            {
+                m_currentProgram = selector.getCounter(); // Change the current preset
+            }
+            
             m_selectorMove = true; // Set the trigger
         }
 
@@ -217,6 +225,7 @@ void Hardware::presetModeSwitch()
 {
     m_presetMode = !m_presetMode; // Switch the preset mode
     m_currentProgram = 0; // Reset the program counter
+    m_currentPreset = 0;
     selector.setCounter(0); // Set the selector counter
 
     mem.writePresetMode (m_presetMode); // Save to memory
@@ -245,7 +254,7 @@ void Hardware::loadProgram()
     m_effectHasPot3Enabled = programs[m_currentProgram].m_pot3Enabled; // Load program parameters
 
     fv1.sendProgramChange(m_currentProgram);
-    mem.writeCurrentPreset(m_currentProgram);
+    mem.writeCurrentProgram(m_currentProgram);
 
     if (m_effectIsDelay) // Effect is a delay
     {
@@ -261,7 +270,7 @@ void Hardware::loadProgram()
                 {
                     tapDivLed.lightLed(m_divValue); // Light the div indicator
 
-                    if(m_divInterval > m_effectMaxInterval) // Current interval over the max program value
+                    if (m_divInterval > m_effectMaxInterval) // Current interval over the max program value
                     {
                         m_divInterval = m_effectMaxInterval; // Set it to the max value
                     }
@@ -343,9 +352,9 @@ void Hardware::loadProgram()
 }
 
 void Hardware::loadPreset()
-{
-    selectorLed.lightLed(m_currentProgram);
-    // mem.writeCurrentPreset(m_currentProgram); // Save the state
+{ 
+    selectorLed.lightLed(map(m_currentPreset, 0, 7, 7, 0));
+    mem.writeCurrentPreset(m_currentPreset); // Save the state
 }
 
 void Hardware::savePreset()

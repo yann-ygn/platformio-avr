@@ -42,7 +42,7 @@ bool Encoder::encoderPoll()
     else if (state == 0x20)
     {
         m_counter ++;
-        if(m_counter == m_maxCounterValue)
+        if(m_counter == m_maxCounterValue + 1)
         {
             m_counter = m_minCounterValue;
         }

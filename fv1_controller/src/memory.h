@@ -13,25 +13,25 @@ class Memory
     private:
         Eeprom eeprom0;
 
-        const uint8_t c_initialSetupStateAddress = 20;
-        const uint8_t c_midiChannelAddress = 21;
-        const uint8_t c_bypassStateAddress = 22;
-        const uint8_t c_presetModeAddress = 23;
-        const uint8_t c_currentPresetAddress = 24;
-        const uint8_t c_currentProgramAddress = 25;
-        const uint8_t c_tapStateAddress = 26;
-        const uint8_t c_divStateAddress = 27;
-        const uint8_t c_divValueAddress = 28;
-        const uint8_t c_intervalAddress = 29;
-        const uint8_t c_divIntervalAddress = 31;
-        const uint8_t c_preset0Address = 65;
-        const uint8_t c_preset1Address = 80;
-        const uint8_t c_preset2Address = 95;
-        const uint8_t c_preset3Address = 110;
-        const uint8_t c_preset4Address = 130;
-        const uint8_t c_preset5Address = 145;
-        const uint8_t c_preset6Address = 160;
-        const uint8_t c_preset7Address = 175;
+        const uint16_t c_initialSetupStateAddress = 0;
+        const uint16_t c_midiChannelAddress = 1;
+        const uint16_t c_bypassStateAddress = 2;
+        const uint16_t c_presetModeAddress = 3;
+        const uint16_t c_currentPresetAddress = 4;
+        const uint16_t c_currentProgramAddress = 5;
+        const uint16_t c_tapStateAddress = 6;
+        const uint16_t c_divStateAddress = 7;
+        const uint16_t c_divValueAddress = 8;
+        const uint16_t c_intervalAddress = 9;
+        const uint16_t c_divIntervalAddress = 11;
+        const uint16_t c_preset0Address = 65;
+        const uint16_t c_preset1Address = 80;
+        const uint16_t c_preset2Address = 95;
+        const uint16_t c_preset3Address = 110;
+        const uint16_t c_preset4Address = 130;
+        const uint16_t c_preset5Address = 145;
+        const uint16_t c_preset6Address = 160;
+        const uint16_t c_preset7Address = 175;
 
     public:
         Memory(uint8_t pin) : eeprom0(pin) {}
@@ -39,6 +39,7 @@ class Memory
         void memorySetup();
         void memoryInitialization();
         void memoryReset();
+        void memoryTest();
         
         uint8_t readInitialSetupState();
         void writeInitialSetupState(uint8_t state);
