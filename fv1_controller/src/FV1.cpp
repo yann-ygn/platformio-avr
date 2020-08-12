@@ -7,41 +7,41 @@
 
 void FV1::FV1Setup()
 {
-    pinMode(c_pot0Pin, OUTPUT);
-    pinMode(c_pot1Pin, OUTPUT);
-    pinMode(c_pot2Pin, OUTPUT);
+    pinMode(m_p0Pin, OUTPUT);
+    pinMode(m_p1Pin, OUTPUT);
+    pinMode(m_p2Pin, OUTPUT);
 
-    pinMode(c_s0Pin, OUTPUT);
-    pinMode(c_s1Pin, OUTPUT);
-    pinMode(c_s2Pin, OUTPUT);
+    pinMode(m_s0Pin, OUTPUT);
+    pinMode(m_s1Pin, OUTPUT);
+    pinMode(m_s2Pin, OUTPUT);
 
-    analogWrite(c_pot0Pin, 0);
-    analogWrite(c_pot1Pin, 0);
-    analogWrite(c_pot2Pin, 0);
+    analogWrite(m_p0Pin, 0);
+    analogWrite(m_p1Pin, 0);
+    analogWrite(m_p2Pin, 0);
 
-    digitalWrite(c_s0Pin, LOW);
-    digitalWrite(c_s1Pin, LOW);
-    digitalWrite(c_s2Pin, LOW);
+    digitalWrite(m_s0Pin, LOW);
+    digitalWrite(m_s1Pin, LOW);
+    digitalWrite(m_s2Pin, LOW);
 }
 
 void FV1::sendProgramChange(uint8_t program)
 {
-    digitalWrite(c_s0Pin, HIGH && (program & B00000001));
-    digitalWrite(c_s1Pin, HIGH && (program & B00000010));
-    digitalWrite(c_s2Pin, HIGH && (program & B00000100));
+    digitalWrite(m_s0Pin, HIGH && (program & 0x1));
+    digitalWrite(m_s1Pin, HIGH && (program & 0x2));
+    digitalWrite(m_s2Pin, HIGH && (program & 0x4));
 }
 
-void FV1::sendPot0Value(int value)
+void FV1::sendPot0Value(uint8_t value)
 {
-    analogWrite(c_pot0Pin, value);
+    analogWrite(m_p0Pin, value);
 }
 
-void FV1::sendPot1Value(int value)
+void FV1::sendPot1Value(uint8_t value)
 {
-    analogWrite(c_pot1Pin, value);
+    analogWrite(m_p1Pin, value);
 }
 
-void FV1::sendPot2Value(int value)
+void FV1::sendPot2Value(uint8_t value)
 {
-    analogWrite(c_pot2Pin, value);
+    analogWrite(m_p2Pin, value);
 }

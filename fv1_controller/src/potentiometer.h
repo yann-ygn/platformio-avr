@@ -4,13 +4,12 @@
 #define POTENTIOMETER_H
 
 /**
- * @brief An analog potentiometer connected to an ADC pin on the µC. The object is instantiated with the pin number used.
- * The potentiometer needs to be setup, can check if its value changed since the last cycle and return its current value. 
+ * @brief Drive an analog potentiometer connected to an ADC pin on the µC and read its value
  */
-class Pot
+class AnalogPot
 {
     private:
-        uint8_t m_pin;
+        uint8_t m_pin; // ADC pin #
         uint16_t m_currPotValue = 0;
         uint16_t m_lastPotValue = 0;
 
@@ -18,17 +17,14 @@ class Pot
         /**
          * @brief Construct a new Pot object
          * 
-         * @param pin The potentiometer pin #
+         * @param pin ADC pin #
          */     
-        Pot(uint8_t pin) : m_pin(pin)
-        {
-
-        }
+        AnalogPot(uint8_t pin) : m_pin(pin) { }
 
         /**
          * @brief Setup the µC's pin and store the current value
          */
-        void potSetup();
+        void analogPotSetup();
 
         /**
          * @brief Get the Current Pot Value object
@@ -36,6 +32,11 @@ class Pot
          * @return int 
          */
         uint16_t getCurrentPotValue();
+
+        /**
+         * @brief Set the Current Pot Value object
+         */
+        void setCurrentPotValue(uint16_t value);
         
         /**
          * @brief Get the Last Pot Value object
@@ -45,11 +46,11 @@ class Pot
         uint16_t getLastPotValue();
 
         /**
-         * @brief Get the Mapped Pot Value object
+         * @brief Get the current value mapped to 8bits
          * 
          * @return uint8_t 
          */
-        uint8_t getMappedPotValue();
+        uint8_t getMappedCurrentPotValue();
 
         /**
          * @brief Check if the pot value has changed since the last cycle
@@ -57,7 +58,7 @@ class Pot
          * @return true 
          * @return false 
          */
-        bool potTurned();
+        bool analogPotTurned();
 };
 
 class DigitalPot
@@ -73,7 +74,7 @@ class DigitalPot
 
         void digitalPotSetup();
 
-        void setPotValue(uint16_t value);
+        void setPotValue(uint8_t value);
 };
 
 #endif

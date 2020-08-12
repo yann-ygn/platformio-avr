@@ -5,14 +5,14 @@
 
 #include "potentiometer.h"
 
-void AnalogPot::analogPotSetup()
+void Pot::potSetup()
 {
     pinMode(m_pin, INPUT);
     m_currPotValue = analogRead(m_pin);
     m_lastPotValue = m_currPotValue;
 }
 
-bool AnalogPot::analogPotTurned()
+bool Pot::potTurned()
 {
     m_currPotValue = analogRead(m_pin); // Read the current pot value
 
@@ -34,22 +34,17 @@ bool AnalogPot::analogPotTurned()
     }
 }
 
-uint8_t AnalogPot::getMappedCurrentPotValue()
+uint8_t Pot::getMappedPotValue()
 {
-    return m_lastPotValue >> 2; // 10 bits to 8 bits
+    return map(m_lastPotValue, 0, 1023, 0, 255); // Map to the 8 bits PWM res
 }
 
-uint16_t AnalogPot::getCurrentPotValue()
+uint16_t Pot::getCurrentPotValue()
 {
     return m_currPotValue;
 }
 
-void AnalogPot::setCurrentPotValue(uint16_t value)
-{
-    m_currPotValue = value;
-}
-
-uint16_t AnalogPot::getLastPotValue()
+uint16_t Pot::getLastPotValue()
 {
     return m_lastPotValue;
 }
@@ -57,23 +52,35 @@ uint16_t AnalogPot::getLastPotValue()
 void DigitalPot::digitalPotSetup()
 {
     pinMode(m_latchPin, OUTPUT);
-    digitalWrite(m_latchPin, HIGH);
 
     SPI.begin();
+
+    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
+    digitalWrite(m_latchPin, LOW);
+    SPI.transfer(0b00011000);
+    SPI.transfer(0b00000010);
+    digitalWrite(m_latchPin, HIGH);
+    SPI.endTransaction();
 }
 
-void DigitalPot::setPotValue(uint8_t value)
+void DigitalPot::setPotValue(uint16_t value)
 {
+    uint8_t highByte = (value >> 8) + 0x04;
+    uint8_t lowByte = (value & 0xFF);
+
     #ifdef DEBUG
         Serial.print("Dpot : ");
-        Serial.println(m_latchPin);
-        Serial.print("Value : ");
         Serial.println(value);
+        Serial.print("HB : ");
+        Serial.println(highByte);
+        Serial.print("LB : ");
+        Serial.println(lowByte);
     #endif
 
-    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE1));
     digitalWrite(m_latchPin, LOW);
-    SPI.transfer(value);
+    SPI.transfer(highByte);
+    SPI.transfer(lowByte);
     digitalWrite(m_latchPin, HIGH);
     SPI.endTransaction();
 }

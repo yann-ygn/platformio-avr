@@ -38,7 +38,15 @@ class Eeprom
          * 
          * @param address 
          */
-        void sendAddress(uint16_t address);
+        void sendAddress(uint8_t address);
+
+        /**
+         * @brief Returns the status register
+         * 
+         * @return uint8_t 
+         */
+        uint8_t readStatusRegister();
+
         /**
          * @brief Check the status of the WIP bit
          * 
@@ -54,19 +62,6 @@ class Eeprom
          * @param pin CS pin #
          */
         Eeprom(uint8_t pin) : m_csPin(pin) { }
-        
-        /**
-         * @brief Returns the status register
-         * 
-         * @return uint8_t 
-         */
-        uint8_t readStatusRegister();
-
-        /**
-         * @brief Reset the status register to its initial value b00000010
-         */
-        void writeStatusRegister();
-
 
         /**
          * @brief Setups the µC's pins and start the SPI bus
@@ -79,7 +74,7 @@ class Eeprom
          * @param address 
          * @return uint8_t 
          */
-        uint8_t readInt8(uint16_t address);
+        uint8_t readInt8(uint8_t address);
 
         /**
          * @brief Writes a 8 bit value to the selected memory address
@@ -87,7 +82,7 @@ class Eeprom
          * @param address 
          * @param data 
          */
-        void writeInt8(uint16_t address, uint8_t data);
+        void writeInt8(uint8_t address, uint8_t data);
 
         /**
          * @brief Read a 16bit value from the selected memory address
@@ -95,7 +90,7 @@ class Eeprom
          * @param address 
          * @return uint16_t 
          */
-        uint16_t readInt16(uint16_t address);
+        uint16_t readInt16(uint8_t address);
 
         /**
          * @brief Writes a 16 bit value to the selected memory address
@@ -103,7 +98,7 @@ class Eeprom
          * @param address 
          * @param data 
          */
-        void writeInt16(uint16_t address, uint16_t data);
+        void writeInt16(uint8_t address, uint16_t data);
 
         /**
          * @brief Read an array of 8 bits integer starting at the selected memory address
@@ -112,7 +107,7 @@ class Eeprom
          * @param data 
          * @param length 
          */
-        void readArray(uint16_t address, uint8_t * data, uint8_t length);
+        void readArray(uint8_t address, uint8_t * data, uint8_t length);
 
         /**
          * @brief Write an array of 8 bits integer starting at the selected memory address
@@ -121,7 +116,7 @@ class Eeprom
          * @param data 
          * @param length 
          */
-        void writeArray(uint16_t address, uint8_t * data, uint8_t length);
+        void writeArray(uint8_t address, uint8_t * data, uint8_t length);
 
         #ifdef DEBUG
             void testInt8();

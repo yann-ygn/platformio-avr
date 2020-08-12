@@ -6,52 +6,18 @@
 
 void Bypass::bypassSetup()
 {
-    pinMode(c_relayPin, OUTPUT);
-    pinMode(c_okPin, OUTPUT),
-    pinMode(c_switchPin, INPUT_PULLUP);
+    pinMode(m_relayPin, OUTPUT);
+    pinMode(m_okPin, OUTPUT),
 
-    digitalWrite(c_okPin, LOW);
-    digitalWrite(c_relayPin, m_bypassState);
+    digitalWrite(m_okPin, LOW);
+    digitalWrite(m_relayPin, LOW);
 }
 
-bool Bypass::bypassPressed()
+void Bypass::BypassSwitch(uint8_t state)
 {
-    m_now = millis();
-
-    if (m_now - m_lastPressTime > c_debounceTime) // Debounce
-    {
-        m_lastPressTime = m_now;   
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-    
-}
-
-void Bypass::switchRelay()
-{
-    m_bypassState = !m_bypassState;
-
-    digitalWrite(c_okPin, HIGH);                // OK on
+    digitalWrite(m_okPin, HIGH);                // OK on
     delay(10);                                  // 5~10 ms depending on the OK
-    digitalWrite(c_relayPin, m_bypassState);    // Relay switch
+    digitalWrite(m_relayPin, state);              // Relay switch
     delay(10);                                  // 5~10 ms depending on the relay
-    digitalWrite(c_okPin, LOW);                 // OK off
-
-    #ifdef DEBUG
-        Serial.print("Bypass : ");
-        Serial.println(m_bypassState);
-    #endif
-}
-
-uint8_t Bypass::getBypassState()
-{
-    return m_bypassState;
-}
-
-void Bypass::setBypassState(uint8_t state)
-{
-    m_bypassState = state;
+    digitalWrite(m_okPin, LOW);                 // OK off
 }

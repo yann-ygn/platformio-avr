@@ -30,22 +30,11 @@ void Eeprom::enableWrite()
 	deselect();
 }
 
-void Eeprom::sendAddress(uint16_t addr) 
+void Eeprom::sendAddress(uint8_t addr) 
 {
-	SPI.transfer(highByte(addr));
-	SPI.transfer(lowByte(addr));
-}
-
-void Eeprom::writeStatusRegister()
-{
-while (isWip()) {};
-
-	enableWrite();
-
-	select();
-	SPI.transfer(WRSR);
-	SPI.transfer(0);
-	deselect();
+  	//SPI.transfer((uint8_t)(addr>>16));
+	//SPI.transfer((uint8_t)(addr>>8));
+	SPI.transfer((uint8_t)(addr));
 }
 
 uint8_t Eeprom::readStatusRegister()
@@ -63,7 +52,7 @@ bool Eeprom::isWip()
 	return (data & (1 << 0));
 }
 
-uint8_t Eeprom::readInt8(uint16_t address) 
+uint8_t Eeprom::readInt8(uint8_t address) 
 {
 	while (isWip()) {};
 
@@ -73,10 +62,17 @@ uint8_t Eeprom::readInt8(uint16_t address)
 	uint8_t data = SPI.transfer(0x00);
 	deselect();
 
+	#ifdef DEBUG
+		Serial.print("Address : ");
+		Serial.println(address);
+		Serial.print("Value : ");
+        Serial.println(data);
+    #endif
+
 	return data;
 }
 
-void Eeprom::writeInt8(uint16_t address, uint8_t data)
+void Eeprom::writeInt8(uint8_t address, uint8_t data)
 {
 	while (isWip()) {};
 
@@ -87,9 +83,16 @@ void Eeprom::writeInt8(uint16_t address, uint8_t data)
 	sendAddress(address);
 	SPI.transfer(data);
 	deselect();
+
+	#ifdef DEBUG
+		Serial.print("Address : ");
+		Serial.println(address);
+		Serial.print("Value : ");
+        Serial.println(data);
+    #endif
 }
 
-uint16_t Eeprom::readInt16(uint16_t address)
+uint16_t Eeprom::readInt16(uint8_t address)
 {
 	while (isWip()) {};
 
@@ -103,7 +106,7 @@ uint16_t Eeprom::readInt16(uint16_t address)
 	return (highbyte << 8) + lowbyte;
 }
 
-void Eeprom::writeInt16(uint16_t address, uint16_t data)
+void Eeprom::writeInt16(uint8_t address, uint16_t data)
 {
 	while (isWip()) {};
 
@@ -117,7 +120,7 @@ void Eeprom::writeInt16(uint16_t address, uint16_t data)
 	deselect();
 }
 
-void Eeprom::readArray(uint16_t address, uint8_t * data, uint8_t length)
+void Eeprom::readArray(uint8_t address, uint8_t * data, uint8_t length)
 {
 	while (isWip()) {};
 
@@ -131,7 +134,7 @@ void Eeprom::readArray(uint16_t address, uint8_t * data, uint8_t length)
 	deselect();
 }
 
-void Eeprom::writeArray(uint16_t address, uint8_t * data, uint8_t length)
+void Eeprom::writeArray(uint8_t address, uint8_t * data, uint8_t length)
 {
 	while (isWip()) {};
 
@@ -194,7 +197,7 @@ void Eeprom::writeArray(uint16_t address, uint8_t * data, uint8_t length)
 
 		uint8_t result[5] = { };
 
-		writeArray(0, blah2, 5);
+		writeArray(0, blah1, 5);
 		readArray(0, result, 5);
 		Serial.println(result[0]);
 		Serial.println(result[1]);
