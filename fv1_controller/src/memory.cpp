@@ -197,7 +197,7 @@ uint8_t Memory::readCurrentProgram()
 void Memory::writeCurrentProgram(uint8_t program)
 {
     #ifdef DEBUG
-        Serial.print("Writing current preset : ");
+        Serial.print("Writing current program : ");
         Serial.println(program);
     #endif
 

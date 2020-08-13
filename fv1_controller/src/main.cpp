@@ -9,8 +9,11 @@ Hardware hardware;
 void setup() 
 {
     hardware.hardwareSetup();
+    delay(500);
     hardware.hardwareInitialization();
     hardware.restoreLastState();
+    delay(500);
+    hardware.hardwareStartup();
 }
 
 void loop() 

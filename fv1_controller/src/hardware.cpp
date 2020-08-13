@@ -64,6 +64,16 @@ void Hardware::hardwareInitialization()
     midi.setMidiChannel(mem.readMidiChannel()); // Restore the stored MIDI channel
 }
 
+void Hardware::hardwareStartup()
+{
+    while (millis() < 2000)
+    {
+        bypassFsw.tempSwitchPoll();
+        selectorSw.tempSwitchPoll();
+        tapFsw.tempSwitchPoll();
+    }
+}
+
 void Hardware::restoreLastState()
 {
     m_tapState = mem.readTapState(); // Read the tap state from memory

@@ -98,6 +98,8 @@ class Hardware
          */
         void hardwareInitialization();
 
+        void hardwareStartup();
+
         /**
          * @brief Restore the last stored pedal state
          */
