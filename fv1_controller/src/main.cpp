@@ -6,6 +6,9 @@
 
 Hardware hardware;
 
+uint8_t test = 0;
+
+
 void setup() 
 {
     hardware.hardwareSetup();
@@ -14,6 +17,7 @@ void setup()
     hardware.restoreLastState();
     delay(500);
     hardware.hardwareStartup();
+    test == 1;
 }
 
 void loop() 
