@@ -210,7 +210,7 @@ void Hardware::bypassSwitch()
 void Hardware::turnPedalOnOff()
 {
     bypass.BypassSwitch(m_bypassState); // Send the state to the bypass object
-    bypassLed.setLedState(m_bypassState); // Send the state to the LED object
+    bypassLed.ledSetState(m_bypassState); // Send the state to the LED object
 
     if (m_bypassState)
     {
