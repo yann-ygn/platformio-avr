@@ -54,6 +54,8 @@ class Hardware
         uint8_t m_tapLedBlinkValue = 0;
         uint8_t m_mappedInterval = 0;
         uint8_t m_mappedDivInterval = 0;
+        uint8_t m_mappedMinMaxInterval = 0;
+        uint8_t m_mappedMinMaxDivInterval = 0;
 
         /**
          * @brief Apply the bypass state
@@ -71,14 +73,28 @@ class Hardware
         void calculateDivInterval();
 
         /**
-         * @brief Calculate the value of the current interval mapped to 8bits in the relation to the min ad max iterval
+         * @brief Returns the current interval mapped to 8bits
+         * 
+         * @return uint8_t 
          */
         uint8_t getMappedInterval();
 
         /**
-         * @brief Calculate the value of the current divied interval mapped to 8bits in the relation to the min ad max iterval
+         * @brief Returns the current divided interval mapped to 8 bits
+         * 
+         * @return uint8_t 
          */
         uint8_t getMappedDivInterval();
+
+        /**
+         * @brief Calculate the value of the current interval mapped to 8bits in the relation to the min ad max iterval
+         */
+        uint8_t getMappedMinMaxInterval();
+
+        /**
+         * @brief Calculate the value of the current divied interval mapped to 8bits in the relation to the min ad max iterval
+         */
+        uint8_t getMappedMinMaxDivInterval();
 
         /**
          * @brief Map the interval to the pot value in relation to the min and max interval
@@ -98,6 +114,9 @@ class Hardware
          */
         void hardwareInitialization();
 
+        /**
+         * @brief Read the initial state of the moving parts and adds a slight delay on startup to avoir misfires.
+         */
         void hardwareStartup();
 
         /**

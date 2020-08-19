@@ -305,7 +305,7 @@ void Hardware::loadProgram()
                     }
                 }
 
-                fv1.sendPot0Value(getMappedInterval()); // Send the mapped interval value to the DSP         
+                fv1.sendPot0Value(getMappedMinMaxInterval()); // Send the mapped interval value to the DSP         
             }
             else // Tap wasn't active
             {
@@ -450,6 +450,7 @@ void Hardware::processTap()
     if (m_timesTapped == c_maxTaps) // Tap count threshold
     {
         m_tapState = 1; // Enable tap
+        mem.writeTapState(m_tapState); // Save it to memory
         m_timesTapped = 0; // Reset the tap count
         calculateInterval(); // Trigger the interval calculation
 
@@ -461,19 +462,23 @@ void Hardware::processTap()
 
 void Hardware::processDiv()
 {
-    m_divState = 1;
+    m_divState = 1; // Enable div
+    mem.writeDivState(m_divState); // Save it to memory
     m_timesTapped = 0; // Reset the tap count
 
     if (m_divValue < 4) // Circle thru the division values
     {
         m_divValue ++;
+
         tapDivLed.lightLed(1 << (m_divValue -3));
     }
     else // Until the /1 then disable and reset
     {
-        m_divValue = 1;
-        m_divState = 0;
-        tapDivLed.lightAllLedOff();
+        m_divState = 0; // Disable div
+        mem.writeDivState(m_divState); // Save it to memory
+        m_divValue = 1; // Reset the div value
+        mem.writeDivValue(m_divValue); // Save it to memory
+        tapDivLed.lightAllLedOff(); // Light the LEDs off
     }
 
     calculateDivInterval(); // Calculate the divided interval
@@ -529,11 +534,18 @@ void Hardware::calculateInterval()
             Serial.println(m_interval);
         #endif
     }
+
+    mem.writeIntervalValue(m_interval); // Save it to memory
     
-    if (m_divState) // Division is enabled trigger the div calculation
+    if (m_divState) // Division is enabled 
     {
-        calculateDivInterval();
+        calculateDivInterval(); // Trigger the divided interval calculation
     }
+    else // Division is not enabled
+    {
+        fv1.sendPot0Value(getMappedInterval()); // Send the mapped interval value to the DSP
+    }
+    
 }
 
 void Hardware::calculateDivInterval()
@@ -556,6 +568,8 @@ void Hardware::calculateDivInterval()
             Serial.println(m_divInterval);
         #endif
     }
+
+    mem.writeDivIntervalValue(m_divInterval); // Save it to memory
 }
 
 uint8_t Hardware::getMappedInterval()
@@ -567,9 +581,23 @@ uint8_t Hardware::getMappedInterval()
 
 uint8_t Hardware::getMappedDivInterval()
 {
-    m_mappedDivInterval = map(m_divInterval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
+    m_mappedDivInterval = map(m_interval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
 
     return m_mappedDivInterval;
+}
+
+uint8_t Hardware::getMappedMinMaxInterval()
+{
+    m_mappedMinMaxInterval = map(m_interval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
+
+    return m_mappedMinMaxInterval;
+}
+
+uint8_t Hardware::getMappedMinMaxDivInterval()
+{
+    m_mappedMinMaxDivInterval = map(m_divInterval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
+
+    return m_mappedMinMaxDivInterval;
 }
 
 void Hardware::setIntervalFromPotValue(uint16_t value)
@@ -589,14 +617,14 @@ void Hardware::processPot0()
         if (m_tapState) // Tap is enabled
         {
             m_tapState = 0; // Disable it
-            //mem.writeTapState(m_tapState); // Save it to memory
+            mem.writeTapState(m_tapState); // Save it to memory
 
             if (m_divState) // Div is enabled
             {
                 m_divState = 0; // Disable it
-                //mem.writeDivState(m_divState); // Save the state to memory
+                mem.writeDivState(m_divState); // Save the state to memory
                 m_divValue = 0; // Reset the div value
-                //mem.writeDivValue(m_divValue); // Save the value to memory
+                mem.writeDivValue(m_divValue); // Save the value to memory
                 tapDivLed.lightAllLedOff(); // Turn the LED off
             }
         }
