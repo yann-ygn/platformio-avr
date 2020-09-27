@@ -375,7 +375,7 @@ void Hardware::savePreset()
 
     while (! selectorSw.tempSwitchReleased()) // Wait for the selector switch to be released after the long press
     {
-        selectorLed.blinkLed(m_currentProgram, 100);
+        selectorLed.blinkLed(m_currentPreset, 100);
         selectorSw.tempSwitchPoll();
     }
 
@@ -400,7 +400,7 @@ void Hardware::savePreset()
             m_presetSaveMode = false; // Reset the trigger
             m_selectorSwitchRelease = false; // Reset the switch trigger
             m_presetMode = 1; // Set the pedal in preset mode
-            // mem.writePresetMode(1); // Save the state
+            mem.writePresetMode(1); // Save the state
 
             mem.writePreset(m_currentPreset, m_currentProgram, m_tapState, m_divState, m_divValue, m_interval, m_divInterval,
                             pot0.getCurrentPotValue(), pot1.getCurrentPotValue(), pot2.getCurrentPotValue(), pot3.getCurrentPotValue());
