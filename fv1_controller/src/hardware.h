@@ -50,7 +50,8 @@ class Hardware
         uint32_t m_firstTapTime = 0;
         uint32_t m_lastTapTime = 0;
         uint8_t m_timesTapped = 0;
-        const uint8_t c_maxTaps = 3;
+        bool m_stillTapping = false;
+        const uint8_t c_maxTaps = 2;
         uint8_t m_tapLedBlinkValue = 0;
         uint8_t m_mappedInterval = 0;
         uint8_t m_mappedDivInterval = 0;

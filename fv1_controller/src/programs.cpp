@@ -14,7 +14,7 @@ program programs[8] =
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
         .m_pot2Enabled = true,
-        .m_pot3Enabled = true
+        .m_pot3Enabled = false
     },
     //programs[1] : dark digital delay
     {

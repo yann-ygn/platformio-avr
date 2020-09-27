@@ -26,7 +26,7 @@ TemporarySwitch selectorSw(A7, 1000); // Selector switch
 LedDriver16 selectorLed(20); // Program LED
 
 TemporarySwitch tapFsw(19, 1000); // Tap footswitch
-LedDriver16 tapDivLed(21); // Tap Div LED
+LedDriver8 tapDivLed(21); // Tap Div LED
 PwmLed tapLed(15); // Blinking tap LED
 
 AnalogPot pot0(A4); // P0
@@ -325,7 +325,7 @@ void Hardware::loadProgram()
         {
             m_tapState = 0; // Disable it
             mem.writeTapState(m_tapState); // Save it to memory
-            tapLed.ledTurnOff(); // Turn the tap LED off
+            tapLed.setPwmLedState(0); // Turn the tap LED off
 
             if (m_divState) // Div was enabled
             {
@@ -412,13 +412,44 @@ void Hardware::savePreset()
 
 void Hardware::processTap()
 {
-    if ((m_timesTapped > 0) && ((millis() - m_lastTapTime) > (m_effectMaxInterval + 200))) // Timeout
+    if (! m_tapState) // Tap is not enabled, use the effect's max interval as timeout threshold
     {
-        m_timesTapped = 0; // Reset the tap count
+        if ((m_timesTapped > 0) && ((millis() - m_lastTapTime) > (m_effectMaxInterval + 200))) // Timeout
+        {
+            m_timesTapped = 0; // Reset the tap count
+            m_stillTapping = false; // Reset the continuous tap trigger
 
-        #ifdef DEBUG
-            Serial.println("Tap timeout, reset");
-        #endif
+            #ifdef DEBUG
+                Serial.println("Tap timeout, reset");
+            #endif
+        }
+    }
+    else // Tap is enabled
+    {
+        if (m_stillTapping) // Tap interval defined and still tapping, use the defined interval + 20% as threshold
+        {
+            if ((m_timesTapped > 0) && ((millis() - m_lastTapTime) > (m_interval + ((m_interval * 20) / 100)))) // Timeout
+            {
+                m_timesTapped = 0; // Reset the tap count
+                m_stillTapping = false; // Reset the continuous tap trigger
+
+                #ifdef DEBUG
+                    Serial.println("Tap timeout, reset");
+                #endif
+            }
+        }
+        else // Tap is enabled but no interval has been defined yet, use the effect's max interval as timeout threshold
+        {
+            if ((m_timesTapped > 0) && ((millis() - m_lastTapTime) > (m_effectMaxInterval + 200))) // Timeout
+            {
+                m_timesTapped = 0; // Reset the tap count
+                m_stillTapping = false; // Reset the continuous tap trigger
+
+                #ifdef DEBUG
+                    Serial.println("Tap timeout, reset");
+                #endif
+            }
+        }
     }
 
     m_lastTapTime = tapFsw.getLastPushedTimes(); // Get the switch time
@@ -447,11 +478,16 @@ void Hardware::processTap()
         #endif
     }
 
-    if (m_timesTapped == c_maxTaps) // Tap count threshold
+    if (m_stillTapping) // Continous tapping
+    {
+        calculateInterval(); // Trigger the interval calculation
+    }
+
+    if (m_timesTapped == c_maxTaps) // Interval threshold to trigger the first interval calculation
     {
         m_tapState = 1; // Enable tap
         mem.writeTapState(m_tapState); // Save it to memory
-        m_timesTapped = 0; // Reset the tap count
+        m_stillTapping = true; // Interval defined, set the continuous tapping trigger
         calculateInterval(); // Trigger the interval calculation
 
         #ifdef DEBUG
@@ -470,7 +506,14 @@ void Hardware::processDiv()
     {
         m_divValue ++;
 
-        tapDivLed.lightLed(1 << (m_divValue -3));
+        if (m_presetMode)
+        {
+            tapDivLed.lightLed(5 - m_divValue);
+        }
+        else
+        {
+            tapDivLed.lightLed(9 - m_divValue);
+        }
     }
     else // Until the /1 then disable and reset
     {
@@ -508,7 +551,7 @@ void Hardware::blinkTapLed()
 
 void Hardware::calculateInterval()
 {
-    m_interval = ((m_lastTapTime - m_firstTapTime) / (c_maxTaps - 1)); // Calculate the average tap value
+    m_interval = ((m_lastTapTime - m_firstTapTime) / (m_timesTapped - 1)); // Calculate the average tap value
 
     #ifdef DEBUG
         Serial.print("Interval : ");
@@ -545,7 +588,6 @@ void Hardware::calculateInterval()
     {
         fv1.sendPot0Value(getMappedInterval()); // Send the mapped interval value to the DSP
     }
-    
 }
 
 void Hardware::calculateDivInterval()
@@ -570,6 +612,7 @@ void Hardware::calculateDivInterval()
     }
 
     mem.writeDivIntervalValue(m_divInterval); // Save it to memory
+    fv1.sendPot0Value(getMappedDivInterval()); // Send the mapped interval to the DSP
 }
 
 uint8_t Hardware::getMappedInterval()
