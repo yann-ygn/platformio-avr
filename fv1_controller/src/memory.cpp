@@ -315,14 +315,14 @@ void Memory::writeDivIntervalValue(uint16_t value)
 }
 
 void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
-                        uint16_t * divinterval, uint16_t * pot0, uint16_t * pot1, uint16_t * pot2, uint16_t * pot3)
+                        uint16_t * divinterval, uint8_t * pot0, uint8_t * pot1, uint8_t * pot2, uint8_t * pot3)
 {
     if (preset > 16)
     {
         preset = 16;
     }
 
-    uint8_t data[16] = {};
+    uint8_t data[12] = {};
 
     switch (preset)
     {
@@ -342,21 +342,21 @@ void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_
     * divvalue = data[3];
     * interval = (data[5] << 8) + data[4];
     * divinterval = (data[7] << 8) + data[6];
-    * pot0 = (data[9] << 8) + data[8];
-    * pot1 = (data[11] << 8) + data[10];
-    * pot2 = (data[13] << 8) + data[12];
-    * pot3 = (data[15] << 8) + data[14];
+    * pot0 = data[8];
+    * pot1 = data[9];
+    * pot2 = data[10];
+    * pot3 = data[11];
 }
 
 void Memory::writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t div, uint8_t divvalue, uint16_t interval, 
-                        uint16_t divinterval, uint16_t pot0, uint16_t pot1, uint16_t pot2, uint16_t pot3)
+                        uint16_t divinterval, uint8_t pot0, uint8_t pot1, uint8_t pot2, uint8_t pot3)
 {
     if (preset > 16)
     {
         preset = 16;
     }
 
-    uint8_t data[16] = {};
+    uint8_t data[12] = {};
 
     data[0] = program; // m_currentProgram
     data[1] = tap; // m_tapState
@@ -366,14 +366,10 @@ void Memory::writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t d
     data[5] = highByte(interval); // m_interval
     data[6] = lowByte(divinterval); // m_divInterval
     data[7] = highByte(divinterval); // m_divInterval
-    data[8] = lowByte(pot0); // pot0Value
-    data[9] = highByte(pot0); // pot0Value
-    data[10] = lowByte(pot1); // pot1Value
-    data[11] = highByte(pot1); // pot1Value
-    data[12] = lowByte(pot2); // pot1Value
-    data[13] = highByte(pot2); // pot1Value
-    data[14] = lowByte(pot3); // pot3Value
-    data[15] = highByte(pot3); // pot3Value
+    data[8] = pot0; // pot0Value
+    data[9] = pot1; // pot1Value
+    data[10] = pot2; // pot2Value
+    data[11] = pot3; // pot3Value
 
     switch (preset)
     {

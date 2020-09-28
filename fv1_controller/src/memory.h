@@ -82,10 +82,10 @@ class Memory
          * data[3] : m_divValue
          * data[4-5] : m_interval
          * data[6-7] : m_divInterval
-         * data[8-9] : pot0Value
-         * data[10-11] : pot1Value
-         * data[12-13] : pot2Value
-         * data[14-15] : pot3Value
+         * data[8] : pot0Value
+         * data[9] : pot1Value
+         * data[10] : pot2Value
+         * data[11] : pot3Value
          */
 
         /**
@@ -95,9 +95,9 @@ class Memory
          * @param data 
          */
         void readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
-                        uint16_t * divinterval, uint16_t * pot0, uint16_t * pot1, uint16_t * pot2, uint16_t * pot3);
+                        uint16_t * divinterval, uint8_t * pot0, uint8_t * pot1, uint8_t * pot2, uint8_t * pot3);
         void writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t div, uint8_t divvalue, uint16_t interval, 
-                        uint16_t divinterval, uint16_t pot0, uint16_t pot1, uint16_t pot2, uint16_t pot3);
+                        uint16_t divinterval, uint8_t pot0, uint8_t pot1, uint8_t pot2, uint8_t pot3);
 };
 
 #endif

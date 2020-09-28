@@ -238,7 +238,7 @@ void Hardware::presetModeSwitch()
     m_currentPreset = 0;
     selector.setCounter(0); // Set the selector counter
 
-    mem.writePresetMode (m_presetMode); // Save to memory
+    mem.writePresetMode(m_presetMode); // Save to memory
 
     if (m_presetMode)
     {
@@ -290,7 +290,7 @@ void Hardware::loadProgram()
                         m_divInterval = m_effectMinInterval; // Set it to the min value
                     }
 
-                    fv1.sendPot0Value(getMappedDivInterval()); // Send the mapped interval value to the DSP
+                    fv1.sendPot0Value(getMappedMinMaxDivInterval()); // Send the mapped interval value to the DSP
                 }
                 else // Div wasn't active
                 {
@@ -303,9 +303,9 @@ void Hardware::loadProgram()
                     {
                         m_interval = m_effectMinInterval; // Set it to the min value
                     }
+                    
+                    fv1.sendPot0Value(getMappedMinMaxInterval()); // Send the mapped interval value to the DSP   
                 }
-
-                fv1.sendPot0Value(getMappedMinMaxInterval()); // Send the mapped interval value to the DSP         
             }
             else // Tap wasn't active
             {
@@ -363,8 +363,68 @@ void Hardware::loadProgram()
 
 void Hardware::loadPreset()
 { 
-    selectorLed.lightLed(map(m_currentPreset, 0, 7, 7, 0));
-    mem.writeCurrentPreset(m_currentPreset); // Save the state
+    selectorLed.lightLed(7 - m_currentPreset); // Light the preset LED
+
+    // Preset parameters
+    uint8_t program = 0;
+    m_presetTapState = 0;
+    m_presetDivState = 0;
+    m_presetDivValue = 0;
+    m_presetInterval = 0;
+    m_presetDivInterval = 0;
+    uint8_t pot0 = 0;
+    uint8_t pot1 = 0;
+    uint8_t pot2 = 0;
+    uint8_t pot3 = 0;
+
+    mem.readPreset(m_currentPreset, & program, & m_presetTapState, & m_presetDivState, & m_presetDivValue, & m_presetInterval, & m_presetDivInterval, & pot0, & pot1, & pot2, & pot3); // Read the values from memory
+
+    m_effectIsDelay = programs[program].m_delayEffect; // Load program parameters
+    m_effectHasPot0Enabled = programs[program].m_pot0Enabled; // Load program parameters
+    m_effectHasPot1Enabled = programs[program].m_pot1Enabled; // Load program parameters
+    m_effectHasPot2Enabled = programs[program].m_pot2Enabled; // Load program parameters
+    m_effectHasPot3Enabled = programs[program].m_pot3Enabled; // Load program parameters
+
+    if (m_effectIsDelay)
+    {
+        m_effectMinInterval = programs[m_currentProgram].m_minInterval; // Load delay parameters
+        m_effectMaxInterval = programs[m_currentProgram].m_maxInterval; // Load delay parameters
+    }
+
+    fv1.sendProgramChange(program); // Send the program change to the DSP
+
+    if (m_presetTapState) // Preset with tap enabled
+    {
+        if (m_presetDivState) // Preset with div enabled
+        {
+            tapDivLed.lightLed(m_presetDivValue);
+            fv1.sendPot0Value(getPresetMappedMinMaxDivInterval());
+        }
+        else // Only tap
+        {
+            tapDivLed.lightAllLedOff();
+            fv1.sendPot0Value(getPresetMappedMinMaxInterval());
+        }
+    }
+    else // Tap not enabled
+    {
+        fv1.sendPot0Value(pot0);
+    }
+
+    if (m_effectHasPot1Enabled)
+    {
+        fv1.sendPot1Value(pot1);
+    }
+
+    if (m_effectHasPot2Enabled)
+    {
+        fv1.sendPot2Value(pot2);
+    }
+
+    if (m_effectHasPot3Enabled)
+    {
+        dpot0.setPotValue(pot3);
+    }
 }
 
 void Hardware::savePreset()
@@ -375,7 +435,7 @@ void Hardware::savePreset()
 
     while (! selectorSw.tempSwitchReleased()) // Wait for the selector switch to be released after the long press
     {
-        selectorLed.blinkLed(m_currentPreset, 100);
+        selectorLed.blinkLed(7 - m_currentPreset, 100);
         selectorSw.tempSwitchPoll();
     }
 
@@ -386,13 +446,13 @@ void Hardware::savePreset()
     {
         selectorSw.tempSwitchPoll(); // Poll the selector switch
 
-        selectorLed.blinkLed(m_currentPreset, 100); // Blink the current preset LED
+        selectorLed.blinkLed(7 - m_currentPreset, 100); // Blink the current preset LED
 
         if (selector.encoderPoll()) // Encoder poll
         {
             m_currentPreset = selector.getCounter(); // Adjust the counter
             selectorLed.resetBlink(); // Reset the blink counter
-            selectorLed.blinkLed(m_currentPreset, 100); // Blink the current preset LED
+            selectorLed.blinkLed(7 - m_currentPreset, 100); // Blink the current preset LED
         }
 
         if (selectorSw.tempSwitchReleased())
@@ -400,11 +460,13 @@ void Hardware::savePreset()
             m_presetSaveMode = false; // Reset the trigger
             m_selectorSwitchRelease = false; // Reset the switch trigger
             m_presetMode = 1; // Set the pedal in preset mode
-            mem.writePresetMode(1); // Save the state
+            mem.writePresetMode(m_presetMode); // Save the state
 
             mem.writePreset(m_currentPreset, m_currentProgram, m_tapState, m_divState, m_divValue, m_interval, m_divInterval,
                             pot0.getCurrentPotValue(), pot1.getCurrentPotValue(), pot2.getCurrentPotValue(), pot3.getCurrentPotValue());
 
+            
+            mem.writeCurrentPreset(m_currentPreset); // Save the state
             loadPreset(); // Load the current preset
         }
     }
@@ -586,7 +648,7 @@ void Hardware::calculateInterval()
     }
     else // Division is not enabled
     {
-        fv1.sendPot0Value(getMappedInterval()); // Send the mapped interval value to the DSP
+        fv1.sendPot0Value(getMappedMinMaxInterval()); // Send the mapped interval value to the DSP
     }
 }
 
@@ -612,7 +674,7 @@ void Hardware::calculateDivInterval()
     }
 
     mem.writeDivIntervalValue(m_divInterval); // Save it to memory
-    fv1.sendPot0Value(getMappedDivInterval()); // Send the mapped interval to the DSP
+    fv1.sendPot0Value(getMappedMinMaxDivInterval()); // Send the mapped interval to the DSP
 }
 
 uint8_t Hardware::getMappedInterval()
@@ -624,7 +686,7 @@ uint8_t Hardware::getMappedInterval()
 
 uint8_t Hardware::getMappedDivInterval()
 {
-    m_mappedDivInterval = map(m_interval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
+    m_mappedDivInterval = map(m_divInterval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
 
     return m_mappedDivInterval;
 }
@@ -639,6 +701,20 @@ uint8_t Hardware::getMappedMinMaxInterval()
 uint8_t Hardware::getMappedMinMaxDivInterval()
 {
     m_mappedMinMaxDivInterval = map(m_divInterval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
+
+    return m_mappedMinMaxDivInterval;
+}
+
+uint8_t Hardware::getPresetMappedMinMaxInterval()
+{
+    m_mappedMinMaxInterval = map(m_presetInterval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
+
+    return m_mappedMinMaxInterval;
+}
+
+uint8_t Hardware::getPresetMappedMinMaxDivInterval()
+{
+    m_mappedMinMaxDivInterval = map(m_presetDivInterval, m_effectMinInterval, m_effectMaxInterval, 0, 255);
 
     return m_mappedMinMaxDivInterval;
 }

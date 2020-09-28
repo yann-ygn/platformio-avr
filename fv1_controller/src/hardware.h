@@ -58,6 +58,13 @@ class Hardware
         uint8_t m_mappedMinMaxInterval = 0;
         uint8_t m_mappedMinMaxDivInterval = 0;
 
+        // Preset logic
+        uint8_t m_presetTapState = 0;
+        uint8_t m_presetDivState = 0;
+        uint8_t m_presetDivValue = 0;
+        uint16_t m_presetInterval = 0;
+        uint16_t m_presetDivInterval = 0;
+
         /**
          * @brief Apply the bypass state
          */
@@ -93,9 +100,19 @@ class Hardware
         uint8_t getMappedMinMaxInterval();
 
         /**
-         * @brief Calculate the value of the current divied interval mapped to 8bits in the relation to the min ad max iterval
+         * @brief Calculate the value of the current divided interval mapped to 8bits in the relation to the min ad max iterval
          */
         uint8_t getMappedMinMaxDivInterval();
+
+        /**
+         * @brief Calculate the value of the current preset interval mapped to 8bits in the relation to the min ad max iterval
+         */
+        uint8_t getPresetMappedMinMaxInterval();
+
+        /**
+         * @brief Calculate the value of the current preset divided interval mapped to 8bits in the relation to the min ad max iterval
+         */
+        uint8_t getPresetMappedMinMaxDivInterval();
 
         /**
          * @brief Map the interval to the pot value in relation to the min and max interval
