@@ -362,7 +362,7 @@ void Hardware::loadProgram()
 }
 
 void Hardware::loadPreset()
-{ 
+{
     selectorLed.lightLed(7 - m_currentPreset); // Light the preset LED
 
     // Preset parameters
