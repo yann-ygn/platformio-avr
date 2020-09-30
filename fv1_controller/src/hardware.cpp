@@ -488,9 +488,9 @@ void Hardware::processTap()
     }
     else // Tap is enabled
     {
-        if (m_stillTapping) // Tap interval defined and still tapping, use the defined interval + 20% as threshold
+        if (m_stillTapping) // Tap interval defined and still tapping, use the defined interval +- 20% as threshold
         {
-            if ((m_timesTapped > 0) && ((millis() - m_lastTapTime) > (m_interval + ((m_interval * 20) / 100)))) // Timeout
+            if ((m_timesTapped > 0) && (((millis() - m_lastTapTime) > m_interval + ((m_interval * 20) / 100))) || (millis() - m_lastTapTime) > (m_interval - ((m_interval * 20) / 100))) // Timeout
             {
                 m_timesTapped = 0; // Reset the tap count
                 m_stillTapping = false; // Reset the continuous tap trigger
