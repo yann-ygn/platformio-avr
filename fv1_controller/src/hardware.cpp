@@ -474,7 +474,7 @@ void Hardware::savePreset()
 
 void Hardware::processTap()
 {
-    if (! m_tapState) // Tap is not enabled, use the effect's max interval as timeout threshold
+    if (! m_tapState) // Tap is not active, use the effect's max interval as timeout threshold
     {
         if ((m_timesTapped > 0) && ((millis() - m_lastTapTime) > (m_effectMaxInterval + 200))) // Timeout
         {
@@ -486,11 +486,11 @@ void Hardware::processTap()
             #endif
         }
     }
-    else // Tap is enabled
+    else // Tap is active
     {
         if (m_stillTapping) // Tap interval defined and still tapping, use the defined interval +- 20% as threshold
         {
-            if ((m_timesTapped > 0) && (((millis() - m_lastTapTime) > m_interval + ((m_interval * 20) / 100))) || (millis() - m_lastTapTime) > (m_interval - ((m_interval * 20) / 100))) // Timeout
+            if (((millis() - m_lastTapTime) > m_interval + ((m_interval * 20) / 100)) || (millis() - m_lastTapTime) < (m_interval - ((m_interval * 20) / 100))) // Timeout
             {
                 m_timesTapped = 0; // Reset the tap count
                 m_stillTapping = false; // Reset the continuous tap trigger
@@ -500,7 +500,7 @@ void Hardware::processTap()
                 #endif
             }
         }
-        else // Tap is enabled but no interval has been defined yet, use the effect's max interval as timeout threshold
+        else // Tap is active but no interval has been defined yet, use the effect's max interval as timeout threshold
         {
             if ((m_timesTapped > 0) && ((millis() - m_lastTapTime) > (m_effectMaxInterval + 200))) // Timeout
             {
