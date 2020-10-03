@@ -13,8 +13,8 @@ program programs[8] =
         .m_tapEnabled = true,
         .m_pot0Enabled = true,
         .m_pot1Enabled = true,
-        .m_pot2Enabled = true,
-        .m_pot3Enabled = false
+        .m_pot2Enabled = false,
+        .m_pot3Enabled = true,
     },
     //programs[1] : dark digital delay
     {

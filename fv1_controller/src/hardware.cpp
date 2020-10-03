@@ -123,7 +123,7 @@ void Hardware::hardwarePoll()
             {
                 m_currentProgram = selector.getCounter(); // Change the current preset
             }
-            
+
             m_selectorMove = true; // Set the trigger
         }
 
@@ -228,7 +228,7 @@ void Hardware::turnPedalOnOff()
         selectorLed.lightAllLedOff();
         tapDivLed.lightAllLedOff();
         tapLed.ledTurnOff();
-    }   
+    }
 }
 
 void Hardware::presetModeSwitch()
@@ -256,7 +256,7 @@ void Hardware::presetModeSwitch()
 }
 
 void Hardware::loadProgram()
-{    
+{
     m_effectIsDelay = programs[m_currentProgram].m_delayEffect; // Load program parameters
     m_effectHasPot0Enabled = programs[m_currentProgram].m_pot0Enabled; // Load program parameters
     m_effectHasPot1Enabled = programs[m_currentProgram].m_pot1Enabled; // Load program parameters
@@ -303,7 +303,7 @@ void Hardware::loadProgram()
                     {
                         m_interval = m_effectMinInterval; // Set it to the min value
                     }
-                    
+
                     fv1.sendPot0Value(getMappedMinMaxInterval()); // Send the mapped interval value to the DSP   
                 }
             }
@@ -336,7 +336,7 @@ void Hardware::loadProgram()
                 tapDivLed.lightAllLedOff(); // Turn the div LED off
             }
         }
-        
+
         if (m_effectHasPot0Enabled)
         {
             fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value to the DSP
@@ -465,7 +465,7 @@ void Hardware::savePreset()
             mem.writePreset(m_currentPreset, m_currentProgram, m_tapState, m_divState, m_divValue, m_interval, m_divInterval,
                             pot0.getCurrentPotValue(), pot1.getCurrentPotValue(), pot2.getCurrentPotValue(), pot3.getCurrentPotValue());
 
-            
+
             mem.writeCurrentPreset(m_currentPreset); // Save the state
             loadPreset(); // Load the current preset
         }
@@ -662,7 +662,7 @@ void Hardware::calculateDivInterval()
         Serial.print("Interval : ");
         Serial.println(m_divInterval);
     #endif
-    
+
     if (m_divInterval < m_effectMinInterval) // Check against the program min interval and correct if necessary
     {
         m_divInterval = m_effectMinInterval;
