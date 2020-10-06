@@ -326,14 +326,14 @@ void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_
 
     switch (preset)
     {
-        case 0 : eeprom0.readArray(c_preset0Address, data, 16); break;
-        case 1 : eeprom0.readArray(c_preset1Address, data, 16); break;
-        case 2 : eeprom0.readArray(c_preset2Address, data, 16); break;
-        case 3 : eeprom0.readArray(c_preset3Address, data, 16); break;
-        case 4 : eeprom0.readArray(c_preset4Address, data, 16); break;
-        case 5 : eeprom0.readArray(c_preset5Address, data, 16); break;
-        case 6 : eeprom0.readArray(c_preset6Address, data, 16); break;
-        case 7 : eeprom0.readArray(c_preset7Address, data, 16); break;
+        case 0 : eeprom0.readArray(c_preset0Address, data, 12); break;
+        case 1 : eeprom0.readArray(c_preset1Address, data, 12); break;
+        case 2 : eeprom0.readArray(c_preset2Address, data, 12); break;
+        case 3 : eeprom0.readArray(c_preset3Address, data, 12); break;
+        case 4 : eeprom0.readArray(c_preset4Address, data, 12); break;
+        case 5 : eeprom0.readArray(c_preset5Address, data, 12); break;
+        case 6 : eeprom0.readArray(c_preset6Address, data, 12); break;
+        case 7 : eeprom0.readArray(c_preset7Address, data, 12); break;
     }
 
     * program = data[0];
@@ -346,6 +346,28 @@ void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_
     * pot1 = data[9];
     * pot2 = data[10];
     * pot3 = data[11];
+
+    Serial.println("Reading");
+    Serial.print("program : ");
+    Serial.println(data[0]);
+    Serial.print("tap : ");
+    Serial.println(data[1]);
+    Serial.print("div : ");
+    Serial.println(data[2]);
+    Serial.print("divvalue : ");
+    Serial.println(data[3]);
+    Serial.print("interval : ");
+    Serial.println((data[5] << 8) + data[4]);
+    Serial.print("divinterval : ");
+    Serial.println((data[7] << 8) + data[6]);
+    Serial.print("pot0 : ");
+    Serial.println(data[8]);
+    Serial.print("pot1 : ");
+    Serial.println(data[9]);
+    Serial.print("pot2 : ");
+    Serial.println(data[10]);
+    Serial.print("pot3 : ");
+    Serial.println(data[11]);
 }
 
 void Memory::writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t div, uint8_t divvalue, uint16_t interval, 
@@ -371,16 +393,38 @@ void Memory::writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t d
     data[10] = pot2; // pot2Value
     data[11] = pot3; // pot3Value
 
+    Serial.println("Writing");
+    Serial.print("program : ");
+    Serial.println(data[0]);
+    Serial.print("tap : ");
+    Serial.println(data[1]);
+    Serial.print("div : ");
+    Serial.println(data[2]);
+    Serial.print("divvalue : ");
+    Serial.println(data[3]);
+    Serial.print("interval : ");
+    Serial.println((data[5] << 8) + data[4]);
+    Serial.print("divinterval : ");
+    Serial.println((data[7] << 8) + data[6]);
+    Serial.print("pot0 : ");
+    Serial.println(data[8]);
+    Serial.print("pot1 : ");
+    Serial.println(data[9]);
+    Serial.print("pot2 : ");
+    Serial.println(data[10]);
+    Serial.print("pot3 : ");
+    Serial.println(data[11]);
+
     switch (preset)
     {
-        case 0 : eeprom0.writeArray(c_preset0Address, data, 16); break;
-        case 1 : eeprom0.writeArray(c_preset1Address, data, 16); break;
-        case 2 : eeprom0.writeArray(c_preset2Address, data, 16); break;
-        case 3 : eeprom0.writeArray(c_preset3Address, data, 16); break;
-        case 4 : eeprom0.writeArray(c_preset4Address, data, 16); break;
-        case 5 : eeprom0.writeArray(c_preset5Address, data, 16); break;
-        case 6 : eeprom0.writeArray(c_preset6Address, data, 16); break;
-        case 7 : eeprom0.writeArray(c_preset7Address, data, 16); break;
+        case 0 : eeprom0.writeArray(c_preset0Address, data, 12); break;
+        case 1 : eeprom0.writeArray(c_preset1Address, data, 12); break;
+        case 2 : eeprom0.writeArray(c_preset2Address, data, 12); break;
+        case 3 : eeprom0.writeArray(c_preset3Address, data, 12); break;
+        case 4 : eeprom0.writeArray(c_preset4Address, data, 12); break;
+        case 5 : eeprom0.writeArray(c_preset5Address, data, 12); break;
+        case 6 : eeprom0.writeArray(c_preset6Address, data, 12); break;
+        case 7 : eeprom0.writeArray(c_preset7Address, data, 12); break;
     }
 }
 

@@ -408,6 +408,7 @@ void Hardware::loadPreset()
     }
     else // Tap not enabled
     {
+        tapDivLed.lightAllLedOff();
         fv1.sendPot0Value(pot0);
     }
 
@@ -463,7 +464,7 @@ void Hardware::savePreset()
             mem.writePresetMode(m_presetMode); // Save the state
 
             mem.writePreset(m_currentPreset, m_currentProgram, m_tapState, m_divState, m_divValue, m_interval, m_divInterval,
-                            pot0.getCurrentPotValue(), pot1.getCurrentPotValue(), pot2.getCurrentPotValue(), pot3.getCurrentPotValue());
+                            pot0.getMappedCurrentPotValue(), pot1.getMappedCurrentPotValue(), pot2.getMappedCurrentPotValue(), pot3.getMappedCurrentPotValue());
 
 
             mem.writeCurrentPreset(m_currentPreset); // Save the state
