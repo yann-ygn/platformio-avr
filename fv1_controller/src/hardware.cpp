@@ -176,6 +176,11 @@ void Hardware::hardwarePoll()
         {
             m_pot3Turned = true; // Set the trigger
         }
+
+        if (midi.completeMidiMessage()) // Complete midi message received
+        {
+            m_newMidiMessage = true; // Set the trigger
+        }
     }
 }
 
@@ -192,6 +197,7 @@ void Hardware::resetTriggers()
     m_pot1Turned = false;
     m_pot2Turned = false;
     m_pot3Turned = false;
+    m_newMidiMessage = false;
 }
 
 void Hardware::bypassSwitch()
@@ -783,6 +789,11 @@ void Hardware::processPot3()
     {
         dpot0.setPotValue(pot3.getMappedCurrentPotValue());
     }
+}
+
+void Hardware::processMidiMessage()
+{
+    
 }
 
 uint8_t Hardware::getCurrentProgram()

@@ -77,6 +77,11 @@ void loop()
             {
                 hardware.processPot3(); // Process it
             }
+
+            if (hardware.getNewMidiMessage()) // New midi message
+            {
+                hardware.processMidiMessage(); // Process it
+            }
         }
     }
     

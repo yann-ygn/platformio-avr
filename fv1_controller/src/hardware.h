@@ -45,6 +45,7 @@ class Hardware
         bool m_pot1Turned = false;
         bool m_pot2Turned = false;
         bool m_pot3Turned = false;
+        bool m_newMidiMessage = false;
 
         // Tap logic
         uint32_t m_firstTapTime = 0;
@@ -213,6 +214,12 @@ class Hardware
         void processPot3();
 
         /**
+         * @brief Midi logic
+         * 
+         */
+        void processMidiMessage();
+
+        /**
          * @brief Get the Current Program object
          * 
          * @return uint8_t 
@@ -320,6 +327,14 @@ class Hardware
          * @return false 
          */
         bool getPot3Turned();
+
+        /**
+         * @brief Get the New Midi Message object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getNewMidiMessage();
 };
 
 #endif
