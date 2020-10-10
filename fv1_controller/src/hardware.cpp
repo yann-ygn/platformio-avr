@@ -331,7 +331,6 @@ void Hardware::loadProgram()
         {
             m_tapState = 0; // Disable it
             mem.writeTapState(m_tapState); // Save it to memory
-            tapLed.setPwmLedState(0); // Turn the tap LED off
 
             if (m_divState) // Div was enabled
             {
@@ -347,6 +346,8 @@ void Hardware::loadProgram()
         {
             fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value to the DSP
         }
+
+        m_tapLedTurnOff = true; // Trigger the tap LED turn off
     }
 
     if (m_effectHasPot1Enabled)
@@ -370,6 +371,7 @@ void Hardware::loadProgram()
 void Hardware::loadPreset()
 {
     selectorLed.lightLed(7 - m_currentPreset); // Light the preset LED
+    mem.writeCurrentPreset(m_currentPreset);
 
     // Preset parameters
     uint8_t program = 0;
@@ -396,6 +398,11 @@ void Hardware::loadPreset()
         m_effectMinInterval = programs[m_currentProgram].m_minInterval; // Load delay parameters
         m_effectMaxInterval = programs[m_currentProgram].m_maxInterval; // Load delay parameters
     }
+    else
+    {
+        m_tapLedTurnOff = true; // Trigger the tap LED turn off
+    }
+    
 
     fv1.sendProgramChange(program); // Send the program change to the DSP
 
@@ -605,16 +612,38 @@ void Hardware::blinkTapLed()
 {
     if (m_effectIsDelay)
     {
-        if (m_divState) // Division is active, use the divided interval
+        if (m_presetMode) // Effect is in preset mode
         {
-            m_tapLedBlinkValue = 128 + (127 * cos(2 * PI / m_divInterval * millis()));
-        }
-        else // Division not active
-        {
-            m_tapLedBlinkValue = 128 + (127 * cos(2 * PI / m_interval * millis()));
-        }
+            if (m_presetDivState) // Division is active, use the divided interval
+            {
+                m_tapLedBlinkValue = 128 + (127 * cos(2 * PI / m_presetDivInterval * millis()));
+            }
+            else // Division not active
+            {
+                m_tapLedBlinkValue = 128 + (127 * cos(2 * PI / m_presetInterval * millis()));
+            }
 
-        tapLed.setPwmLedState(m_tapLedBlinkValue);
+            tapLed.setPwmLedState(m_tapLedBlinkValue);
+        }
+        else // Program mode
+        {
+            if (m_divState) // Division is active, use the divided interval
+            {
+                m_tapLedBlinkValue = 128 + (127 * cos(2 * PI / m_divInterval * millis()));
+            }
+            else // Division not active
+            {
+                m_tapLedBlinkValue = 128 + (127 * cos(2 * PI / m_interval * millis()));
+            }
+
+            tapLed.setPwmLedState(m_tapLedBlinkValue);
+        }
+    }
+    
+    if (m_tapLedTurnOff)
+    {
+        tapLed.ledTurnOff();
+        m_tapLedTurnOff = false;
     }
 }
 
@@ -749,7 +778,7 @@ void Hardware::processPot0()
             {
                 m_divState = 0; // Disable it
                 mem.writeDivState(m_divState); // Save the state to memory
-                m_divValue = 0; // Reset the div value
+                m_divValue = 1; // Reset the div value
                 mem.writeDivValue(m_divValue); // Save the value to memory
                 tapDivLed.lightAllLedOff(); // Turn the LED off
             }
@@ -757,6 +786,8 @@ void Hardware::processPot0()
 
         fv1.sendPot0Value(pot0.getMappedCurrentPotValue());
         setIntervalFromPotValue(pot0.getCurrentPotValue());
+
+        m_tapLedTurnOff = true; // Trigger a tap LED turn off to avoid weird blinking effects
     }
     else // Current effect is not a delay
     {
@@ -864,4 +895,9 @@ bool Hardware::getPot2Turned()
 bool Hardware::getPot3Turned()
 {
     return m_pot3Turned;
+}
+
+bool Hardware::getNewMidiMessage()
+{
+    return m_newMidiMessage;
 }

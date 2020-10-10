@@ -46,6 +46,7 @@ class Hardware
         bool m_pot2Turned = false;
         bool m_pot3Turned = false;
         bool m_newMidiMessage = false;
+        bool m_tapLedTurnOff = false;
 
         // Tap logic
         uint32_t m_firstTapTime = 0;

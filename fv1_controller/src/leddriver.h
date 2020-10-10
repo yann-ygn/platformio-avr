@@ -115,6 +115,14 @@ class LedDriver16 : public LedDriver
         void blinkLed(uint8_t led, uint8_t interval);
 
         /**
+         * @brief Blink two LEDs with a given inrterval
+         * 
+         * @param led LED #
+         * @param interval Interval in ms
+         */
+        void blinkLed2(uint8_t led, uint8_t interval);
+
+        /**
          * @brief Reset the blink state
          * 
          */
