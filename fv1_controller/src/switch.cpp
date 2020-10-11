@@ -115,7 +115,12 @@ bool TemporarySwitch::tempSwitchLongPress()
     return m_tempSwitchLongPress;
 }
 
-uint32_t TemporarySwitch::getLastPushedTimes()
+uint32_t TemporarySwitch::getLastPushedTime()
 {
     return m_lastPushedTime;
+}
+
+void TemporarySwitch::setLastPushedTime(uint32_t time)
+{
+    m_lastPushedTime = time;
 }

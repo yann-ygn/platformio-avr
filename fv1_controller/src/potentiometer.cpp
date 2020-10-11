@@ -36,7 +36,7 @@ bool AnalogPot::analogPotTurned()
 
 uint8_t AnalogPot::getMappedCurrentPotValue()
 {
-    return m_lastPotValue >> 2; // 10 bits to 8 bits
+    return m_currPotValue >> 2; // 10 bits to 8 bits
 }
 
 uint16_t AnalogPot::getCurrentPotValue()

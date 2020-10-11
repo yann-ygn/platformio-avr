@@ -49,7 +49,7 @@ bool Midi::completeMidiMessage()
                 return true;                // Complete PC message
             }
 
-            if ((m_commandCode == MIDI_CC)  // There's an incomplete CC message stored
+            else if ((m_commandCode == MIDI_CC)  // There's an incomplete CC message stored
             && (m_dataByte1 == 0x0)         // No data stored on byte1
             && (m_dataByte2 == 0x0)         // No data stored on byte2
             && ((newByte & 0x80) == 0))     // This is a data byte
@@ -64,7 +64,7 @@ bool Midi::completeMidiMessage()
                 return false;               // Incomplete CC message
             }
 
-            if ((m_commandCode == MIDI_CC)  // There's an incomplete CC message stored
+            else if ((m_commandCode == MIDI_CC)  // There's an incomplete CC message stored
             && (m_dataByte1 != 0x0)         // The incomplete message has valid byte1
             && (m_dataByte2 == 0x0)         // No data stored on byte2
             && ((newByte & 0x80) == 0))     // This is a data byte

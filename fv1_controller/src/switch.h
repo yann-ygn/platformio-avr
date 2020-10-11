@@ -47,7 +47,9 @@ class TemporarySwitch
 
         bool tempSwitchLongPress();
 
-        uint32_t getLastPushedTimes();
+        uint32_t getLastPushedTime();
+
+        void setLastPushedTime(uint32_t time);
 };
 
 #endif

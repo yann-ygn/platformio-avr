@@ -176,11 +176,11 @@ void Hardware::hardwarePoll()
         {
             m_pot3Turned = true; // Set the trigger
         }
+    }
 
-        if (midi.completeMidiMessage()) // Complete midi message received
-        {
-            m_newMidiMessage = true; // Set the trigger
-        }
+    if (midi.completeMidiMessage()) // Complete midi message received
+    {
+        m_newMidiMessage = true; // Set the trigger
     }
 }
 
@@ -223,10 +223,20 @@ void Hardware::turnPedalOnOff()
         if (m_presetMode)
         {
             selectorLed.lightLed(m_currentProgram);
+
+            if (m_presetDivState)
+            {
+                tapDivLed.lightLed(m_presetDivValue);
+            }
         }
         else
         {
             selectorLed.lightLed(m_currentProgram + 8);
+
+            if (m_divState)
+            {
+                tapDivLed.lightLed(9 - m_divValue);
+            }
         }
     }
     else
@@ -449,7 +459,7 @@ void Hardware::savePreset()
 
     while (! selectorSw.tempSwitchReleased()) // Wait for the selector switch to be released after the long press
     {
-        selectorLed.blinkLed(7 - m_currentPreset, 100);
+        selectorLed.blinkLed2(7 - m_currentPreset, 100);
         selectorSw.tempSwitchPoll();
     }
 
@@ -460,13 +470,13 @@ void Hardware::savePreset()
     {
         selectorSw.tempSwitchPoll(); // Poll the selector switch
 
-        selectorLed.blinkLed(7 - m_currentPreset, 100); // Blink the current preset LED
+        selectorLed.blinkLed2(7 - m_currentPreset, 100); // Blink the current preset LED
 
         if (selector.encoderPoll()) // Encoder poll
         {
             m_currentPreset = selector.getCounter(); // Adjust the counter
             selectorLed.resetBlink(); // Reset the blink counter
-            selectorLed.blinkLed(7 - m_currentPreset, 100); // Blink the current preset LED
+            selectorLed.blinkLed2(7 - m_currentPreset, 100); // Blink the current preset LED
         }
 
         if (selectorSw.tempSwitchReleased())
@@ -528,7 +538,7 @@ void Hardware::processTap()
         }
     }
 
-    m_lastTapTime = tapFsw.getLastPushedTimes(); // Get the switch time
+    m_lastTapTime = tapFsw.getLastPushedTime(); // Get the switch time
 
     if (m_timesTapped == 0) // First tap
     {
@@ -578,7 +588,7 @@ void Hardware::processDiv()
     mem.writeDivState(m_divState); // Save it to memory
     m_timesTapped = 0; // Reset the tap count
 
-    if (m_divValue < 4) // Circle thru the division values
+    if (m_divValue < 5) // Circle thru the division values
     {
         m_divValue ++;
 
@@ -690,7 +700,14 @@ void Hardware::calculateInterval()
 
 void Hardware::calculateDivInterval()
 {
-    m_divInterval = m_interval / m_divValue; // Current interval divided by current divider
+    if (m_divValue < 5)
+    {
+        m_divInterval = m_interval / m_divValue; // Current interval divided by current divider
+    }
+    else
+    {
+        m_divInterval = m_interval * 0.75; // croche pointée
+    }
 
     #ifdef DEBUG
         Serial.print("Division : ");
@@ -789,6 +806,7 @@ void Hardware::processPot0()
 
         m_tapLedTurnOff = true; // Trigger a tap LED turn off to avoid weird blinking effects
     }
+
     else // Current effect is not a delay
     {
         if (m_effectHasPot0Enabled)
@@ -824,7 +842,206 @@ void Hardware::processPot3()
 
 void Hardware::processMidiMessage()
 {
-    
+    switch (midi.getCommandCode())
+    {
+        case MIDI_PC:
+            if (midi.getDataByte1() < 8) // Program
+            {
+                if (m_presetMode) // Not in program mode
+                {
+                    m_presetMode = ! m_presetMode; // Set the program mode
+                    mem.writePresetMode(m_presetMode); // Write it to memory
+                }
+
+                m_currentProgram = midi.getDataByte1(); // Retrieve the program #
+                mem.writeCurrentProgram(m_currentProgram); // Write it to memory
+                selector.setCounter(m_currentProgram); // Set the selector counter
+                loadProgram(); // Load the program
+
+                midi.resetMidiMessage(); // Reset stored midi messages
+            }
+            else // Preset
+            {
+                if (m_presetMode) // Not in preset mode
+                {
+                    m_presetMode = ! m_presetMode; // Set the program mode
+                    mem.writePresetMode(m_presetMode); // Write it to memory
+                }
+
+                m_currentPreset = midi.getDataByte1() - 8; // Retrieve the preset #
+                mem.writeCurrentPreset(m_currentPreset); // Write it to memory
+                selector.setCounter(m_currentPreset); // Set the selector counter
+                loadPreset(); // Load the preset
+
+                midi.resetMidiMessage(); // Reset stored midi messages
+            }
+
+            break;
+
+        case MIDI_CC:
+            switch (midi.getDataByte1())
+            {
+                case MIDI_BYPASS: // Bypass switch logic
+                    if (midi.getDataByte2() == 0x00) // Turn off
+                    {
+                        if (m_bypassState) // Only process if the effect is on
+                        {                            
+                            m_bypassState = 0; // Set the bypass state
+                            mem.writeBypassState(m_bypassState); // Write it to memory
+                            turnPedalOnOff(); // Process
+                        }
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                    }
+
+                    if (midi.getDataByte2() == 0x7F) // Turn on
+                    {
+                        if (! m_bypassState) // Only process if the effect is off
+                        {
+                            m_bypassState = 1; // Set the bypass state
+                            mem.writeBypassState(m_bypassState); // Write it to memorys
+                            turnPedalOnOff(); // Process
+                        }
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                    }
+
+                    break;
+
+                case MIDI_TAP: // Tap switch logic
+                    if (midi.getDataByte2() == 0x7F) // Tap trigger
+                    {
+                        tapFsw.setLastPushedTime(millis()); // Set the tap time
+                        processTap(); // Process
+                    }
+
+                    midi.resetMidiMessage(); // Reset stored midi messages
+                    break;
+                
+                case MIDI_TAPLP: // Div switch logic
+                    if (midi.getDataByte2() == 0x7F) // Tap long press trigger
+                    {
+                        processDiv(); // Process
+                    }
+
+                    midi.resetMidiMessage(); // Reset stored midi messages
+                    break;
+
+                case MIDI_DIV: // Div logic
+                    if (midi.getDataByte2() == 0x01) // Div /1
+                    {
+                        if (m_divState) // Div was enabled
+                        {
+                            m_divState = 0; // Disable it
+                            mem.writeDivState(m_divState); // Write to memory
+                        }
+
+                        m_divValue = 1; // Reset the div value
+                        mem.writeDivValue(m_divValue); // Save to memory
+                        tapDivLed.lightAllLedOff(); // Light the LEDs off
+                        calculateDivInterval(); // Process
+                    }
+
+                    else if (midi.getDataByte2() == 0x02) // Div /2
+                    {
+                        if (! m_divState) // Div was not enabled
+                        {
+                            m_divState = 1; // Enable it
+                            mem.writeDivState(m_divState); // Save to memory
+                        }
+
+                        m_divValue = 2; // Set the div value
+                        mem.writeDivValue(m_divValue); // Write to memory
+                        tapDivLed.lightLed(9 - m_divValue);
+                        calculateDivInterval(); // Process
+                    }
+
+                    else if (midi.getDataByte2() == 0x03) // Div /3
+                    {
+                        if (! m_divState) // Div was not enabled
+                        {
+                            m_divState = 1; // Enable it
+                            mem.writeDivState(m_divState); // Save to memory
+                        }
+
+                        m_divValue = 3; // Set the div value
+                        mem.writeDivValue(m_divValue); // Write to memory
+                        tapDivLed.lightLed(9 - m_divValue);
+                        calculateDivInterval(); // Process
+                    }
+
+                    else if (midi.getDataByte2() == 0x04) // Div /4
+                    {
+                        if (! m_divState) // Div was not enabled
+                        {
+                            m_divState = 1; // Enable it
+                            mem.writeDivState(m_divState); // Save to memory
+                        }
+
+                        m_divValue = 4; // Set the div value
+                        mem.writeDivValue(m_divValue); // Write to memory
+                        tapDivLed.lightLed(9 - m_divValue);
+                        calculateDivInterval(); // Process
+                    }
+
+                    else if (midi.getDataByte2() == 0x05) // Div /5
+                    {
+                        if (! m_divState) // Div was not enabled
+                        {
+                            m_divState = 1; // Enable it
+                            mem.writeDivState(m_divState); // Save to memory
+                        }
+
+                        m_divValue = 5; // Set the div value
+                        mem.writeDivValue(m_divValue); // Write to memory
+                        tapDivLed.lightLed(9 - m_divValue);
+                        calculateDivInterval(); // Process
+                    }
+
+                    else
+                    {
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
+                    }
+
+                    midi.resetMidiMessage(); // Reset stored midi messages
+                    break;
+
+                case MIDI_POT0:
+                    pot0.setCurrentPotValue(midi.getDataByte2() * 8); // Set the pot value mapped to 10bits
+                    processPot0(); // Process
+
+                    midi.resetMidiMessage(); // Reset stored midi messages
+                    break;
+
+                case MIDI_POT1:
+                    pot1.setCurrentPotValue(midi.getDataByte2() * 8); // Set the pot value mapped to 10bits
+                    processPot1(); // Process
+
+                    midi.resetMidiMessage(); // Reset stored midi messages
+                    break;
+                
+                case MIDI_POT2:
+                    pot2.setCurrentPotValue(midi.getDataByte2() * 8); // Set the pot value mapped to 10bits
+                    processPot2(); // Process
+
+                    midi.resetMidiMessage(); // Reset stored midi messages
+                    break;
+
+                case MIDI_POT3:
+                    pot3.setCurrentPotValue(midi.getDataByte2() * 8); // Set the pot value mapped to 10bits
+                    processPot3(); // Process
+
+                    midi.resetMidiMessage(); // Reset stored midi messages
+                    break;
+
+                default:
+                    break;
+            }
+
+        default:
+            break;
+    }
 }
 
 uint8_t Hardware::getCurrentProgram()

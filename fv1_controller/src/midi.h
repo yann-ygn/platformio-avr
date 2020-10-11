@@ -6,6 +6,15 @@
 #define MIDI_PC 0x40 // 01000000
 #define MIDI_CC 0x30 // 00110000
 
+#define MIDI_POT0 0x3 // POT0 Pot
+#define MIDI_POT1 0x9 // POT1 Pot
+#define MIDI_POT2 0xE // POT2 Pot
+#define MIDI_POT3 0xF // MIX Pot
+#define MIDI_BYPASS 0x10 // BYPASS Switch
+#define MIDI_TAP 0x11 // TAP Switch
+#define MIDI_TAPLP 0x12 // TAP Switch long press
+#define MIDI_DIV 0x13 // DIV
+
 class Midi
 {
     private:

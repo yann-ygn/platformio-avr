@@ -77,14 +77,14 @@ void loop()
             {
                 hardware.processPot3(); // Process it
             }
-
-            if (hardware.getNewMidiMessage()) // New midi message
-            {
-                hardware.processMidiMessage(); // Process it
-            }
         }
     }
-    
+
+    if (hardware.getNewMidiMessage()) // New midi message
+    {
+        hardware.processMidiMessage(); // Process it
+    }
+
     if (hardware.getBypassSwitchPress()) // Bypass switch Press
     {
         hardware.bypassSwitch(); // Turn the pedal on/off
