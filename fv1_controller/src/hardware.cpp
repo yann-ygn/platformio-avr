@@ -294,7 +294,10 @@ void Hardware::loadProgram()
             {
                 if (m_divState) // Div was active
                 {
-                    tapDivLed.lightLed(m_divValue); // Light the div indicator
+                    if (m_bypassState)
+                    {
+                        tapDivLed.lightLed(m_divValue); // Light the div indicator
+                    }                    
 
                     if (m_divInterval > m_effectMaxInterval) // Current interval over the max program value
                     {
@@ -375,12 +378,14 @@ void Hardware::loadProgram()
         dpot0.setPotValue(pot3.getMappedCurrentPotValue());
     }
 
-    selectorLed.lightLed(m_currentProgram + 8);
+    if (m_bypassState)
+    {
+        selectorLed.lightLed(m_currentProgram + 8);
+    }
 }
 
 void Hardware::loadPreset()
 {
-    selectorLed.lightLed(7 - m_currentPreset); // Light the preset LED
     mem.writeCurrentPreset(m_currentPreset);
 
     // Preset parameters
@@ -412,7 +417,6 @@ void Hardware::loadPreset()
     {
         m_tapLedTurnOff = true; // Trigger the tap LED turn off
     }
-    
 
     fv1.sendProgramChange(program); // Send the program change to the DSP
 
@@ -420,7 +424,11 @@ void Hardware::loadPreset()
     {
         if (m_presetDivState) // Preset with div enabled
         {
-            tapDivLed.lightLed(m_presetDivValue);
+            if (m_bypassState)
+            {
+                tapDivLed.lightLed(m_presetDivValue);
+            }
+
             fv1.sendPot0Value(getPresetMappedMinMaxDivInterval());
         }
         else // Only tap
@@ -448,6 +456,11 @@ void Hardware::loadPreset()
     if (m_effectHasPot3Enabled)
     {
         dpot0.setPotValue(pot3);
+    }
+
+    if (m_bypassState)
+    {
+        selectorLed.lightLed(7 - m_currentPreset); // Light the preset LED
     }
 }
 
@@ -488,7 +501,6 @@ void Hardware::savePreset()
 
             mem.writePreset(m_currentPreset, m_currentProgram, m_tapState, m_divState, m_divValue, m_interval, m_divInterval,
                             pot0.getMappedCurrentPotValue(), pot1.getMappedCurrentPotValue(), pot2.getMappedCurrentPotValue(), pot3.getMappedCurrentPotValue());
-
 
             mem.writeCurrentPreset(m_currentPreset); // Save the state
             loadPreset(); // Load the current preset
@@ -594,11 +606,17 @@ void Hardware::processDiv()
 
         if (m_presetMode)
         {
-            tapDivLed.lightLed(5 - m_divValue);
+            if (m_bypassState)
+            {
+                tapDivLed.lightLed(5 - m_divValue);
+            }
         }
         else
         {
-            tapDivLed.lightLed(9 - m_divValue);
+            if (m_bypassState)
+            {
+                tapDivLed.lightLed(9 - m_divValue);
+            }
         }
     }
     else // Until the /1 then disable and reset
@@ -847,14 +865,13 @@ void Hardware::processMidiMessage()
         case MIDI_PC:
             if (midi.getDataByte1() < 8) // Program
             {
-                if (m_presetMode) // Not in program mode
+                if (m_presetMode == 1) // Not in program mode
                 {
-                    m_presetMode = ! m_presetMode; // Set the program mode
+                    m_presetMode = 0; // Set the program mode
                     mem.writePresetMode(m_presetMode); // Write it to memory
                 }
 
                 m_currentProgram = midi.getDataByte1(); // Retrieve the program #
-                mem.writeCurrentProgram(m_currentProgram); // Write it to memory
                 selector.setCounter(m_currentProgram); // Set the selector counter
                 loadProgram(); // Load the program
 
@@ -862,14 +879,13 @@ void Hardware::processMidiMessage()
             }
             else // Preset
             {
-                if (m_presetMode) // Not in preset mode
+                if (m_presetMode == 0) // Not in preset mode
                 {
-                    m_presetMode = ! m_presetMode; // Set the program mode
+                    m_presetMode = 1; // Set the program mode
                     mem.writePresetMode(m_presetMode); // Write it to memory
                 }
 
                 m_currentPreset = midi.getDataByte1() - 8; // Retrieve the preset #
-                mem.writeCurrentPreset(m_currentPreset); // Write it to memory
                 selector.setCounter(m_currentPreset); // Set the selector counter
                 loadPreset(); // Load the preset
 
@@ -917,7 +933,7 @@ void Hardware::processMidiMessage()
 
                     midi.resetMidiMessage(); // Reset stored midi messages
                     break;
-                
+
                 case MIDI_TAPLP: // Div switch logic
                     if (midi.getDataByte2() == 0x7F) // Tap long press trigger
                     {
@@ -952,7 +968,12 @@ void Hardware::processMidiMessage()
 
                         m_divValue = 2; // Set the div value
                         mem.writeDivValue(m_divValue); // Write to memory
-                        tapDivLed.lightLed(9 - m_divValue);
+
+                        if (m_bypassState)
+                        {
+                            tapDivLed.lightLed(9 - m_divValue);
+                        }
+
                         calculateDivInterval(); // Process
                     }
 
@@ -966,7 +987,12 @@ void Hardware::processMidiMessage()
 
                         m_divValue = 3; // Set the div value
                         mem.writeDivValue(m_divValue); // Write to memory
-                        tapDivLed.lightLed(9 - m_divValue);
+
+                        if (m_bypassState)
+                        {
+                            tapDivLed.lightLed(9 - m_divValue);
+                        }
+
                         calculateDivInterval(); // Process
                     }
 
@@ -980,7 +1006,12 @@ void Hardware::processMidiMessage()
 
                         m_divValue = 4; // Set the div value
                         mem.writeDivValue(m_divValue); // Write to memory
-                        tapDivLed.lightLed(9 - m_divValue);
+
+                        if (m_bypassState)
+                        {
+                            tapDivLed.lightLed(9 - m_divValue);
+                        }
+
                         calculateDivInterval(); // Process
                     }
 
@@ -994,7 +1025,12 @@ void Hardware::processMidiMessage()
 
                         m_divValue = 5; // Set the div value
                         mem.writeDivValue(m_divValue); // Write to memory
-                        tapDivLed.lightLed(9 - m_divValue);
+
+                        if (m_bypassState)
+                        {
+                            tapDivLed.lightLed(9 - m_divValue);
+                        }
+
                         calculateDivInterval(); // Process
                     }
 
@@ -1020,7 +1056,7 @@ void Hardware::processMidiMessage()
 
                     midi.resetMidiMessage(); // Reset stored midi messages
                     break;
-                
+
                 case MIDI_POT2:
                     pot2.setCurrentPotValue(midi.getDataByte2() * 8); // Set the pot value mapped to 10bits
                     processPot2(); // Process
