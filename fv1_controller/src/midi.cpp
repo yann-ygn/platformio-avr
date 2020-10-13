@@ -104,6 +104,10 @@ void Midi::resetMidiMessage()
     m_channelInformation = 0;
     m_dataByte1 = 0;
     m_dataByte2 = 0;
+
+    #ifdef DEBUG
+        Serial.println("Midi message reset");
+    #endif
 }
 
 uint8_t Midi::getMidiChannel()

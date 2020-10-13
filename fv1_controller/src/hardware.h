@@ -45,6 +45,7 @@ class Hardware
         bool m_pot1Turned = false;
         bool m_pot2Turned = false;
         bool m_pot3Turned = false;
+        bool m_exprTurned = false;
         bool m_newMidiMessage = false;
         bool m_tapLedTurnOff = false;
 

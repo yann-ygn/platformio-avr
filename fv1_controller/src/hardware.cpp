@@ -12,6 +12,7 @@
 #include "midi.h"
 #include "hardware.h"
 #include "programs.h"
+#include "expression.h"
 
 Memory mem(22); // EEPROM
 
@@ -34,6 +35,8 @@ AnalogPot pot1(A0); // P1
 AnalogPot pot2(A3); // P2
 AnalogPot pot3(A1); // Mix
 
+Expr expr0(A2, 23); // Expression pedal
+
 DigitalPot dpot0(3); // Digital mix pot
 
 FV1 fv1(14, 13, 12, 16, 17, 18); // FV1 DSP
@@ -55,6 +58,7 @@ void Hardware::hardwareSetup()
     pot1.analogPotSetup();
     pot2.analogPotSetup();
     pot3.analogPotSetup();
+    expr0.exprSetup();
     dpot0.digitalPotSetup();
     fv1.FV1Setup();
 }
@@ -175,6 +179,14 @@ void Hardware::hardwarePoll()
         if (pot3.analogPotTurned()) // Pot 3 moved
         {
             m_pot3Turned = true; // Set the trigger
+        }
+
+        if (expr0.exprPresent())
+        {
+            if (expr0.exprTurned())
+            {
+
+            }
         }
     }
 
@@ -877,7 +889,8 @@ void Hardware::processMidiMessage()
 
                 midi.resetMidiMessage(); // Reset stored midi messages
             }
-            else // Preset
+
+            else if (midi.getDataByte1() > 7 && midi.getDataByte1() < 16)
             {
                 if (m_presetMode == 0) // Not in preset mode
                 {
@@ -891,6 +904,12 @@ void Hardware::processMidiMessage()
 
                 midi.resetMidiMessage(); // Reset stored midi messages
             }
+
+            else
+            {
+                midi.resetMidiMessage(); // Reset stored midi messages
+            }
+            
 
             break;
 
@@ -925,26 +944,38 @@ void Hardware::processMidiMessage()
                     break;
 
                 case MIDI_TAP: // Tap switch logic
-                    if (midi.getDataByte2() == 0x7F) // Tap trigger
+                    if (midi.getDataByte2() == 0x7F && ! m_presetMode) // Tap trigger
                     {
                         tapFsw.setLastPushedTime(millis()); // Set the tap time
                         processTap(); // Process
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
                     }
 
-                    midi.resetMidiMessage(); // Reset stored midi messages
-                    break;
+                    else
+                    {
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
+                    }
 
                 case MIDI_TAPLP: // Div switch logic
-                    if (midi.getDataByte2() == 0x7F) // Tap long press trigger
+                    if (midi.getDataByte2() == 0x7F && ! m_presetMode) // Tap long press trigger
                     {
                         processDiv(); // Process
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
                     }
 
-                    midi.resetMidiMessage(); // Reset stored midi messages
-                    break;
+                    else
+                    {
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
+                    }
 
                 case MIDI_DIV: // Div logic
-                    if (midi.getDataByte2() == 0x01) // Div /1
+                    if (midi.getDataByte2() == 0x01 && ! m_presetMode) // Div /1
                     {
                         if (m_divState) // Div was enabled
                         {
@@ -956,9 +987,12 @@ void Hardware::processMidiMessage()
                         mem.writeDivValue(m_divValue); // Save to memory
                         tapDivLed.lightAllLedOff(); // Light the LEDs off
                         calculateDivInterval(); // Process
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
                     }
 
-                    else if (midi.getDataByte2() == 0x02) // Div /2
+                    else if (midi.getDataByte2() == 0x02 && ! m_presetMode) // Div /2
                     {
                         if (! m_divState) // Div was not enabled
                         {
@@ -975,9 +1009,12 @@ void Hardware::processMidiMessage()
                         }
 
                         calculateDivInterval(); // Process
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
                     }
 
-                    else if (midi.getDataByte2() == 0x03) // Div /3
+                    else if (midi.getDataByte2() == 0x03 && ! m_presetMode) // Div /3
                     {
                         if (! m_divState) // Div was not enabled
                         {
@@ -994,9 +1031,12 @@ void Hardware::processMidiMessage()
                         }
 
                         calculateDivInterval(); // Process
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
                     }
 
-                    else if (midi.getDataByte2() == 0x04) // Div /4
+                    else if (midi.getDataByte2() == 0x04 && ! m_presetMode) // Div /4
                     {
                         if (! m_divState) // Div was not enabled
                         {
@@ -1013,9 +1053,12 @@ void Hardware::processMidiMessage()
                         }
 
                         calculateDivInterval(); // Process
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
                     }
 
-                    else if (midi.getDataByte2() == 0x05) // Div /5
+                    else if (midi.getDataByte2() == 0x05 && ! m_presetMode) // Div /5
                     {
                         if (! m_divState) // Div was not enabled
                         {
@@ -1032,6 +1075,9 @@ void Hardware::processMidiMessage()
                         }
 
                         calculateDivInterval(); // Process
+
+                        midi.resetMidiMessage(); // Reset stored midi messages
+                        break;
                     }
 
                     else
@@ -1039,9 +1085,6 @@ void Hardware::processMidiMessage()
                         midi.resetMidiMessage(); // Reset stored midi messages
                         break;
                     }
-
-                    midi.resetMidiMessage(); // Reset stored midi messages
-                    break;
 
                 case MIDI_POT0:
                     pot0.setCurrentPotValue(midi.getDataByte2() * 8); // Set the pot value mapped to 10bits
