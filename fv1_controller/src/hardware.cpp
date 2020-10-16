@@ -181,9 +181,9 @@ void Hardware::hardwarePoll()
             m_pot3Turned = true; // Set the trigger
         }
 
-        if (expr0.exprPresent())
+        if (expr0.exprPresent()) // Expression pedal present
         {
-            if (expr0.exprTurned())
+            if (expr0.exprTurned()) // Expression pedal turned
             {
 
             }

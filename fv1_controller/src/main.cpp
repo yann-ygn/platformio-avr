@@ -35,6 +35,16 @@ void loop()
             {
                 hardware.loadPreset(); // Load the selected preset
             }
+
+            if (hardware.getTapSwitchPress())
+            {
+
+            }
+
+            if (hardware.getTapSwitchLongPress())
+            {
+
+            }
         }
         else // Program mode active
         {
