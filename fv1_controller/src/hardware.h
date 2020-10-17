@@ -181,6 +181,16 @@ class Hardware
         void savePreset();
 
         /**
+         * @brief Load the next preset
+         */
+        void nextPreset();
+
+        /**
+         * @brief Load the previous preset
+         */
+        void prevPreset();
+
+        /**
          * @brief Tap logic
          */
         void processTap();

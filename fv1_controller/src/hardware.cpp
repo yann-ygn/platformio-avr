@@ -113,81 +113,113 @@ void Hardware::hardwarePoll()
         m_bypassSwitchPress = true; // Set the trigger
     }
 
-    if (m_bypassState)
+    if (m_bypassState) // Effect is on
     {
         selectorSw.tempSwitchPoll(); // Poll the program selector switch
 
-        if (selector.encoderPoll()) // Poll the program selector
+        if (m_presetMode) // Preset mode
         {
-            if (m_presetMode)
+            if (selector.encoderPoll()) // Poll the program selector
             {
                 m_currentPreset = selector.getCounter(); // Change the current program
+                m_selectorMove = true; // Set the trigger
             }
-            else
+
+            if (selectorSw.tempSwitchPushed()) // Selector switch press
+            {
+                m_selectorSwitchPress = true; // Set the trigger
+            }
+
+            if (selectorSw.tempSwitchLongPress()) // Selector switch long press
+            {
+                m_selectorSwitchLongPress = true; // Set the trigger
+            }
+
+            if (selectorSw.tempSwitchReleased())
+            {
+                m_selectorSwitchRelease = true;
+            }
+
+            if (expr0.exprPresent()) // Expression pedal present
+            {
+                if (expr0.exprTurned()) // Expression pedal turned
+                {
+
+                }
+            }
+        }
+
+        else // Program mode
+        {
+            if (selector.encoderPoll()) // Poll the program selector
             {
                 m_currentProgram = selector.getCounter(); // Change the current preset
+                m_selectorMove = true; // Set the trigger
             }
 
-            m_selectorMove = true; // Set the trigger
-        }
-
-        if (selectorSw.tempSwitchPushed()) // Selector switch press
-        {
-            m_selectorSwitchPress = true; // Set the trigger
-        }
-
-        if (selectorSw.tempSwitchLongPress()) // Selector switch long press
-        {
-            m_selectorSwitchLongPress = true; // Set the trigger
-        }
-
-        if (selectorSw.tempSwitchReleased())
-        {
-            m_selectorSwitchRelease = true;
-        }
-
-        if (m_effectHasTapEnabled)
-        {
-            tapFsw.tempSwitchPoll(); // Poll the tap footswitch
-
-            if (tapFsw.tempSwitchPushed()) // Tap switch press
+            if (selectorSw.tempSwitchPushed()) // Selector switch press
             {
-                m_tapSwitchPress = true; // Set the trigger
+                m_selectorSwitchPress = true; // Set the trigger
             }
 
-            if(tapFsw.tempSwitchLongPress()) // Tap switch long press
+            if (selectorSw.tempSwitchLongPress()) // Selector switch long press
             {
-                m_tapSwitchLongPress = true; // Set the trigger
+                m_selectorSwitchLongPress = true; // Set the trigger
             }
-        }
 
-        if (pot0.analogPotTurned()) // Pot0 moved
-        {
-            m_pot0Turned = true; // Set the trigger
-        }
-
-        if (pot1.analogPotTurned()) // Pot 1 moved
-        {
-            m_pot1Turned = true; // Set the trigger
-        }
-
-        if (pot2.analogPotTurned()) // Pot 2 moved
-        {
-            m_pot2Turned = true; // Set the trigger
-        }
-
-        if (pot3.analogPotTurned()) // Pot 3 moved
-        {
-            m_pot3Turned = true; // Set the trigger
-        }
-
-        if (expr0.exprPresent()) // Expression pedal present
-        {
-            if (expr0.exprTurned()) // Expression pedal turned
+            if (selectorSw.tempSwitchReleased())
             {
+                m_selectorSwitchRelease = true;
+            }
 
+            if (m_effectHasTapEnabled)
+            {
+                tapFsw.tempSwitchPoll(); // Poll the tap footswitch
+
+                if (tapFsw.tempSwitchPushed()) // Tap switch press
+                {
+                    m_tapSwitchPress = true; // Set the trigger
+                }
+
+                if(tapFsw.tempSwitchLongPress()) // Tap switch long press
+                {
+                    m_tapSwitchLongPress = true; // Set the trigger
+                }
+            }
+
+            if (pot0.analogPotTurned()) // Pot0 moved
+            {
+                m_pot0Turned = true; // Set the trigger
+            }
+
+            if (pot1.analogPotTurned()) // Pot 1 moved
+            {
+                m_pot1Turned = true; // Set the trigger
+            }
+
+            if (pot2.analogPotTurned()) // Pot 2 moved
+            {
+                m_pot2Turned = true; // Set the trigger
+            }
+
+            if (pot3.analogPotTurned()) // Pot 3 moved
+            {
+                m_pot3Turned = true; // Set the trigger
+            }
+
+            if (expr0.exprPresent()) // Expression pedal present
+            {
+                if (expr0.exprTurned()) // Expression pedal turned
+                {
+
+                }
             }
         }
+    }
+
+    else // Effect is off
+    {
+
     }
 
     if (midi.completeMidiMessage()) // Complete midi message received
@@ -518,6 +550,32 @@ void Hardware::savePreset()
             loadPreset(); // Load the current preset
         }
     }
+}
+
+void Hardware::nextPreset()
+{
+    m_currentPreset ++;
+
+    if (m_currentPreset == selector.getMaxCounterValue() + 1)
+    {
+        m_currentPreset = selector.getMinCounterValue();
+    }
+
+    selector.setCounter(m_currentPreset);
+    loadPreset();
+}
+
+void Hardware::prevPreset()
+{
+    m_currentPreset --;
+
+    if (m_currentPreset == 255 || m_currentPreset < selector.getMinCounterValue())
+    {
+        m_currentPreset = selector.getMaxCounterValue();
+    }
+
+    selector.setCounter(m_currentPreset);
+    loadPreset();
 }
 
 void Hardware::processTap()

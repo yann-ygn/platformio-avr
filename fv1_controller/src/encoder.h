@@ -72,6 +72,20 @@ class Encoder
          * @param counter 
          */
         void setCounter(uint8_t counter);
+
+        /**
+         * @brief Get the Min Value object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getMinCounterValue();
+
+        /**
+         * @brief Get the Max Value object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getMaxCounterValue();
 };
 
 #endif

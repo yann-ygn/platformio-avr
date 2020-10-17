@@ -36,16 +36,17 @@ void loop()
                 hardware.loadPreset(); // Load the selected preset
             }
 
-            if (hardware.getTapSwitchPress())
+            if (hardware.getTapSwitchPress()) // Tap footswitch press
             {
-
+                hardware.nextPreset(); // Load the next preset
             }
 
-            if (hardware.getTapSwitchLongPress())
+            if (hardware.getTapSwitchLongPress()) // Tap footswitch long press
             {
-
+                hardware.prevPreset(); // Load the previous footswitch
             }
         }
+
         else // Program mode active
         {
             if (hardware.getSelectorSwitchLongPress()) // Selector switch long press
@@ -63,7 +64,7 @@ void loop()
                 hardware.processTap(); // Process it
             }
 
-            if(hardware.getTapSwitchLongPress()) // Tap switch long press
+            if (hardware.getTapSwitchLongPress()) // Tap switch long press
             {
                 hardware.processDiv(); // Process it
             }

@@ -69,3 +69,13 @@ void Encoder::setCounter(uint8_t counter)
 {
     m_counter = counter;
 }
+
+uint8_t Encoder::getMinCounterValue()
+{
+    return m_minCounterValue;
+}
+
+uint8_t Encoder::getMaxCounterValue()
+{
+    return m_maxCounterValue;
+}
