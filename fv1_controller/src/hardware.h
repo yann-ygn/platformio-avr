@@ -41,6 +41,7 @@ class Hardware
         bool m_selectorSwitchRelease = false;
         bool m_tapSwitchPress = false;
         bool m_tapSwitchLongPress = false;
+        bool m_tapswitchRelease = false;
         bool m_pot0Turned = false;
         bool m_pot1Turned = false;
         bool m_pot2Turned = false;
@@ -67,6 +68,13 @@ class Hardware
         uint8_t m_presetDivValue = 0;
         uint16_t m_presetInterval = 0;
         uint16_t m_presetDivInterval = 0;
+
+        // Settings logic
+        bool m_settingsMode = true;
+        uint8_t m_menuLevel = 0;
+        uint8_t m_menuItem = 0;
+        uint8_t m_selectedProgram = 0;
+        bool m_newMenuLevel = false;
 
         /**
          * @brief Apply the bypass state
@@ -232,6 +240,11 @@ class Hardware
         void processMidiMessage();
 
         /**
+         * @brief 
+         */
+        void settingsMode();
+
+        /**
          * @brief Get the Current Program object
          * 
          * @return uint8_t 
@@ -300,6 +313,14 @@ class Hardware
          * @return false 
          */
         bool getTapSwitchLongPress();
+
+        /**
+         * @brief Get the Tapswitch Release object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getTapswitchRelease();
 
         /**
          * @brief Get the Bypass State object

@@ -36,14 +36,14 @@ void loop()
                 hardware.loadPreset(); // Load the selected preset
             }
 
-            if (hardware.getTapSwitchPress()) // Tap footswitch press
+            if (hardware.getTapswitchRelease()) // Tap footswitch press
             {
                 hardware.nextPreset(); // Load the next preset
             }
 
             if (hardware.getTapSwitchLongPress()) // Tap footswitch long press
             {
-                hardware.prevPreset(); // Load the previous footswitch
+                hardware.prevPreset(); // Load the previous preset
             }
         }
 
@@ -89,6 +89,11 @@ void loop()
                 hardware.processPot3(); // Process it
             }
         }
+    }
+
+    if (hardware.getTapSwitchLongPress()) // Tap footswitch long press
+    {
+        hardware.settingsMode(); // Enter settings menu
     }
 
     if (hardware.getNewMidiMessage()) // New midi message

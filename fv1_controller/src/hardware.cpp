@@ -119,6 +119,8 @@ void Hardware::hardwarePoll()
 
         if (m_presetMode) // Preset mode
         {
+            tapFsw.tempSwitchPoll();
+
             if (selector.encoderPoll()) // Poll the program selector
             {
                 m_currentPreset = selector.getCounter(); // Change the current program
@@ -138,6 +140,21 @@ void Hardware::hardwarePoll()
             if (selectorSw.tempSwitchReleased())
             {
                 m_selectorSwitchRelease = true;
+            }
+
+            if (tapFsw.tempSwitchPushed())
+            {
+                m_tapSwitchPress = true;
+            }
+
+            if (tapFsw.tempSwitchLongPress())
+            {
+                m_tapSwitchLongPress = true;
+            }
+
+            if (tapFsw.tempSwitchReleased())
+            {
+                m_tapswitchRelease = true;
             }
 
             if (expr0.exprPresent()) // Expression pedal present
@@ -219,7 +236,12 @@ void Hardware::hardwarePoll()
 
     else // Effect is off
     {
+        tapFsw.tempSwitchPoll();
 
+        if (tapFsw.tempSwitchLongPress())
+        {
+            m_tapSwitchLongPress = true;
+        }
     }
 
     if (midi.completeMidiMessage()) // Complete midi message received
@@ -237,6 +259,7 @@ void Hardware::resetTriggers()
     m_selectorSwitchRelease = false;
     m_tapSwitchPress = false;
     m_tapSwitchLongPress = false;
+    m_tapswitchRelease = false;
     m_pot0Turned = false;
     m_pot1Turned = false;
     m_pot2Turned = false;
@@ -516,7 +539,7 @@ void Hardware::savePreset()
 
     while (! selectorSw.tempSwitchReleased()) // Wait for the selector switch to be released after the long press
     {
-        selectorLed.blinkLed2(7 - m_currentPreset, 100);
+        selectorLed.blinkLed(7 - m_currentPreset, 100);
         selectorSw.tempSwitchPoll();
     }
 
@@ -527,13 +550,13 @@ void Hardware::savePreset()
     {
         selectorSw.tempSwitchPoll(); // Poll the selector switch
 
-        selectorLed.blinkLed2(7 - m_currentPreset, 100); // Blink the current preset LED
+        selectorLed.blinkLed(7 - m_currentPreset, 100); // Blink the current preset LED
 
         if (selector.encoderPoll()) // Encoder poll
         {
             m_currentPreset = selector.getCounter(); // Adjust the counter
             selectorLed.resetBlink(); // Reset the blink counter
-            selectorLed.blinkLed2(7 - m_currentPreset, 100); // Blink the current preset LED
+            selectorLed.blinkLed(7 - m_currentPreset, 100); // Blink the current preset LED
         }
 
         if (selectorSw.tempSwitchReleased())
@@ -576,6 +599,13 @@ void Hardware::prevPreset()
 
     selector.setCounter(m_currentPreset);
     loadPreset();
+
+    while (! tapFsw.tempSwitchReleased()) // Wait for the selector switch to be released after the long press
+    {
+        tapFsw.tempSwitchPoll();
+    }
+
+    m_tapswitchRelease = false; // Reset the switch trigger
 }
 
 void Hardware::processTap()
@@ -1181,6 +1211,115 @@ void Hardware::processMidiMessage()
     }
 }
 
+void Hardware::settingsMode()
+{
+    m_settingsMode = true; // Set the trigger
+    m_menuLevel = 0; // Reset the lenu level
+    m_menuItem = 0; // Reset the menu item
+    selectorLed.lightLed(7 - m_menuItem); // Light the selector LED
+
+    selector.setMinCounterValue(0); // Set the encoder min value for the main menu
+    selector.setMaxCounterValue(1); // Set the encoder max value for the main menu
+
+    while (m_settingsMode)
+    {
+        tapFsw.tempSwitchPoll(); // Poll the tap footswitch
+        selectorSw.tempSwitchPoll(); // Poll the selector switch
+
+        if (tapFsw.tempSwitchLongPress()) // Tap footswitch long press
+        {
+            m_settingsMode = false; // Exit the settings mode
+        }
+
+        if (selectorSw.tempSwitchReleased())
+        {
+            switch (m_menuLevel)
+            {
+                case 0: // Main menu
+                    switch (m_menuItem)
+                    {
+                        case 0: // To midi settings
+                            m_menuLevel = 1; // Enter midi menu
+                            m_menuItem = 0; // Reset the menu item
+
+                            selector.setMinCounterValue(0); // Set the encoder min value for the midi menu
+                            selector.setMaxCounterValue(7); // Set the encoder max value for the midi menu
+                            break;
+
+                        case 1: // To expression pedal settings
+                            m_menuLevel = 2; // Enter expression pedal menu
+                            m_menuItem = 0; // Reset the menu item
+
+                            selector.setMinCounterValue(0); // Set the encoder min value for the expression pedal menu
+                            selector.setMaxCounterValue(7); // Set the encoder max value for the expression pedal menu
+
+                            selectorLed.lightLed(m_menuItem + 8);
+                            break;
+
+                        default:
+                            break;
+                    }
+                    break; // End main menu
+
+                case 1: // Midi menu
+                    mem.writeMidiChannel(m_menuItem); // Write the midi channel to memory
+
+                    m_menuLevel = 0; // Reset the menu level
+                    m_menuItem = 0; // Reset the menu item
+                    selectorLed.lightLed(7 - m_menuItem); // Light the selector LED
+
+                    selector.setMinCounterValue(0); // Set the encoder min value for the main menu
+                    selector.setMaxCounterValue(1); // Set the encoder max value for the main menu
+                    break; // End midi menu
+                
+                case 2: // Expression pedal menu
+                    m_selectedProgram = m_menuItem; // Store the program #
+                    m_menuLevel = 3; // Enter expression pedal sub menu
+                    m_menuItem = 0; // Reset the menu item
+
+                    selector.setMinCounterValue(0); // Set the encoder min value for the expression pedal sub menu
+                    selector.setMaxCounterValue(3); // Set the encoder max value for the expression pedal sub menu
+                    break; // End expression pedal menu
+
+                default:
+                    break;
+            }
+        }
+
+        if (m_menuLevel == 0) // Main menu
+        {
+            if (selector.encoderPoll())
+            {
+                m_menuItem = selector.getCounter();
+                selectorLed.lightLed(7 - m_menuItem);
+            }
+        }
+
+        if (m_menuLevel == 1) // Midi settings
+        {
+            if (selector.encoderPoll())
+            {
+                m_menuItem = selector.getCounter();
+            }
+
+            selectorLed.blinkLed(7 - m_menuItem, 100);
+        }
+
+        if (m_menuItem == 2) // Expression pedal settings
+        {
+            if (selector.encoderPoll())
+            {
+                m_menuItem = selector.getCounter();
+                selectorLed.lightLed(m_menuItem + 8);
+            }
+        }
+    }
+
+    selector.setMinCounterValue(0);
+    selector.setMaxCounterValue(7);
+    selectorLed.lightAllLedOff();
+}
+
 uint8_t Hardware::getCurrentProgram()
 {
     return m_currentProgram;
@@ -1224,6 +1363,11 @@ bool Hardware::getTapSwitchPress()
 bool Hardware::getTapSwitchLongPress()
 {
     return m_tapSwitchLongPress;
+}
+
+bool Hardware::getTapswitchRelease()
+{
+    return m_tapswitchRelease;
 }
 
 uint8_t Hardware::getBypassState()

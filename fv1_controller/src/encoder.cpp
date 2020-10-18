@@ -79,3 +79,13 @@ uint8_t Encoder::getMaxCounterValue()
 {
     return m_maxCounterValue;
 }
+
+void Encoder::setMinCounterValue(uint8_t value)
+{
+    m_minCounterValue = value;
+}
+
+void Encoder::setMaxCounterValue(uint8_t value)
+{
+    m_maxCounterValue = value;
+}
