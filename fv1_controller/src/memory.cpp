@@ -314,6 +314,92 @@ void Memory::writeDivIntervalValue(uint16_t value)
     eeprom0.writeInt16(c_divIntervalAddress, value);
 }
 
+uint8_t Memory::readProgramExprSetting(uint8_t program)
+{
+    uint8_t setting = 0;
+
+    switch (program)
+    {
+        case 0:
+            eeprom0.readInt8(c_program0ExpreSetting);
+            break;
+
+        case 1:
+            eeprom0.readInt8(c_program1ExpreSetting);
+            break;
+
+        case 2:
+            eeprom0.readInt8(c_program2ExpreSetting);
+            break;
+
+        case 3:
+            eeprom0.readInt8(c_program3ExpreSetting);
+            break;
+
+        case 4:
+            eeprom0.readInt8(c_program4ExpreSetting);
+            break;
+
+        case 5:
+            eeprom0.readInt8(c_program5ExpreSetting);
+            break;
+        
+        case 6:
+            eeprom0.readInt8(c_program6ExpreSetting);
+            break;
+
+        case 7:
+            eeprom0.readInt8(c_program7ExpreSetting);
+            break;
+
+        default:
+            break;
+    }
+
+    return setting;
+}
+
+void Memory::writeProgramExprSetting(uint8_t program, uint8_t setting)
+{
+    switch (program)
+    {
+        case 0:
+            eeprom0.writeInt8(c_program0ExpreSetting, setting);
+            break;
+
+        case 1:
+            eeprom0.writeInt8(c_program1ExpreSetting, setting);
+            break;
+
+        case 2:
+            eeprom0.writeInt8(c_program2ExpreSetting, setting);
+            break;
+
+        case 3:
+            eeprom0.writeInt8(c_program3ExpreSetting, setting);
+            break;
+
+        case 4:
+            eeprom0.writeInt8(c_program4ExpreSetting, setting);
+            break;
+
+        case 5:
+            eeprom0.writeInt8(c_program5ExpreSetting, setting);
+            break;
+        
+        case 6:
+            eeprom0.writeInt8(c_program6ExpreSetting, setting);
+            break;
+
+        case 7:
+            eeprom0.writeInt8(c_program7ExpreSetting, setting);
+            break;
+
+        default:
+            break;
+    }
+}
+
 void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
                         uint16_t * divinterval, uint8_t * pot0, uint8_t * pot1, uint8_t * pot2, uint8_t * pot3)
 {

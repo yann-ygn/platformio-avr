@@ -24,6 +24,14 @@ class Memory
         const uint16_t c_divValueAddress = 8;
         const uint16_t c_intervalAddress = 9;
         const uint16_t c_divIntervalAddress = 11;
+        const uint16_t c_program0ExpreSetting = 13;
+        const uint16_t c_program1ExpreSetting = 14;
+        const uint16_t c_program2ExpreSetting = 15;
+        const uint16_t c_program3ExpreSetting = 16;
+        const uint16_t c_program4ExpreSetting = 17;
+        const uint16_t c_program5ExpreSetting = 18;
+        const uint16_t c_program6ExpreSetting = 19;
+        const uint16_t c_program7ExpreSetting = 10;
         const uint16_t c_preset0Address = 65;
         const uint16_t c_preset1Address = 80;
         const uint16_t c_preset2Address = 95;
@@ -73,6 +81,9 @@ class Memory
 
         uint16_t readDivIntervalValue();
         void writeDivIntervalValue(uint16_t value);
+
+        uint8_t readProgramExprSetting(uint8_t program);
+        void writeProgramExprSetting(uint8_t program, uint8_t setting);
 
         /**
          * data[16]
