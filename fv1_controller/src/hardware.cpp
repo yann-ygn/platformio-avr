@@ -89,6 +89,11 @@ void Hardware::restoreLastState()
     m_currentPreset = mem.readCurrentPreset(); // Read the stored current preset
     m_currentProgram = mem.readCurrentProgram(); // Read the stored current program
 
+    for (uint8_t i = 0; i < 8; i++) // Read the stored expression pedal parameters
+    {
+        m_programExprSetting[i] = mem.readProgramExprSetting(i);
+    }
+
     if (m_presetMode) // preset mode
     {
         selector.setCounter(m_currentPreset);
@@ -228,7 +233,7 @@ void Hardware::hardwarePoll()
             {
                 if (expr0.exprTurned()) // Expression pedal turned
                 {
-
+                    m_exprTurned = true;
                 }
             }
         }
@@ -265,6 +270,7 @@ void Hardware::resetTriggers()
     m_pot2Turned = false;
     m_pot3Turned = false;
     m_newMidiMessage = false;
+    m_exprTurned = false;
 }
 
 void Hardware::bypassSwitch()
@@ -1244,6 +1250,7 @@ void Hardware::settingsMode()
 
                             selector.setMinCounterValue(0); // Set the encoder min value for the midi menu
                             selector.setMaxCounterValue(7); // Set the encoder max value for the midi menu
+                            selector.setCounter(0); // Reset the selector counter
                             break;
 
                         case 1: // To expression pedal settings
@@ -1252,6 +1259,7 @@ void Hardware::settingsMode()
 
                             selector.setMinCounterValue(0); // Set the encoder min value for the expression pedal menu
                             selector.setMaxCounterValue(7); // Set the encoder max value for the expression pedal menu
+                            selector.setCounter(0); // Reset the selector counter
 
                             selectorLed.lightLed(m_menuItem + 8);
                             break;
@@ -1263,6 +1271,7 @@ void Hardware::settingsMode()
 
                 case 1: // Midi menu
                     mem.writeMidiChannel(m_menuItem); // Write the midi channel to memory
+                    midi.setMidiChannel(m_menuItem); // Set the midi channel
 
                     m_menuLevel = 0; // Reset the menu level
                     m_menuItem = 0; // Reset the menu item
@@ -1270,6 +1279,7 @@ void Hardware::settingsMode()
 
                     selector.setMinCounterValue(0); // Set the encoder min value for the main menu
                     selector.setMaxCounterValue(1); // Set the encoder max value for the main menu
+                    selector.setCounter(0); // Reset the selector counter
                     break; // End midi menu
                 
                 case 2: // Expression pedal menu
@@ -1279,7 +1289,20 @@ void Hardware::settingsMode()
 
                     selector.setMinCounterValue(0); // Set the encoder min value for the expression pedal sub menu
                     selector.setMaxCounterValue(3); // Set the encoder max value for the expression pedal sub menu
+                    selector.setCounter(0); // Reset the selector counter
                     break; // End expression pedal menu
+
+                case 3:
+                    mem.writeProgramExprSetting(m_selectedProgram, m_menuItem);
+
+                    m_menuLevel = 0; // Reset the menu level
+                    m_menuItem = 0; // Reset the menu item
+                    selectorLed.lightLed(7 - m_menuItem); // Light the selector LED
+
+                    selector.setMinCounterValue(0); // Set the encoder min value for the main menu
+                    selector.setMaxCounterValue(1); // Set the encoder max value for the main menu
+                    selector.setCounter(0); // Reset the selector counter
+                    break; // End expression pedal sub menu
 
                 default:
                     break;
@@ -1305,13 +1328,23 @@ void Hardware::settingsMode()
             selectorLed.blinkLed(7 - m_menuItem, 100);
         }
 
-        if (m_menuItem == 2) // Expression pedal settings
+        if (m_menuLevel == 2) // Expression pedal settings
         {
             if (selector.encoderPoll())
             {
                 m_menuItem = selector.getCounter();
                 selectorLed.lightLed(m_menuItem + 8);
             }
+        }
+
+        if (m_menuLevel == 3) // Expression pedal sub menu
+        {
+            if (selector.encoderPoll())
+            {
+                m_menuItem = selector.getCounter();
+            }
+
+            selectorLed.blinkLed(m_menuItem + 8, 100);
         }
     }
 

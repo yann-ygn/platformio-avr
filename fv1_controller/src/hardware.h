@@ -32,6 +32,7 @@ class Hardware
         uint8_t m_divValue = 0;
         uint16_t m_interval = 0;
         uint16_t m_divInterval = 0;
+        uint8_t m_programExprSetting[8] = {0};
 
         // Hardware triggers
         bool m_bypassSwitchPress = false;
@@ -234,6 +235,11 @@ class Hardware
         void processPot3();
 
         /**
+         * @brief Expression pedal logic
+         */
+        void processExpr();
+
+        /**
          * @brief Midi logic
          * 
          */
@@ -360,6 +366,14 @@ class Hardware
          * @return false 
          */
         bool getPot3Turned();
+
+        /**
+         * @brief Get the Expr Turned object
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool getExprTurned();
 
         /**
          * @brief Get the New Midi Message object

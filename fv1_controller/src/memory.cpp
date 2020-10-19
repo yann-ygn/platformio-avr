@@ -70,6 +70,11 @@ void Memory::memoryReset()
     writeDivValue(1);
     writeDivIntervalValue(0);
     writeIntervalValue(0);
+    
+    for (uint8_t i =0; i < 8; i++)
+    {
+        writeProgramExprSetting(i, 0);
+    }
 }
 
 uint8_t Memory::readInitialSetupState()
@@ -321,40 +326,48 @@ uint8_t Memory::readProgramExprSetting(uint8_t program)
     switch (program)
     {
         case 0:
-            eeprom0.readInt8(c_program0ExpreSetting);
+            setting = eeprom0.readInt8(c_program0ExpreSettingAddress);
             break;
 
         case 1:
-            eeprom0.readInt8(c_program1ExpreSetting);
+            setting = eeprom0.readInt8(c_program1ExpreSettingAddress);
             break;
 
         case 2:
-            eeprom0.readInt8(c_program2ExpreSetting);
+            setting = eeprom0.readInt8(c_program2ExpreSettingAddress);
             break;
 
         case 3:
-            eeprom0.readInt8(c_program3ExpreSetting);
+            setting = eeprom0.readInt8(c_program3ExpreSettingAddress);
             break;
 
         case 4:
-            eeprom0.readInt8(c_program4ExpreSetting);
+            setting = eeprom0.readInt8(c_program4ExpreSettingAddress);
             break;
 
         case 5:
-            eeprom0.readInt8(c_program5ExpreSetting);
+            setting = eeprom0.readInt8(c_program5ExpreSettingAddress);
             break;
         
         case 6:
-            eeprom0.readInt8(c_program6ExpreSetting);
+            setting = eeprom0.readInt8(c_program6ExpreSettingAddress);
             break;
 
         case 7:
-            eeprom0.readInt8(c_program7ExpreSetting);
+            setting = eeprom0.readInt8(c_program7ExpreSettingAddress);
             break;
 
         default:
             break;
     }
+
+    #ifdef DEBUG
+        Serial.println("Reading program expression value");
+        Serial.print("Program : ");
+        Serial.println(program);
+        Serial.print("Setting : ");
+        Serial.println(setting);
+    #endif
 
     return setting;
 }
@@ -364,40 +377,48 @@ void Memory::writeProgramExprSetting(uint8_t program, uint8_t setting)
     switch (program)
     {
         case 0:
-            eeprom0.writeInt8(c_program0ExpreSetting, setting);
+            eeprom0.writeInt8(c_program0ExpreSettingAddress, setting);
             break;
 
         case 1:
-            eeprom0.writeInt8(c_program1ExpreSetting, setting);
+            eeprom0.writeInt8(c_program1ExpreSettingAddress, setting);
             break;
 
         case 2:
-            eeprom0.writeInt8(c_program2ExpreSetting, setting);
+            eeprom0.writeInt8(c_program2ExpreSettingAddress, setting);
             break;
 
         case 3:
-            eeprom0.writeInt8(c_program3ExpreSetting, setting);
+            eeprom0.writeInt8(c_program3ExpreSettingAddress, setting);
             break;
 
         case 4:
-            eeprom0.writeInt8(c_program4ExpreSetting, setting);
+            eeprom0.writeInt8(c_program4ExpreSettingAddress, setting);
             break;
 
         case 5:
-            eeprom0.writeInt8(c_program5ExpreSetting, setting);
+            eeprom0.writeInt8(c_program5ExpreSettingAddress, setting);
             break;
         
         case 6:
-            eeprom0.writeInt8(c_program6ExpreSetting, setting);
+            eeprom0.writeInt8(c_program6ExpreSettingAddress, setting);
             break;
 
         case 7:
-            eeprom0.writeInt8(c_program7ExpreSetting, setting);
+            eeprom0.writeInt8(c_program7ExpreSettingAddress, setting);
             break;
 
         default:
             break;
     }
+
+    #ifdef DEBUG
+        Serial.println("Writing program expression value");
+        Serial.print("Program : ");
+        Serial.println(program);
+        Serial.print("Setting : ");
+        Serial.println(setting);
+    #endif
 }
 
 void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 

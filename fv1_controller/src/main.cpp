@@ -88,6 +88,11 @@ void loop()
             {
                 hardware.processPot3(); // Process it
             }
+
+            if (hardware.getExprTurned()) // Expression pedal moved
+            {
+                hardware.processExpr(); // Process it
+            }
         }
     }
 
