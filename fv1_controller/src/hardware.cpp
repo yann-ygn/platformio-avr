@@ -964,6 +964,77 @@ void Hardware::processPot3()
     }
 }
 
+void Hardware::processExpr()
+{
+    if (m_presetMode)
+    {
+
+    }
+    else
+    {
+        switch (m_programExprSetting[m_currentProgram])
+        {
+            case 0:
+                if (m_effectHasPot0Enabled)
+                {
+                    if (m_effectIsDelay)
+                    {
+                        if (m_tapState) // Tap is enabled
+                        {
+                            m_tapState = 0; // Disable it
+                            mem.writeTapState(m_tapState); // Save it to memory
+
+                            if (m_divState) // Div is enabled
+                            {
+                                m_divState = 0; // Disable it
+                                mem.writeDivState(m_divState); // Save the state to memory
+                                m_divValue = 1; // Reset the div value
+                                mem.writeDivValue(m_divValue); // Save the value to memory
+                                tapDivLed.lightAllLedOff(); // Turn the LED off
+                            }
+                        }
+
+                        fv1.sendPot0Value(expr0.getMappedCurrExprValue());
+                        setIntervalFromPotValue(expr0.getCurrExprValue());
+
+                        m_tapLedTurnOff = true; // Trigger a tap LED turn off to avoid weird blinking effects
+                    }
+                    else
+                    {
+                        fv1.sendPot0Value(expr0.getMappedCurrExprValue());
+                    }
+                }
+                
+                break;
+
+            case 1:
+                if (m_effectHasPot1Enabled)
+                {
+                    fv1.sendPot1Value(expr0.getMappedCurrExprValue());
+                }
+
+                break;
+
+            case 2:
+                if (m_effectHasPot2Enabled)
+                {
+                    fv1.sendPot2Value(expr0.getMappedCurrExprValue());
+                }
+
+                break;
+
+            case 3:
+                if (m_effectHasPot3Enabled)
+                {
+                    dpot0.setPotValue(expr0.getMappedCurrExprValue());
+                }
+
+                break;
+        }
+    }
+    
+}
+
 void Hardware::processMidiMessage()
 {
     switch (midi.getCommandCode())
@@ -1426,6 +1497,11 @@ bool Hardware::getPot2Turned()
 bool Hardware::getPot3Turned()
 {
     return m_pot3Turned;
+}
+
+bool Hardware::getExprTurned()
+{
+    return m_exprTurned;
 }
 
 bool Hardware::getNewMidiMessage()

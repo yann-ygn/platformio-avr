@@ -24,9 +24,14 @@ bool Expr::exprPresent()
     }
 }
 
-int Expr::getCurrExprValue()
+uint16_t Expr::getCurrExprValue()
 {
     return m_currExprValue;
+}
+
+uint8_t Expr::getMappedCurrExprValue()
+{
+    return m_currExprValue >> 2;
 }
 
 bool Expr::exprTurned()

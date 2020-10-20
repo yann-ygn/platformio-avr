@@ -46,7 +46,14 @@ class Expr
          * 
          * @return int 
          */
-        int getCurrExprValue();
+        uint16_t getCurrExprValue();
+
+        /**
+         * @brief Get the Mapped Curr Expr Value object
+         * 
+         * @return uint8_t 
+         */
+        uint8_t getMappedCurrExprValue();
 
         /**
          * @brief Checks if the expression pedal moved.
