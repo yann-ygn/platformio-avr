@@ -69,6 +69,7 @@ class Hardware
         uint8_t m_presetDivValue = 0;
         uint16_t m_presetInterval = 0;
         uint16_t m_presetDivInterval = 0;
+        uint8_t m_presetExprSetting = 0;
 
         // Settings logic
         bool m_settingsMode = true;

@@ -472,8 +472,9 @@ void Hardware::loadPreset()
     uint8_t pot1 = 0;
     uint8_t pot2 = 0;
     uint8_t pot3 = 0;
+    m_presetExprSetting = 0;
 
-    mem.readPreset(m_currentPreset, & program, & m_presetTapState, & m_presetDivState, & m_presetDivValue, & m_presetInterval, & m_presetDivInterval, & pot0, & pot1, & pot2, & pot3); // Read the values from memory
+    mem.readPreset(m_currentPreset, & program, & m_presetTapState, & m_presetDivState, & m_presetDivValue, & m_presetInterval, & m_presetDivInterval, & pot0, & pot1, & pot2, & pot3, & m_presetExprSetting); // Read the values from memory
 
     m_effectIsDelay = programs[program].m_delayEffect; // Load program parameters
     m_effectHasPot0Enabled = programs[program].m_pot0Enabled; // Load program parameters
@@ -573,7 +574,8 @@ void Hardware::savePreset()
             mem.writePresetMode(m_presetMode); // Save the state
 
             mem.writePreset(m_currentPreset, m_currentProgram, m_tapState, m_divState, m_divValue, m_interval, m_divInterval,
-                            pot0.getMappedCurrentPotValue(), pot1.getMappedCurrentPotValue(), pot2.getMappedCurrentPotValue(), pot3.getMappedCurrentPotValue());
+                            pot0.getMappedCurrentPotValue(), pot1.getMappedCurrentPotValue(), pot2.getMappedCurrentPotValue(), 
+                            pot3.getMappedCurrentPotValue(), m_programExprSetting[m_currentProgram]);
 
             mem.writeCurrentPreset(m_currentPreset); // Save the state
             loadPreset(); // Load the current preset

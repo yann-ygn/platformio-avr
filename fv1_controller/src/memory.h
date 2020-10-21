@@ -97,6 +97,7 @@ class Memory
          * data[9] : pot1Value
          * data[10] : pot2Value
          * data[11] : pot3Value
+         * data[12] : m_programExprSetting
          */
 
         /**
@@ -106,9 +107,9 @@ class Memory
          * @param data 
          */
         void readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
-                        uint16_t * divinterval, uint8_t * pot0, uint8_t * pot1, uint8_t * pot2, uint8_t * pot3);
+                        uint16_t * divinterval, uint8_t * pot0, uint8_t * pot1, uint8_t * pot2, uint8_t * pot3, uint8_t * expr);
         void writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t div, uint8_t divvalue, uint16_t interval, 
-                        uint16_t divinterval, uint8_t pot0, uint8_t pot1, uint8_t pot2, uint8_t pot3);
+                        uint16_t divinterval, uint8_t pot0, uint8_t pot1, uint8_t pot2, uint8_t pot3, uint8_t expr);
 };
 
 #endif
