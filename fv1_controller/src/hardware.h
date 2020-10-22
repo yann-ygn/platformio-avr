@@ -134,6 +134,13 @@ class Hardware
          */
         void setIntervalFromPotValue(uint16_t value);
 
+        /**
+         * @brief Map the preset interval to the pot value in relation to the min and max interval
+         * 
+         * @param value 
+         */
+        void setPresetIntervalFromPotValue(uint16_t value);
+
     public:
         /**
          * @brief Setup the hardware devices

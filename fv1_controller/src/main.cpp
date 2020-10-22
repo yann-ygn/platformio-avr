@@ -45,6 +45,11 @@ void loop()
             {
                 hardware.prevPreset(); // Load the previous preset
             }
+
+            if (hardware.getExprTurned())
+            {
+                hardware.processExpr();
+            }
         }
 
         else // Program mode active

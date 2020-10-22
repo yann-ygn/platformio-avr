@@ -75,6 +75,14 @@ void Hardware::hardwareStartup()
         bypassFsw.tempSwitchPoll();
         selectorSw.tempSwitchPoll();
         tapFsw.tempSwitchPoll();
+        pot0.analogPotTurned();
+        pot1.analogPotTurned();
+        pot2.analogPotTurned();
+
+        if (expr0.exprPresent())
+        {
+            expr0.exprTurned();
+        }
     }
 }
 
@@ -351,6 +359,7 @@ void Hardware::loadProgram()
     m_effectHasPot1Enabled = programs[m_currentProgram].m_pot1Enabled; // Load program parameters
     m_effectHasPot2Enabled = programs[m_currentProgram].m_pot2Enabled; // Load program parameters
     m_effectHasPot3Enabled = programs[m_currentProgram].m_pot3Enabled; // Load program parameters
+    m_programExprSetting[m_currentProgram] = mem.readProgramExprSetting(m_currentProgram); // Load the expr setting
 
     fv1.sendProgramChange(m_currentProgram);
     mem.writeCurrentProgram(m_currentProgram);
@@ -908,6 +917,11 @@ void Hardware::setIntervalFromPotValue(uint16_t value)
     #endif
 }
 
+void Hardware::setPresetIntervalFromPotValue(uint16_t value)
+{
+    m_presetInterval =  map(value, 0, 1023, m_effectMinInterval, m_effectMaxInterval);
+}
+
 void Hardware::processPot0()
 {
     if (m_effectIsDelay) // Current effect is a delay
@@ -970,7 +984,60 @@ void Hardware::processExpr()
 {
     if (m_presetMode)
     {
+        switch (m_presetExprSetting)
+        {
+        case 0:
+            if (m_effectHasPot0Enabled)
+            {
+                if (m_effectIsDelay)
+                {
+                    if (m_presetDivState)
+                    {
+                        m_presetDivState = 0;
+                        m_presetDivValue = 1;
+                        tapDivLed.lightAllLedOff();
+                    }
 
+                    fv1.sendPot0Value(expr0.getMappedCurrExprValue());
+                    setPresetIntervalFromPotValue(expr0.getCurrExprValue());
+
+                    m_tapLedTurnOff = true;
+                }
+                else
+                {
+                    fv1.sendPot0Value(expr0.getMappedCurrExprValue());
+                }
+            }
+
+            break;
+
+        case 1:
+            if (m_effectHasPot1Enabled)
+            {
+                fv1.sendPot1Value(expr0.getMappedCurrExprValue());
+            }
+
+            break;
+
+        case 2:
+            if (m_effectHasPot2Enabled)
+            {
+                fv1.sendPot2Value(expr0.getMappedCurrExprValue());
+            }
+
+            break;
+
+        case 3:
+            if (m_effectHasPot3Enabled)
+            {
+                dpot0.setPotValue(expr0.getMappedCurrExprValue());
+            }
+
+            break;
+
+        default:
+            break;
+        }
     }
     else
     {
@@ -1423,6 +1490,17 @@ void Hardware::settingsMode()
 
     selector.setMinCounterValue(0);
     selector.setMaxCounterValue(7);
+
+    if(m_presetMode)
+    {
+        selector.setCounter(m_currentPreset);
+    }
+
+    else
+    {
+        selector.setCounter(m_currentProgram);
+    }
+    
     selectorLed.lightAllLedOff();
 }
 
