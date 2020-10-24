@@ -303,7 +303,7 @@ void Hardware::turnPedalOnOff()
     {
         if (m_presetMode)
         {
-            selectorLed.lightLed(m_currentProgram);
+            selectorLed.lightLed(7 - m_currentPreset);
 
             if (m_presetDivState)
             {

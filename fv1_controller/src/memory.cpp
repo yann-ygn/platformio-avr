@@ -456,12 +456,13 @@ void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_
     * expr = data[12];
     
     #ifdef DEBUG
-        Serial.println("Reading");
+        Serial.print("Reading preset : ");
+        Serial.println(preset);
         Serial.print("program : ");
         Serial.println(data[0]);
-        Serial.print("tap : ");
+        Serial.print("tapstate : ");
         Serial.println(data[1]);
-        Serial.print("div : ");
+        Serial.print("divstate : ");
         Serial.println(data[2]);
         Serial.print("divvalue : ");
         Serial.println(data[3]);
@@ -507,12 +508,13 @@ void Memory::writePreset(uint8_t preset, uint8_t program, uint8_t tap, uint8_t d
     data[12] = expr;
 
     #ifdef DEBUG
-        Serial.println("Writing");
+        Serial.print("Writing preset : ");
+        Serial.println(preset);
         Serial.print("program : ");
         Serial.println(data[0]);
-        Serial.print("tap : ");
+        Serial.print("tapstate : ");
         Serial.println(data[1]);
-        Serial.print("div : ");
+        Serial.print("divstate : ");
         Serial.println(data[2]);
         Serial.print("divvalue : ");
         Serial.println(data[3]);
