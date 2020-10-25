@@ -71,9 +71,14 @@ void Memory::memoryReset()
     writeDivIntervalValue(0);
     writeIntervalValue(0);
     
-    for (uint8_t i =0; i < 8; i++)
+    for (uint8_t i = 0; i < 8; i++)
     {
         writeProgramExprSetting(i, 0);
+    }
+
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        writePreset(i, 0, 0, 0, 1, 500, 500, 128, 128, 128,128, 0);
     }
 }
 
