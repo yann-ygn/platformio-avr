@@ -70,7 +70,7 @@ void Memory::memoryReset()
     writeDivValue(1);
     writeDivIntervalValue(0);
     writeIntervalValue(0);
-    
+
     for (uint8_t i = 0; i < 8; i++)
     {
         writeProgramExprSetting(i, 0);
@@ -404,7 +404,7 @@ void Memory::writeProgramExprSetting(uint8_t program, uint8_t setting)
         case 5:
             eeprom0.writeInt8(c_program5ExpreSettingAddress, setting);
             break;
-        
+
         case 6:
             eeprom0.writeInt8(c_program6ExpreSettingAddress, setting);
             break;
@@ -459,7 +459,7 @@ void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_
     * pot2 = data[10];
     * pot3 = data[11];
     * expr = data[12];
-    
+
     #ifdef DEBUG
         Serial.print("Reading preset : ");
         Serial.println(preset);
