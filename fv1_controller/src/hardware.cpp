@@ -1366,6 +1366,7 @@ void Hardware::settingsMode()
 
     selector.setMinCounterValue(0); // Set the encoder min value for the main menu
     selector.setMaxCounterValue(1); // Set the encoder max value for the main menu
+    selector.setCounter(0);
 
     while (m_settingsMode)
     {
@@ -1434,6 +1435,7 @@ void Hardware::settingsMode()
 
                 case 3:
                     mem.writeProgramExprSetting(m_selectedProgram, m_menuItem);
+                    m_programExprSetting[m_selectedProgram] = m_menuItem;
 
                     m_menuLevel = 0; // Reset the menu level
                     m_menuItem = 0; // Reset the menu item
