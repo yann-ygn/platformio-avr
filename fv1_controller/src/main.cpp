@@ -101,9 +101,12 @@ void loop()
         }
     }
 
-    if (hardware.getTapSwitchLongPress()) // Tap footswitch long press
+    else // The pedal is off
     {
-        hardware.settingsMode(); // Enter settings menu
+        if (hardware.getTapSwitchLongPress()) // Tap footswitch long press
+        {
+            hardware.settingsMode(); // Enter settings menu
+        }
     }
 
     if (hardware.getNewMidiMessage()) // New midi message
