@@ -112,7 +112,7 @@ class Eeprom
          * @param data 
          * @param length 
          */
-        void readArray(uint16_t address, uint8_t * data, uint8_t length);
+        void readArray(uint16_t address, uint8_t* data, uint8_t length);
 
         /**
          * @brief Write an array of 8 bits integer starting at the selected memory address
@@ -121,7 +121,7 @@ class Eeprom
          * @param data 
          * @param length 
          */
-        void writeArray(uint16_t address, uint8_t * data, uint8_t length);
+        void writeArray(uint16_t address, uint8_t* data, uint8_t length);
 
         #ifdef DEBUG
             void testInt8();

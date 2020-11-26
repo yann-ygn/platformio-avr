@@ -117,7 +117,7 @@ void Eeprom::writeInt16(uint16_t address, uint16_t data)
 	deselect();
 }
 
-void Eeprom::readArray(uint16_t address, uint8_t * data, uint8_t length)
+void Eeprom::readArray(uint16_t address, uint8_t* data, uint8_t length)
 {
 	while (isWip()) {};
 
@@ -131,7 +131,7 @@ void Eeprom::readArray(uint16_t address, uint8_t * data, uint8_t length)
 	deselect();
 }
 
-void Eeprom::writeArray(uint16_t address, uint8_t * data, uint8_t length)
+void Eeprom::writeArray(uint16_t address, uint8_t* data, uint8_t length)
 {
 	while (isWip()) {};
 

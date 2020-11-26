@@ -426,8 +426,8 @@ void Memory::writeProgramExprSetting(uint8_t program, uint8_t setting)
     #endif
 }
 
-void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
-                        uint16_t * divinterval, uint8_t * pot0, uint8_t * pot1, uint8_t * pot2, uint8_t * pot3, uint8_t * expr)
+void Memory::readPreset(uint8_t preset, uint8_t* program, uint8_t* tap, uint8_t* div, uint8_t* divvalue, uint16_t* interval, 
+                        uint16_t* divinterval, uint8_t* pot0, uint8_t* pot1, uint8_t* pot2, uint8_t* pot3, uint8_t* expr)
 {
     if (preset > 16)
     {
@@ -448,17 +448,17 @@ void Memory::readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_
         case 7 : eeprom0.readArray(c_preset7Address, data, 13); break;
     }
 
-    * program = data[0];
-    * tap = data[1];
-    * div = data[2];
-    * divvalue = data[3];
-    * interval = (data[5] << 8) + data[4];
-    * divinterval = (data[7] << 8) + data[6];
-    * pot0 = data[8];
-    * pot1 = data[9];
-    * pot2 = data[10];
-    * pot3 = data[11];
-    * expr = data[12];
+    *program = data[0];
+    *tap = data[1];
+    *div = data[2];
+    *divvalue = data[3];
+    *interval = (data[5] << 8) + data[4];
+    *divinterval = (data[7] << 8) + data[6];
+    *pot0 = data[8];
+    *pot1 = data[9];
+    *pot2 = data[10];
+    *pot3 = data[11];
+    *expr = data[12];
 
     #ifdef DEBUG
         Serial.print("Reading preset : ");
