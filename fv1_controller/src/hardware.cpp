@@ -378,7 +378,7 @@ void Hardware::loadProgram()
                 {
                     if (m_bypassState)
                     {
-                        tapDivLed.lightLed(m_divValue); // Light the div indicator
+                        tapDivLed.lightLed(5 - m_divValue); // Light the div indicator
                     }                    
 
                     if (m_divInterval > m_effectMaxInterval) // Current interval over the max program value
@@ -406,6 +406,8 @@ void Hardware::loadProgram()
                     }
 
                     fv1.sendPot0Value(getMappedMinMaxInterval()); // Send the mapped interval value to the DSP   
+                
+                    tapDivLed.lightAllLedOff(); // Reset the tap LED
                 }
             }
             else // Tap wasn't active
