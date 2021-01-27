@@ -36,7 +36,7 @@ class LedDriver
         LedDriver(uint8_t cspin) : m_csPin(cspin) { }
 
         /**
-         * @brief Setup the µC's pins and start de SPI bus
+         * @brief Setup the µC's pins and start the SPI bus
          */
         void ledDriverSetup();
 };

@@ -1,9 +1,16 @@
 #include <Arduino.h>
+#include <SPI.h>
 
-void setup() {
-  // put your setup code here, to run once:
+uint8_t csPin = 49;
+uint8_t data[16][16] = {};
+
+void setup() 
+{
+	pinMode(csPin, OUTPUT);
+	digitalWrite(csPin, HIGH);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+	SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+
 }
