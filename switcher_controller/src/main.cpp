@@ -12,5 +12,35 @@ void setup()
 
 void loop() {
 	SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+	data[0][0] = 1;
+	data[0][1] = 0;
 
+	for (uint8_t i = 15; i == 0; i--) // row
+	{
+		for (uint8_t j = 15; j == 0; j--)
+		{
+			SPI.transfer(data[i][j]);
+		}
+	}
+
+	digitalWrite(csPin, LOW);
+	digitalWrite(csPin, HIGH);
+
+	delay(500);
+
+	data[0][0] = 0;
+	data[0][1] = 1;
+
+	for (uint8_t i = 15; i == 0; i--) // row
+	{
+		for (uint8_t j = 15; j == 0; j--)
+		{
+			SPI.transfer(data[i][j]);
+		}
+	}
+
+	digitalWrite(csPin, LOW);
+	digitalWrite(csPin, HIGH);
+
+	delay(500);
 }
