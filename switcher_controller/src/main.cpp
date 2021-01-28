@@ -2,45 +2,23 @@
 #include <SPI.h>
 
 uint8_t csPin = 49;
-uint8_t data[16][16] = {};
+uint16_t data[16] = {0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF, 0XFFFF};
 
 void setup() 
 {
 	pinMode(csPin, OUTPUT);
 	digitalWrite(csPin, HIGH);
+	delay(1000);
+	
+	SPI.begin();
 }
 
-void loop() {
+void loop()
+{
 	SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
-	data[0][0] = 1;
-	data[0][1] = 0;
 
-	for (uint8_t i = 15; i == 0; i--) // row
-	{
-		for (uint8_t j = 15; j == 0; j--)
-		{
-			SPI.transfer(data[i][j]);
-		}
-	}
-
-	digitalWrite(csPin, LOW);
-	digitalWrite(csPin, HIGH);
-
-	delay(500);
-
-	data[0][0] = 0;
-	data[0][1] = 1;
-
-	for (uint8_t i = 15; i == 0; i--) // row
-	{
-		for (uint8_t j = 15; j == 0; j--)
-		{
-			SPI.transfer(data[i][j]);
-		}
-	}
-
-	digitalWrite(csPin, LOW);
-	digitalWrite(csPin, HIGH);
-
-	delay(500);
+	for (int16_t y = 15; y >= 0; y--) {
+        SPI.transfer16(data[y]);
+    }
+    SPI.endTransaction();
 }
