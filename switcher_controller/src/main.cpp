@@ -1,31 +1,32 @@
 #include <Arduino.h>
-#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
-uint8_t csPin = 1;
-uint16_t data[16] = {0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000};
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-void setup() 
-{
-	pinMode(csPin, OUTPUT);
-	digitalWrite(csPin, HIGH);
-	delay(1000);
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
-	SPI.begin();
+void setup() {
+  Serial.begin(115200);
 
-	SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;);
+  }
+  delay(2000);
+  display.clearDisplay();
 
-	for (int16_t y = 15; y >= 0; y--) {
-        SPI.transfer16(data[y]);
-    }
-    SPI.endTransaction();
-	
-    delayMicroseconds(8);
-    digitalWrite(csPin, LOW);
-    delayMicroseconds(8);
-    digitalWrite(csPin, HIGH);
+  display.setTextSize(6);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  // Display static text
+  display.println("A|3");
+  display.display(); 
 }
 
-void loop()
-{
-	
+void loop() {
+  
 }
