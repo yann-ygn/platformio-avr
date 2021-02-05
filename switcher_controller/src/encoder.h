@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
-#ifndef SELECTOR_H
-#define SELECTOR_H
+#ifndef ENCODER_H
+#define ENCODER_H
 
 /**
  * @brief Read the state of an encoder and increments/decrements a counter in regards to a set max/min value
