@@ -22,7 +22,7 @@ void setup() {
   display.setTextSize(6);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
-  // Display static text
+  
   display.println("A|3");
   display.display(); 
 }
