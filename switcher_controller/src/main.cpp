@@ -23,6 +23,7 @@ void setup() {
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
   
+  
   display.println("A|3");
   display.display(); 
 }
