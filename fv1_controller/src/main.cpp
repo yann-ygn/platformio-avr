@@ -6,7 +6,7 @@
 
 Hardware hardware;
 
-void setup() 
+void setup()
 {
     hardware.hardwareSetup();
     delay(500);
@@ -16,10 +16,10 @@ void setup()
     hardware.hardwareStartup();
 }
 
-void loop() 
+void loop()
 {
     hardware.hardwarePoll(); // Poll the moving parts
-    
+
     if (hardware.getBypassState()) // The pedal is on
     {
         hardware.blinkTapLed();
@@ -28,7 +28,7 @@ void loop()
         {
             hardware.presetModeSwitch(); // Switch the preset/program mode
         }
-        
+
         if (hardware.getPresetMode()) // Preset mode active
         {
             if (hardware.getSelectorMove()) // The selector moved

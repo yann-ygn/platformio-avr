@@ -16,9 +16,9 @@ class AnalogPot
     public:
         /**
          * @brief Construct a new Pot object
-         * 
+         *
          * @param pin ADC pin #
-         */     
+         */
         AnalogPot(uint8_t pin) : m_pin(pin) { }
 
         /**
@@ -28,8 +28,8 @@ class AnalogPot
 
         /**
          * @brief Get the Current Pot Value object
-         * 
-         * @return int 
+         *
+         * @return int
          */
         uint16_t getCurrentPotValue();
 
@@ -37,26 +37,26 @@ class AnalogPot
          * @brief Set the Current Pot Value object
          */
         void setCurrentPotValue(uint16_t value);
-        
+
         /**
          * @brief Get the Last Pot Value object
-         * 
-         * @return int 
+         *
+         * @return int
          */
         uint16_t getLastPotValue();
 
         /**
          * @brief Get the current value mapped to 8bits
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getMappedCurrentPotValue();
 
         /**
          * @brief Check if the pot value has changed since the last cycle
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool analogPotTurned();
 };

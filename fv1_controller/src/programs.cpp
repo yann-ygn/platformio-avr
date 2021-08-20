@@ -40,7 +40,7 @@ program programs[8] =
         .m_pot2Enabled = true,
         .m_pot3Enabled = true
     },
-    //programs[3] : 
+    //programs[3] :
     {
         .m_id = 0,
         .m_delayEffect = true,
@@ -52,7 +52,7 @@ program programs[8] =
         .m_pot2Enabled = true,
         .m_pot3Enabled = true
     },
-    //programs[4] : 
+    //programs[4] :
     {
         .m_id = 0,
         .m_delayEffect = true,
@@ -64,7 +64,7 @@ program programs[8] =
         .m_pot2Enabled = true,
         .m_pot3Enabled = true
     },
-    //programs[5] : 
+    //programs[5] :
     {
         .m_id = 0,
         .m_delayEffect = false,
@@ -76,7 +76,7 @@ program programs[8] =
         .m_pot2Enabled = true,
         .m_pot3Enabled = true
     },
-    //programs[6] : 
+    //programs[6] :
     {
         .m_id = 0,
         .m_delayEffect = false,
@@ -88,7 +88,7 @@ program programs[8] =
         .m_pot2Enabled = true,
         .m_pot3Enabled = true
     },
-    //programs[7] : 
+    //programs[7] :
     {
         .m_id = 0,
         .m_delayEffect = false,

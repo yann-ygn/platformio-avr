@@ -26,11 +26,10 @@ class LedDriver
          */
         void deselect();
 
-    
     public:
         /**
          * @brief Construct a new Led Driver object
-         * 
+         *
          * @param cspin CS pin #
          */
         LedDriver(uint8_t cspin) : m_csPin(cspin) { }
@@ -49,22 +48,22 @@ class LedDriver8 : public LedDriver
     public:
         /**
          * @brief Construct a new Led Driver 8 object
-         * 
+         *
          * @param cspin CS pin #
          */
         LedDriver8(uint8_t cspin) : LedDriver(cspin) { }
 
         /**
          * @brief Light the selected LED
-         * 
+         *
          * @param led LED #
          */
-        void lightLed(uint8_t led);     
+        void lightLed(uint8_t led);
 
         /**
-         * @brief Toggles all the LED off 
+         * @brief Toggles all the LED off
          */
-        void lightAllLedOff(); 
+        void lightAllLedOff();
 
         #ifdef DEBUG
             /**

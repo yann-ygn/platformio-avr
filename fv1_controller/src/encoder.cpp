@@ -38,7 +38,7 @@ bool Encoder::encoderPoll()
 
         return true;
     }
-    
+
     else if (state == 0x20)
     {
         m_counter ++;

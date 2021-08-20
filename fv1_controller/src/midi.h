@@ -33,9 +33,9 @@ class Midi
 
         /**
          * @brief Process the incoming data bytes to form complete MIDI PC and CC messages.
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool completeMidiMessage();
 
@@ -46,36 +46,36 @@ class Midi
 
         /**
          * @brief Get the Midi Channel object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getMidiChannel();
 
         /**
          * @brief Set the Midi Channel object
-         * 
-         * @param channel 
+         *
+         * @param channel
          */
         void setMidiChannel(uint8_t channel);
 
         /**
          * @brief Get the Command Code object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getCommandCode();
 
         /**
          * @brief Get the Data Byte1 object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getDataByte1();
 
         /**
          * @brief Get the Data Byte2 object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getDataByte2();
 };

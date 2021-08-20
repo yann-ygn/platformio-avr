@@ -353,7 +353,7 @@ uint8_t Memory::readProgramExprSetting(uint8_t program)
         case 5:
             setting = eeprom0.readInt8(c_program5ExpreSettingAddress);
             break;
-        
+
         case 6:
             setting = eeprom0.readInt8(c_program6ExpreSettingAddress);
             break;

@@ -22,7 +22,7 @@ void TemporarySwitch::tempSwitchPoll()
         m_rawState = 0;
         m_deglitchTime = m_now;
     }
-    
+
     if (m_rawState && ((m_now - m_deglitchTime) > m_deglitchPeriod))
     {
         m_deglitchedState = m_tempSwitchState;

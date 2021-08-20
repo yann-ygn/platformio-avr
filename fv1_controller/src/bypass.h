@@ -15,7 +15,7 @@ class Bypass
     public:
         /**
          * @brief Construct a new Bypass object
-         * 
+         *
          * @param rpin Relay pin #
          * @param okpin Optical relay pin #
          */

@@ -95,15 +95,15 @@ class Hardware
 
         /**
          * @brief Returns the current interval mapped to 8bits
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getMappedInterval();
 
         /**
          * @brief Returns the current divided interval mapped to 8 bits
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getMappedDivInterval();
 
@@ -129,15 +129,15 @@ class Hardware
 
         /**
          * @brief Map the interval to the pot value in relation to the min and max interval
-         * 
-         * @param value 
+         *
+         * @param value
          */
         void setIntervalFromPotValue(uint16_t value);
 
         /**
          * @brief Map the preset interval to the pot value in relation to the min and max interval
-         * 
-         * @param value 
+         *
+         * @param value
          */
         void setPresetIntervalFromPotValue(uint16_t value);
 
@@ -249,145 +249,144 @@ class Hardware
 
         /**
          * @brief Midi logic
-         * 
          */
         void processMidiMessage();
 
         /**
-         * @brief 
+         * @brief
          */
         void settingsMode();
 
         /**
          * @brief Get the Current Program object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getCurrentProgram();
 
         /**
          * @brief Get the Preset Mode object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getPresetMode();
 
         /**
          * @brief Get the Bypass Switch Press object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getBypassSwitchPress();
 
         /**
          * @brief Get the Selector Move object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getSelectorMove();
 
         /**
          * @brief Get the Selector Switch Press object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getSelectorSwitchPress();
 
         /**
          * @brief Get the Selector Switch Long Press object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getSelectorSwitchLongPress();
 
         /**
          * @brief Get the Selector Switch Released object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getSelectorSwitchReleased();
 
         /**
          * @brief Get the Tap Switch Press object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getTapSwitchPress();
 
         /**
          * @brief Get the Tap Switch Long Press object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getTapSwitchLongPress();
 
         /**
          * @brief Get the Tapswitch Release object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getTapswitchRelease();
 
         /**
          * @brief Get the Bypass State object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getBypassState();
 
         /**
          * @brief Get the Pot0 Turned object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getPot0Turned();
 
         /**
          * @brief Get the Pot1 Turned object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getPot1Turned();
 
         /**
          * @brief Get the Pot2 Turned object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getPot2Turned();
 
         /**
          * @brief Get the Pot3 Turned object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getPot3Turned();
 
         /**
          * @brief Get the Expr Turned object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getExprTurned();
 
         /**
          * @brief Get the New Midi Message object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getNewMidiMessage();
 };

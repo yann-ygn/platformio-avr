@@ -6,7 +6,7 @@
 #define MEMORY_H
 
 /**
- * @brief Manages 
+ * @brief Manages
  */
 class Memory
 {
@@ -48,7 +48,7 @@ class Memory
         void memoryInitialization();
         void memoryReset();
         void memoryTest();
-        
+
         uint8_t readInitialSetupState();
         void writeInitialSetupState(uint8_t state);
 
@@ -101,10 +101,10 @@ class Memory
          */
 
         /**
-         * @brief 
-         * 
-         * @param preset 
-         * @param data 
+         * @brief
+         *
+         * @param preset
+         * @param data
          */
         void readPreset(uint8_t preset, uint8_t * program, uint8_t * tap, uint8_t * div, uint8_t * divvalue, uint16_t * interval, 
                         uint16_t * divinterval, uint8_t * pot0, uint8_t * pot1, uint8_t * pot2, uint8_t * pot3, uint8_t * expr);

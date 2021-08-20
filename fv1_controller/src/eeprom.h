@@ -35,30 +35,30 @@ class Eeprom
 
         /**
          * @brief Selects the memory address to write or read
-         * 
-         * @param address 
+         *
+         * @param address
          */
         void sendAddress(uint16_t address);
         /**
          * @brief Check the status of the WIP bit
-         * 
+         *
          * @return true if a read/write is still in progress
-         * @return false 
+         * @return false
          */
         bool isWip();
 
     public:
         /**
          * @brief Construct a new Eeprom object
-         * 
+         *
          * @param pin CS pin #
          */
         Eeprom(uint8_t pin) : m_csPin(pin) { }
-        
+
         /**
          * @brief Returns the status register
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t readStatusRegister();
 
@@ -75,51 +75,51 @@ class Eeprom
 
         /**
          * @brief Read a 8bit value from the select memory address
-         * 
-         * @param address 
-         * @return uint8_t 
+         *
+         * @param address
+         * @return uint8_t
          */
         uint8_t readInt8(uint16_t address);
 
         /**
          * @brief Writes a 8 bit value to the selected memory address
-         * 
-         * @param address 
-         * @param data 
+         *
+         * @param address
+         * @param data
          */
         void writeInt8(uint16_t address, uint8_t data);
 
         /**
          * @brief Read a 16bit value from the selected memory address
-         * 
-         * @param address 
-         * @return uint16_t 
+         *
+         * @param address
+         * @return uint16_t
          */
         uint16_t readInt16(uint16_t address);
 
         /**
          * @brief Writes a 16 bit value to the selected memory address
-         * 
-         * @param address 
-         * @param data 
+         *
+         * @param address
+         * @param data
          */
         void writeInt16(uint16_t address, uint16_t data);
 
         /**
          * @brief Read an array of 8 bits integer starting at the selected memory address
-         * 
-         * @param address 
-         * @param data 
-         * @param length 
+         *
+         * @param address
+         * @param data
+         * @param length
          */
         void readArray(uint16_t address, uint8_t* data, uint8_t length);
 
         /**
          * @brief Write an array of 8 bits integer starting at the selected memory address
-         * 
-         * @param address 
-         * @param data 
-         * @param length 
+         *
+         * @param address
+         * @param data
+         * @param length
          */
         void writeArray(uint16_t address, uint8_t* data, uint8_t length);
 

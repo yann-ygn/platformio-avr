@@ -19,9 +19,9 @@ class Expr
     public:
         /**
          * @brief Construct a new Expr object.
-         * 
-         * @param epin 
-         * @param cpin 
+         *
+         * @param epin
+         * @param cpin
          */
         Expr(uint8_t epin, uint8_t cpin) : m_exprPin(epin), m_checkPin(cpin)
         {
@@ -35,31 +35,31 @@ class Expr
 
         /**
          * @brief Check if the expression pedal is plugged in.
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool exprPresent();
 
         /**
          * @brief Get the Curr Expr Value object.
-         * 
-         * @return int 
+         *
+         * @return int
          */
         uint16_t getCurrExprValue();
 
         /**
          * @brief Get the Mapped Curr Expr Value object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getMappedCurrExprValue();
 
         /**
          * @brief Checks if the expression pedal moved.
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool exprTurned();
 };

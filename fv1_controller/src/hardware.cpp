@@ -109,12 +109,12 @@ void Hardware::restoreLastState()
     }
     else // program mode
     {
-        selector.setCounter(m_currentProgram); // Set the encoder counter        
+        selector.setCounter(m_currentProgram); // Set the encoder counter
         loadProgram();
     }
 
     m_bypassState = mem.readBypassState(); // Read the bypass state from memory
-    turnPedalOnOff();   
+    turnPedalOnOff();
 }
 
 void Hardware::hardwarePoll()
@@ -379,13 +379,13 @@ void Hardware::loadProgram()
                     if (m_bypassState)
                     {
                         tapDivLed.lightLed(5 - m_divValue); // Light the div indicator
-                    }                    
+                    }
 
                     if (m_divInterval > m_effectMaxInterval) // Current interval over the max program value
                     {
                         m_divInterval = m_effectMaxInterval; // Set it to the max value
                     }
-                    
+
                     if (m_divInterval < m_effectMinInterval) // Current interval under the min program value
                     {
                         m_divInterval = m_effectMinInterval; // Set it to the min value
@@ -405,8 +405,8 @@ void Hardware::loadProgram()
                         m_interval = m_effectMinInterval; // Set it to the min value
                     }
 
-                    fv1.sendPot0Value(getMappedMinMaxInterval()); // Send the mapped interval value to the DSP   
-                
+                    fv1.sendPot0Value(getMappedMinMaxInterval()); // Send the mapped interval value to the DSP
+
                     tapDivLed.lightAllLedOff(); // Reset the tap LED
                 }
             }
@@ -786,7 +786,7 @@ void Hardware::blinkTapLed()
             tapLed.setPwmLedState(m_tapLedBlinkValue);
         }
     }
-    
+
     if (m_tapLedTurnOff)
     {
         tapLed.ledTurnOff();
@@ -824,8 +824,8 @@ void Hardware::calculateInterval()
     }
 
     mem.writeIntervalValue(m_interval); // Save it to memory
-    
-    if (m_divState) // Division is enabled 
+
+    if (m_divState) // Division is enabled
     {
         calculateDivInterval(); // Trigger the divided interval calculation
     }
@@ -1075,7 +1075,7 @@ void Hardware::processExpr()
                         fv1.sendPot0Value(expr0.getMappedCurrExprValue());
                     }
                 }
-                
+
                 break;
 
             case 1:
@@ -1103,7 +1103,6 @@ void Hardware::processExpr()
                 break;
         }
     }
-    
 }
 
 void Hardware::processMidiMessage()
@@ -1145,7 +1144,6 @@ void Hardware::processMidiMessage()
             {
                 midi.resetMidiMessage(); // Reset stored midi messages
             }
-            
 
             break;
 
@@ -1156,7 +1154,7 @@ void Hardware::processMidiMessage()
                     if (midi.getDataByte2() == 0x00) // Turn off
                     {
                         if (m_bypassState) // Only process if the effect is on
-                        {                            
+                        {
                             m_bypassState = 0; // Set the bypass state
                             mem.writeBypassState(m_bypassState); // Write it to memory
                             turnPedalOnOff(); // Process
@@ -1424,7 +1422,7 @@ void Hardware::settingsMode()
                     selector.setMaxCounterValue(1); // Set the encoder max value for the main menu
                     selector.setCounter(0); // Reset the selector counter
                     break; // End midi menu
-                
+
                 case 2: // Expression pedal menu
                     m_selectedProgram = m_menuItem; // Store the program #
                     m_menuLevel = 3; // Enter expression pedal sub menu
@@ -1504,7 +1502,7 @@ void Hardware::settingsMode()
     {
         selector.setCounter(m_currentProgram);
     }
-    
+
     selectorLed.lightAllLedOff();
 }
 

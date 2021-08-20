@@ -189,7 +189,7 @@ void Eeprom::writeArray(uint16_t address, uint8_t* data, uint8_t length)
 
 	void Eeprom::testArray()
 	{
-		uint8_t blah1[5] = { 0, 0, 0, 0, 0 };
+		//uint8_t blah1[5] = { 0, 0, 0, 0, 0 };
 		uint8_t blah2[5] = { 5, 10, 95, 159, 254 };
 
 		uint8_t result[5] = { };
@@ -202,7 +202,7 @@ void Eeprom::writeArray(uint16_t address, uint8_t* data, uint8_t length)
 		Serial.println(result[3]);
 		Serial.println(result[4]);
 
-		delay(1000); 
+		delay(1000);
 
 		writeArray(0, blah2, 5);
 		readArray(0, result, 5);
@@ -212,7 +212,7 @@ void Eeprom::writeArray(uint16_t address, uint8_t* data, uint8_t length)
 		Serial.println(result[3]);
 		Serial.println(result[4]);
 
-		delay(1000); 
+		delay(1000);
 	}
 
 	uint8_t Eeprom::test()

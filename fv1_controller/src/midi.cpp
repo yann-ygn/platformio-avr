@@ -89,7 +89,7 @@ bool Midi::completeMidiMessage()
                 resetMidiMessage();
                 return false;
             }
-        }        
+        }
     }
     else
     {
