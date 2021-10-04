@@ -412,12 +412,14 @@ void Hardware::loadProgram()
             }
             else // Tap wasn't active
             {
+                tapDivLed.lightAllLedOff(); // Turn off the div LED in case it was active from a preset
                 fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value tot he DSP
                 setIntervalFromPotValue(pot0.getCurrentPotValue()); // Set the interval according to pot0 value
             }
         }
         else // Effect doesn't have tap enabled
         {
+            tapDivLed.lightAllLedOff(); // Turn off the div LED in case it was active from a preset
             fv1.sendPot0Value(pot0.getMappedCurrentPotValue()); // Send pot0 value to the DSP
             setIntervalFromPotValue(pot0.getCurrentPotValue()); // Set the interval according to pot0 value
         }
