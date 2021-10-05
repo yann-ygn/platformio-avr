@@ -4,7 +4,7 @@
 #define RESET   "\e[1;0m"
 #define WHITE   "\e[1;037m"
 #define BLACK   "\e[1;030m"
-#define RED     "\e[1;031m"
+#define RED     "\e[0;031m"
 #define GREEN   "\e[1;032m"
 #define YELLOW  "\e[1;033m"
 #define BLUE    "\e[1;034m"
@@ -16,6 +16,12 @@
 #define UNDERLINE "\e[1;4m"
 
 /**
+ * @brief Reset the default character
+ *
+ */
+void initLog();
+
+/**
  * @brief
  *
  * @param periph 1: encoder, 2: LED, 3: switch, 4: potentiometer
@@ -23,4 +29,4 @@
  * @param message
  * @param messageColor
  */
-void logAction(uint8_t periph, uint8_t periphPinNumber, String message[10], uint8_t messageColor);
+void test();

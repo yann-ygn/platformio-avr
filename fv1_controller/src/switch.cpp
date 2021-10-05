@@ -72,8 +72,8 @@ void TemporarySwitch::tempSwitchPoll()
         m_lastSwitchedTime = m_now;
 
         #ifdef DEBUG
-            Serial.print("\e[1;31mtempSwitch \e[1;37m");
-            Serial.print(m_pin);
+            Serial.print("tempSwitch ");
+                Serial.print(m_pin);
             Serial.println(" switched");
         #endif
 

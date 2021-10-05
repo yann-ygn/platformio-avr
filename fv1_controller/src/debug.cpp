@@ -1,22 +1,27 @@
 #include "debug.h"
 
-void logAction(uint8_t periph, uint8_t periphPinNumber, String message[10], uint8_t messageColor)
+void initLog()
 {
+    Serial.println(RESET);
+    Serial.println("LOG RESET");
+}
+
+void test()
+{
+    Serial.print(WHITE);
+    Serial.print("WHITE ");
+    Serial.print(RED);
+    Serial.print("RED ");
+    Serial.print(GREEN);
+    Serial.print("GREEN ");
+    Serial.print(YELLOW);
+    Serial.print("YELLOW ");
     Serial.print(BLUE);
-    Serial.print("[");
-    Serial.print(millis());
-    Serial.print("] | ");
-
+    Serial.print("BLUE ");
+    Serial.print(MAGENTA);
+    Serial.print("MAGENTA ");
     Serial.print(CYAN);
-    Serial.print("ACTION | ");
-
-    switch (periph)
-    {
-    case 1:
-        /* code */
-        break;
-
-    default:
-        break;
-    }
+    Serial.print("CYAN ");
+    Serial.print(RESET);
+    Serial.print("RESET ");
 }

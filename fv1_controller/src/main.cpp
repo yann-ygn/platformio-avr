@@ -3,6 +3,7 @@
 #include <Arduino.h>
 
 #include "hardware.h"
+#include "debug.h"
 
 Hardware hardware;
 
@@ -14,6 +15,8 @@ void setup()
     hardware.restoreLastState();
     delay(500);
     hardware.hardwareStartup();
+    initLog();
+    test();
 }
 
 void loop()
