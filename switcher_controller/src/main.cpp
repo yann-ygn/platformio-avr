@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <Fonts/FreeSansBold24pt7b.h>
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -17,15 +18,14 @@ void setup() {
     for(;;);
   }
   delay(2000);
-  display.clearDisplay();
 
-  display.setTextSize(6);
+  display.setFont(&FreeSansBold24pt7b);
+  display.clearDisplay();
+  display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  
-  
-  display.println("A|3");
-  display.display(); 
+  display.setCursor(0,32);
+  display.println("A-3");
+  display.display();
 }
 
 void loop() {
