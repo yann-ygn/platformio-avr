@@ -21,6 +21,8 @@ class Display
         uint16_t m_cursorY = 0; // Y axis cursor
         uint8_t m_newLine = 9; // How many pixels is a new line
 
+        const uint8_t rightArrow = 26; // Menu cursor
+
         /**
          * @brief Reset X/Y cursors
          */
@@ -32,14 +34,12 @@ class Display
         void newLine();
 
         /**
-         * @brief Clear the display
+         * @brief Calculate the width of a string
+         *
+         * @param buff Text input
+         * @return uint16_t Witdh of the string
          */
-        void clear();
-
-        /**
-         * @brief Display
-         */
-        void display();
+        uint16_t calcTextWidth(const char * buff);
 
     public:
         /**
@@ -61,11 +61,28 @@ class Display
         void displaySetup();
 
         /**
+         * @brief Clear the display
+         */
+        void clear();
+
+        /**
+         * @brief Display
+         */
+        void display();
+
+        /**
          * @brief Print the menu header, inverse text and background
          *
          * @param buff Text to print
          */
         void printMenuHeader(const char * buff);
+
+        /**
+         * @brief Print a menu item, slight indent
+         *
+         * @param buff Text to print
+         */
+        void printMenuItem(const char * buff);
 
         /**
          * @brief Get the Cursor X object
