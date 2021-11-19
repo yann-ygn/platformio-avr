@@ -15,7 +15,7 @@ class Led
     public:
         /**
          * @brief Construct a new Led object
-         * 
+         *
          * @param pin LED pin #
          */
         Led(uint8_t pin) : m_pin(pin) { }
@@ -37,8 +37,8 @@ class Led
 
         /**
          * @brief Set the LED to a desired state
-         * 
-         * @param state 
+         *
+         * @param state
          */
         void ledSetState(uint8_t state);
 
@@ -49,15 +49,15 @@ class Led
 
         /**
          * @brief Get the Led State object
-         * 
-         * @return uint8_t 
+         *
+         * @return uint8_t
          */
         uint8_t getLedState();
 
         /**
          * @brief Set the Led State object
-         * 
-         * @param state 
+         *
+         * @param state
          */
         void setLedState(uint8_t state);
 };
@@ -67,15 +67,15 @@ class PwmLed : public Led
     public:
     /**
      * @brief Construct a new Pwm Led object
-     * 
-     * @param cspin 
+     *
+     * @param cspin
      */
     PwmLed(uint8_t pin) : Led(pin) { }
 
     /**
      * @brief Set the Pwm Led State object
-     * 
-     * @param state 
+     *
+     * @param state
      */
     void setPwmLedState(uint8_t state);
 };
