@@ -8,14 +8,14 @@
 
 /**
  * @brief 
- * 
+ *
  */
 class Display
 {
     private:
         Adafruit_SSD1306 m_ssd1306; // SSD1306 Display object
-        uint8_t m_witdh = 0;
-        uint8_t m_height = 0;
+        uint8_t m_witdh;
+        uint8_t m_height;
 
         uint16_t m_cursorX = 0; // X axis cursor
         uint16_t m_cursorY = 0; // Y axis cursor
@@ -36,10 +36,10 @@ class Display
         /**
          * @brief Calculate the width of a string
          *
-         * @param buff Text input
+         * @param text Text input
          * @return uint16_t Witdh of the string
          */
-        uint16_t calcTextWidth(const char * buff);
+        uint16_t calcTextWidth(const char* text);
 
     public:
         /**
@@ -49,11 +49,7 @@ class Display
          * @param witdh Width of the screen
          * @param height Height of the screen
          */
-        Display(TwoWire* wire, uint8_t witdh, uint8_t height) : m_ssd1306(witdh, height, wire, -1)
-        {
-            m_witdh = witdh;
-            m_height = height;
-        }
+        Display(TwoWire* wire, uint8_t witdh, uint8_t height) : m_ssd1306(witdh, height, wire, -1), m_witdh(witdh), m_height(height) {}
 
         /**
          * @brief Initialize the base display
@@ -73,16 +69,16 @@ class Display
         /**
          * @brief Print the menu header, inverse text and background
          *
-         * @param buff Text to print
+         * @param text Text to print
          */
-        void printMenuHeader(const char * buff);
+        void printMenuHeader(const char* text);
 
         /**
          * @brief Print a menu item, slight indent
          *
-         * @param buff Text to print
+         * @param text Text to print
          */
-        void printMenuItem(const char * buff);
+        void printMenuItem(const char* text);
 
         /**
          * @brief Get the Cursor X object
