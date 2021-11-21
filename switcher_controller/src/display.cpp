@@ -9,7 +9,7 @@ void Display::resetCursor()
 void Display::newLine()
 {
     setCursorX(0);
-    setCursorY(getCursorY() + m_newLine);
+    setCursorY(getCursorY() + c_newLine);
 }
 
 uint16_t Display::calcTextWidth(const char* text)
@@ -39,7 +39,8 @@ void Display::displaySetup()
 
 void Display::printMenuHeader(const char* text)
 {
-    m_ssd1306.fillRect(0, 0, m_witdh, m_newLine, WHITE); // White background
+    resetCursor();
+    m_ssd1306.fillRect(0, 0, m_witdh, c_newLine, WHITE); // White background
     m_ssd1306.setTextColor(BLACK); // Invert the text color
     m_ssd1306.setTextSize(1);
     setCursorX((m_witdh / 2) - (calcTextWidth(text) / 2)); // Set the cursor accounting for the screen and text width to center the text
@@ -52,9 +53,35 @@ void Display::printMenuHeader(const char* text)
 void Display::printMenuItem(const char* text)
 {
     newLine();
-    m_ssd1306.write(rightArrow);
-    setCursorX(8); // Indent to allow for the arrow
+    setCursorX(8); // Indent to account for the arrow cursor
     m_ssd1306.print(text);
+}
+
+void Display::printSubMenuIcon()
+{
+    setCursorX(getWidth() - 16);
+    m_ssd1306.write(c_subMenuIcon);
+}
+
+void Display::printMenuCursor(uint8_t line)
+{
+    setCursorX(0);
+    setCursorY((line * c_newLine) + 2);
+    m_ssd1306.write(c_menuCursor);
+}
+
+void Display::printScrollUpArrow()
+{
+    setCursorX(getWidth() - 8);
+    setCursorY(0 + c_newLine + 2);
+    m_ssd1306.write(c_scrollUpArrow);
+}
+
+void Display::printscrollDownArrow()
+{
+    setCursorX(getWidth() - 8);
+    setCursorY(getHeight() - c_newLine);
+    m_ssd1306.write(c_scrollDownArrow);
 }
 
 uint16_t Display::getCursorX()
@@ -77,4 +104,14 @@ void Display::setCursorY(uint16_t y)
 {
     m_cursorY = y;
     m_ssd1306.setCursor(getCursorX(), y);
+}
+
+uint8_t Display::getWidth()
+{
+    return m_witdh;
+}
+
+uint8_t Display::getHeight()
+{
+    return m_height;
 }

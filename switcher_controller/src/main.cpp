@@ -1,23 +1,21 @@
 #include <Arduino.h>
-#include <Wire.h>
-#include <display.h>
+#include "menu.h"
 
-Display test(&Wire, 128, 64);
+Menu menu(128, 64, 7);
+MenuItem mainMenu[] =
+{
+  MenuItemHeader("MAIN MENU"),
+  MenuItem("Test 1"),
+  MenuItem("Test 2"),
+  MenuItemSubMenu("Test Sub Menu", mainMenu),
+  MenuItemFooter()
+};
 
 void setup()
 {
   Serial.begin(115200);
-  test.displaySetup();
-  delay(2000);
-  test.clear();
-  test.printMenuHeader("MAIN MENU");
-  test.printMenuItem("Item 1");
-  test.printMenuItem("Item 2");
-  test.printMenuItem("Item 3");
-  test.printMenuItem("Item 4");
-  test.printMenuItem("Item 5");
-  test.printMenuItem("Item 6");
-  test.display();
+  menu.menuSetup(mainMenu);
+  menu.displayMenu();
 }
 
 void loop()

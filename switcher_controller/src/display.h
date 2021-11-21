@@ -19,9 +19,12 @@ class Display
 
         uint16_t m_cursorX = 0; // X axis cursor
         uint16_t m_cursorY = 0; // Y axis cursor
-        uint8_t m_newLine = 9; // How many pixels is a new line
+        const uint8_t c_newLine = 9; // How many pixels is a new line
 
-        const uint8_t rightArrow = 26; // Menu cursor
+        const uint8_t c_menuCursor = 26; // Menu cursor
+        const uint8_t c_scrollDownArrow = 25;
+        const uint8_t c_scrollUpArrow = 24;
+        const uint8_t c_subMenuIcon = 16;
 
         /**
          * @brief Reset X/Y cursors
@@ -49,7 +52,7 @@ class Display
          * @param witdh Width of the screen
          * @param height Height of the screen
          */
-        Display(TwoWire* wire, uint8_t witdh, uint8_t height) : m_ssd1306(witdh, height, wire, -1), m_witdh(witdh), m_height(height) {}
+        Display(uint8_t witdh, uint8_t height) : m_ssd1306(witdh, height, &Wire, -1), m_witdh(witdh), m_height(height) {}
 
         /**
          * @brief Initialize the base display
@@ -81,6 +84,26 @@ class Display
         void printMenuItem(const char* text);
 
         /**
+         * @brief Print a sub icon at the end of the current line
+         */
+        void printSubMenuIcon();
+
+        /**
+         * @brief Draw the menu cursor at y = line * newline
+         */
+        void printMenuCursor(uint8_t line);
+
+        /**
+         * @brief 
+         */
+        void printScrollUpArrow();
+
+        /**
+         * @brief 
+         */
+        void printscrollDownArrow();
+
+        /**
          * @brief Get the Cursor X object
          */
         uint16_t getCursorX();
@@ -103,6 +126,16 @@ class Display
          * @param y Cursor value
          */
         void setCursorY(uint16_t y);
+
+        /**
+         * @brief Get the Width object
+         */
+        uint8_t getWidth();
+
+        /**
+         * @brief Get the Height object
+         */
+        uint8_t getHeight();
 };
 
 #endif
