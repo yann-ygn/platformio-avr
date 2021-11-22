@@ -38,7 +38,7 @@ bool Encoder::encoderPoll()
 
         return true;
     }
-    
+
     else if (state == 0x20)
     {
         m_counter ++;
@@ -88,4 +88,9 @@ void Encoder::setMinCounterValue(uint8_t value)
 void Encoder::setMaxCounterValue(uint8_t value)
 {
     m_maxCounterValue = value;
+}
+
+uint8_t Encoder::getEncoderState()
+{
+    return m_encoderState;
 }

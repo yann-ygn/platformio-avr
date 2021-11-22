@@ -20,6 +20,7 @@ class Display
         uint16_t m_cursorX = 0; // X axis cursor
         uint16_t m_cursorY = 0; // Y axis cursor
         const uint8_t c_newLine = 9; // How many pixels is a new line
+        const uint8_t c_maxLines = 7; // Max number of lines
 
         const uint8_t c_menuCursor = 26; // Menu cursor
         const uint8_t c_scrollDownArrow = 25;

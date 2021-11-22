@@ -53,7 +53,7 @@ class Menu
         Display m_display;
         MenuItem* m_currentMenuArray = NULL;
         uint8_t m_menuMaxLines;
-        uint8_t m_menuTopItem = 0;
+        uint8_t m_menuTopItem = 1;
         uint8_t m_menuBottomItem;
         uint8_t m_menuCursorPosition = 1; // 0 is always the header
 
@@ -70,6 +70,8 @@ class Menu
 
         void menuSetup(MenuItem* menu);
         void displayMenu();
+        void menuCursorUp();
+        void menuCursorDown();
 };
 
 #endif

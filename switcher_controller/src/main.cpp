@@ -1,5 +1,11 @@
 #include <Arduino.h>
 #include "menu.h"
+#include "encoder.h"
+#include "led.h"
+#include "switch.h"
+
+Encoder encoder0(32, 33);
+Led swLed0(31);
 
 Menu menu(128, 64, 7);
 MenuItem mainMenu[] =
@@ -7,18 +13,40 @@ MenuItem mainMenu[] =
   MenuItemHeader("MAIN MENU"),
   MenuItem("Test 1"),
   MenuItem("Test 2"),
-  MenuItemSubMenu("Test Sub Menu", mainMenu),
+  MenuItem("Test 3"),
+  MenuItem("Test 4"),
+  MenuItem("Test 5"),
+  MenuItem("Test 6"),
+  MenuItem("Test 7"),
+  MenuItem("Test 8"),
+  MenuItem("Test 9"),
   MenuItemFooter()
 };
 
 void setup()
 {
   Serial.begin(115200);
+  encoder0.encoderSetup();
+  swLed0.ledSetup();
   menu.menuSetup(mainMenu);
   menu.displayMenu();
+
+  swLed0.ledTurnOn();
 }
 
 void loop()
 {
-
+  if (encoder0.encoderPoll())
+  {
+    if (encoder0.getEncoderState() == c_encoderIncrement)
+    {
+      Serial.println("UP");
+      menu.menuCursorUp();
+    }
+    else if (encoder0.getEncoderState() == c_encoderDrecrement)
+    {
+      Serial.println("DOWN");
+      menu.menuCursorDown();
+    }
+  }
 }

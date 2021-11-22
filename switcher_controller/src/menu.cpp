@@ -17,16 +17,15 @@ MenuItem* MenuItem::getParentMenu()
 
 void Menu::drawMenu()
 {
+    MenuItem* item = &m_currentMenuArray[0]; // 0 is always the header
+    m_display.printMenuHeader(item->getText()); // Draw the menu header
+
     for (uint8_t i = m_menuTopItem; i <= m_menuBottomItem; i++)
     {
-        MenuItem* item = &m_currentMenuArray[i];
+        item = &m_currentMenuArray[i];
 
         switch (item->getType())
         {
-            case c_menuItemHeader:
-                m_display.printMenuHeader(item->getText());
-                break;
-
             case c_menuItemNone:
                 m_display.printMenuItem(item->getText());
                 break;
@@ -63,7 +62,8 @@ void Menu::drawMenu()
 
 void Menu::drawCursor()
 {
-    m_display.printMenuCursor(m_menuCursorPosition);
+    uint8_t line = constrain(m_menuCursorPosition - m_menuTopItem + 1, 1, 7); // + 1 to account for the header which is always visisble
+    m_display.printMenuCursor(line);
 }
 
 bool Menu::menuTop()
@@ -87,6 +87,38 @@ bool Menu::menuBottom()
     else
     {
         return false;
+    }
+}
+
+void Menu::menuCursorUp()
+{
+    if (!menuTop())
+    {
+        m_menuCursorPosition--;
+
+        if (m_menuCursorPosition < m_menuTopItem)
+        {
+            m_menuTopItem--;
+            m_menuBottomItem--;
+        }
+
+        displayMenu();
+    }
+}
+
+void Menu::menuCursorDown()
+{
+    if (!menuBottom())
+    {
+        m_menuCursorPosition++;
+
+        if (m_menuCursorPosition > m_menuBottomItem)
+        {
+            m_menuTopItem++;
+            m_menuBottomItem++;
+        }
+
+        displayMenu();
     }
 }
 
