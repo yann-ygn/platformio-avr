@@ -63,6 +63,12 @@ void Display::printSubMenuIcon()
     m_ssd1306.write(c_subMenuIcon);
 }
 
+void Display::printSubMenuBackIcon()
+{
+    setCursorX(getWidth() - 16);
+    m_ssd1306.write(c_subMenuBackIcon);
+}
+
 void Display::printMenuCursor(uint8_t line)
 {
     setCursorX(0);

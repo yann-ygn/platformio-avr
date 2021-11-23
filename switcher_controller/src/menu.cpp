@@ -10,9 +10,9 @@ uint8_t MenuItem::getType()
     return m_type;
 }
 
-MenuItem* MenuItem::getParentMenu()
+MenuItem* MenuItem::getSubMenu()
 {
-    return m_parentMenu;
+    return m_subMenu;
 }
 
 void Menu::drawMenu()
@@ -33,6 +33,11 @@ void Menu::drawMenu()
             case c_menuItemSubMenu:
                 m_display.printMenuItem(item->getText());
                 m_display.printSubMenuIcon();
+                break;
+
+            case c_menuItemSubMenuBack:
+                m_display.printMenuItem(item->getText());
+                m_display.printSubMenuBackIcon();
                 break;
 
             default:
@@ -66,9 +71,39 @@ void Menu::drawCursor()
     m_display.printMenuCursor(line);
 }
 
+void Menu::displayMenu()
+{
+    m_display.clear();
+    drawMenu();
+    drawCursor();
+    m_display.display();
+}
+
+void Menu::resetMenu(bool history)
+{
+    if (history)
+    {
+        m_menuCursorPosition = m_menuPreviousCursorPosition;
+        m_menuTopItem = m_menuPreviousTopItem;
+        m_menuBottomItem = m_menuPreviousBottomItem;
+    }
+    else
+    {
+        m_menuPreviousCursorPosition = m_menuCursorPosition;
+        m_menuPreviousTopItem = m_menuTopItem;
+        m_menuPreviousBottomItem = m_menuBottomItem;
+
+        m_menuCursorPosition = 1;
+        m_menuTopItem = 1;
+        m_menuBottomItem = m_menuMaxLines - 1;
+    }
+
+    displayMenu();
+}
+
 bool Menu::menuTop()
 {
-    if (m_currentMenuArray[m_menuCursorPosition - 1].getType() == c_menuItemHeader)
+    if (m_currentMenuArray[m_menuCursorPosition - 1].getType() == c_menuItemMainMenuHeader)
     {
         return true;
     }
@@ -88,6 +123,13 @@ bool Menu::menuBottom()
     {
         return false;
     }
+}
+
+void Menu::menuSetup(MenuItem* menu)
+{
+    m_display.displaySetup();
+    m_currentMenuArray = menu;
+    displayMenu();
 }
 
 void Menu::menuCursorUp()
@@ -122,16 +164,34 @@ void Menu::menuCursorDown()
     }
 }
 
-void Menu::menuSetup(MenuItem* menu)
+void Menu::menuCursorEnter()
 {
-    m_display.displaySetup();
-    m_currentMenuArray = menu;
-}
+    Serial.println("Prout");
 
-void Menu::displayMenu()
-{
-    m_display.clear();
-    drawMenu();
-    drawCursor();
-    m_display.display();
+    MenuItem* item = &m_currentMenuArray[m_menuCursorPosition];
+
+    switch (item->getType())
+    {
+        case c_menuItemSubMenu:
+            Serial.println("Prout2");
+            if (item->getSubMenu() != NULL)
+            {
+                m_currentMenuArray = item->getSubMenu();
+
+                resetMenu(false);
+                break;
+            }
+
+        case c_menuItemSubMenuBack:
+            Serial.println("Prout3");
+            MenuItem* menuHeader = &m_currentMenuArray[0];
+
+            if (menuHeader->getType() == c_menuItemSubMenuHeader)
+            {
+                m_currentMenuArray = menuHeader->getSubMenu();
+
+                resetMenu(true);
+                break;
+            }
+    }
 }

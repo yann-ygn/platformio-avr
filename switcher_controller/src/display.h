@@ -26,6 +26,7 @@ class Display
         const uint8_t c_scrollDownArrow = 25;
         const uint8_t c_scrollUpArrow = 24;
         const uint8_t c_subMenuIcon = 16;
+        const uint8_t c_subMenuBackIcon = 17;
 
         /**
          * @brief Reset X/Y cursors
@@ -88,6 +89,11 @@ class Display
          * @brief Print a sub icon at the end of the current line
          */
         void printSubMenuIcon();
+
+        /**
+         * @brief Print a sub icon at the end of the current line
+         */
+        void printSubMenuBackIcon();
 
         /**
          * @brief Draw the menu cursor at y = line * newline
