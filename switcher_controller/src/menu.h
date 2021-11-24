@@ -4,55 +4,55 @@
 #ifndef MENU_H
 #define MENU_H
 
-const uint8_t c_menuItemNone = 0;
-const uint8_t c_menuItemMainMenuHeader = 1;
-const uint8_t c_menuItemSubMenuHeader = 2;
-const uint8_t c_menuItemFooter = 3;
-const uint8_t c_menuItemSubMenu = 4;
-const uint8_t c_menuItemSubMenuBack = 5;
+const uint8_t c_menuItemTypeNone = 0;
+const uint8_t c_menuItemTypeMainMenuHeader = 1;
+const uint8_t c_menuItemTypeSubMenuHeader = 2;
+const uint8_t c_menuItemTypeFooter = 3;
+const uint8_t c_menuItemTypeSubMenu = 4;
+const uint8_t c_menuItemTypeSubMenuBack = 5;
 
 class MenuItem
 {
     private:
-        const char* m_text = NULL;
-        uint8_t m_type = c_menuItemNone;
-        MenuItem* m_subMenu = NULL;
+        const char* m_menuItemText = NULL;
+        uint8_t m_menuItemType = c_menuItemTypeNone;
+        MenuItem* m_menuItemSubMenu = NULL;
 
     public:
-        MenuItem(const char* text) : m_text(text) {}
-        MenuItem(const char* text, uint8_t type) : m_text(text), m_type(type) {}
-        MenuItem(const char* text, uint8_t type, MenuItem* submenu) : m_text(text), m_type(type), m_subMenu(submenu) {}
+        MenuItem(const char* text) : m_menuItemText(text) {}
+        MenuItem(const char* text, uint8_t type) : m_menuItemText(text), m_menuItemType(type) {}
+        MenuItem(const char* text, uint8_t type, MenuItem* submenu) : m_menuItemText(text), m_menuItemType(type), m_menuItemSubMenu(submenu) {}
 
-        const char* getText();
+        const char* getMenuItemText();
 
-        uint8_t getType();
+        uint8_t getMenuItemType();
 
-        MenuItem* getSubMenu();
+        MenuItem* getMenuItemSubMenu();
 };
 
 class MenuItemHeader : public MenuItem
 {
     public:
-        MenuItemHeader(const char* text) : MenuItem(text, c_menuItemMainMenuHeader) {} // Main menu header
-        MenuItemHeader(const char* text, MenuItem* submenu) : MenuItem(text, c_menuItemSubMenuHeader, submenu) {} // Sub menu header
+        MenuItemHeader(const char* text) : MenuItem(text, c_menuItemTypeMainMenuHeader) {} // Main menu header
+        MenuItemHeader(const char* text, MenuItem* submenu) : MenuItem(text, c_menuItemTypeSubMenuHeader, submenu) {} // Sub menu header
 };
 
 class MenuItemFooter : public MenuItem
 {
     public:
-        MenuItemFooter() : MenuItem(NULL, c_menuItemFooter) {}
+        MenuItemFooter() : MenuItem(NULL, c_menuItemTypeFooter) {}
 };
 
 class MenuItemSubMenu : public MenuItem
 {
     public:
-        MenuItemSubMenu(const char* text, MenuItem* submenu) : MenuItem(text, c_menuItemSubMenu, submenu) {}
+        MenuItemSubMenu(const char* text, MenuItem* submenu) : MenuItem(text, c_menuItemTypeSubMenu, submenu) {}
 };
 
 class MenuItemSubMenuBack : public MenuItem
 {
     public:
-        MenuItemSubMenuBack(const char* text) : MenuItem(text, c_menuItemSubMenuBack) {}
+        MenuItemSubMenuBack(const char* text) : MenuItem(text, c_menuItemTypeSubMenuBack) {}
 };
 
 class Menu

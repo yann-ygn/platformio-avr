@@ -1,42 +1,42 @@
 #include "menu.h"
 
-const char* MenuItem::getText()
+const char* MenuItem::getMenuItemText()
 {
-    return m_text;
+    return m_menuItemText;
 }
 
-uint8_t MenuItem::getType()
+uint8_t MenuItem::getMenuItemType()
 {
-    return m_type;
+    return m_menuItemType;
 }
 
-MenuItem* MenuItem::getSubMenu()
+MenuItem* MenuItem::getMenuItemSubMenu()
 {
-    return m_subMenu;
+    return m_menuItemSubMenu;
 }
 
 void Menu::drawMenu()
 {
     MenuItem* item = &m_currentMenuArray[0]; // 0 is always the header
-    m_display.printMenuHeader(item->getText()); // Draw the menu header
+    m_display.printMenuHeader(item->getMenuItemText()); // Draw the menu header
 
     for (uint8_t i = m_menuTopItem; i <= m_menuBottomItem; i++)
     {
         item = &m_currentMenuArray[i];
 
-        switch (item->getType())
+        switch (item->getMenuItemType())
         {
-            case c_menuItemNone:
-                m_display.printMenuItem(item->getText());
+            case c_menuItemTypeNone:
+                m_display.printMenuItem(item->getMenuItemText());
                 break;
 
-            case c_menuItemSubMenu:
-                m_display.printMenuItem(item->getText());
+            case c_menuItemTypeSubMenu:
+                m_display.printMenuItem(item->getMenuItemText());
                 m_display.printSubMenuIcon();
                 break;
 
-            case c_menuItemSubMenuBack:
-                m_display.printMenuItem(item->getText());
+            case c_menuItemTypeSubMenuBack:
+                m_display.printMenuItem(item->getMenuItemText());
                 m_display.printSubMenuBackIcon();
                 break;
 
@@ -44,7 +44,7 @@ void Menu::drawMenu()
                 break;
         }
 
-        if (item->getType() == c_menuItemFooter)
+        if (item->getMenuItemType() == c_menuItemTypeFooter)
         {
             break;
         }
@@ -103,7 +103,7 @@ void Menu::resetMenu(bool history)
 
 bool Menu::menuTop()
 {
-    if (m_currentMenuArray[m_menuCursorPosition - 1].getType() == c_menuItemMainMenuHeader)
+    if (m_currentMenuArray[m_menuCursorPosition - 1].getMenuItemType() == c_menuItemTypeMainMenuHeader)
     {
         return true;
     }
@@ -115,7 +115,7 @@ bool Menu::menuTop()
 
 bool Menu::menuBottom()
 {
-    if (m_currentMenuArray[m_menuCursorPosition + 1].getType() == c_menuItemFooter)
+    if (m_currentMenuArray[m_menuCursorPosition + 1].getMenuItemType() == c_menuItemTypeFooter)
     {
         return true;
     }
@@ -170,25 +170,25 @@ void Menu::menuCursorEnter()
 
     MenuItem* item = &m_currentMenuArray[m_menuCursorPosition];
 
-    switch (item->getType())
+    switch (item->getMenuItemType())
     {
-        case c_menuItemSubMenu:
+        case c_menuItemTypeSubMenu:
             Serial.println("Prout2");
-            if (item->getSubMenu() != NULL)
+            if (item->getMenuItemSubMenu() != NULL)
             {
-                m_currentMenuArray = item->getSubMenu();
+                m_currentMenuArray = item->getMenuItemSubMenu();
 
                 resetMenu(false);
                 break;
             }
 
-        case c_menuItemSubMenuBack:
+        case c_menuItemTypeSubMenuBack:
             Serial.println("Prout3");
             MenuItem* menuHeader = &m_currentMenuArray[0];
 
-            if (menuHeader->getType() == c_menuItemSubMenuHeader)
+            if (menuHeader->getMenuItemType() == c_menuItemTypeSubMenuHeader)
             {
-                m_currentMenuArray = menuHeader->getSubMenu();
+                m_currentMenuArray = menuHeader->getMenuItemSubMenu();
 
                 resetMenu(true);
                 break;
