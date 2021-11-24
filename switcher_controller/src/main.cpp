@@ -39,7 +39,7 @@ MenuItem subMenu1[] =
   MenuItemFooter()
 };
 
-Menu menu(128, 64, 7);
+Menu menu(128, 64, 7, 9, 2);
 
 void setup()
 {

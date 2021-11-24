@@ -76,10 +76,10 @@ class Menu
         bool menuBottom();
 
     public:
-        Menu(uint8_t width, uint8_t height, uint8_t lines) :
-            m_display(width, height),
-            m_menuMaxLines(lines),
-            m_menuBottomItem(lines - 1) {}
+        Menu(uint8_t width, uint8_t height, uint8_t maxlines, uint8_t newline, uint8_t headeroffset) :
+            m_display(width, height, newline, maxlines, headeroffset),
+            m_menuMaxLines(maxlines),
+            m_menuBottomItem(maxlines - 1) {}
 
         void menuSetup(MenuItem* menu);
         void menuCursorUp();

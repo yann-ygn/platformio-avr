@@ -7,26 +7,28 @@
 #define DISPLAY_H
 
 /**
- * @brief 
+ * @brief A display manages a physical OLED screen, it is defined by a width, a height and a maximum number of lines of a determine size
  *
  */
 class Display
 {
     private:
         Adafruit_SSD1306 m_ssd1306; // SSD1306 Display object
-        uint8_t m_witdh;
-        uint8_t m_height;
+        uint8_t m_witdh; // Width of the display in pixel
+        uint8_t m_height; // Height of the display in pixel
 
         uint16_t m_cursorX = 0; // X axis cursor
         uint16_t m_cursorY = 0; // Y axis cursor
-        const uint8_t c_newLine = 9; // How many pixels is a new line
-        const uint8_t c_maxLines = 7; // Max number of lines
+        const uint8_t c_newLine; // How many pixels is a new line
+        const uint8_t c_maxLines; // Max number of lines
+        const uint8_t c_headerOffset; // The header is typically c_newLine + 2 to allow for the text to be centerex vertically
+        const uint8_t c_newTab = 8; // Arbitrary "tab" value in pixel used to ident the text
 
-        const uint8_t c_menuCursor = 26; // Menu cursor
-        const uint8_t c_scrollDownArrow = 25;
-        const uint8_t c_scrollUpArrow = 24;
-        const uint8_t c_subMenuIcon = 16;
-        const uint8_t c_subMenuBackIcon = 17;
+        const uint8_t c_menuCursor = 26; // Menu cursor symbol
+        const uint8_t c_scrollDownArrow = 25; // Scroll down symbol
+        const uint8_t c_scrollUpArrow = 24; // Scroll up symbol
+        const uint8_t c_subMenuIcon = 16; // Submenu symbol
+        const uint8_t c_subMenuBackIcon = 17; // Submenu back symbol
 
         /**
          * @brief Reset X/Y cursors
@@ -50,11 +52,16 @@ class Display
         /**
          * @brief Construct a new Display object
          *
-         * @param wire TwoWire instance
          * @param witdh Width of the screen
          * @param height Height of the screen
          */
-        Display(uint8_t witdh, uint8_t height) : m_ssd1306(witdh, height, &Wire, -1), m_witdh(witdh), m_height(height) {}
+        Display(uint8_t witdh, uint8_t height, uint8_t newline, uint8_t maxlines, uint8_t headeroffset) :
+            m_ssd1306(witdh, height, &Wire, -1),
+            m_witdh(witdh),
+            m_height(height),
+            c_newLine(newline),
+            c_maxLines(maxlines),
+            c_headerOffset(headeroffset) {}
 
         /**
          * @brief Initialize the base display
@@ -101,12 +108,12 @@ class Display
         void printMenuCursor(uint8_t line);
 
         /**
-         * @brief 
+         * @brief Print the scroll arrow pointing up
          */
         void printScrollUpArrow();
 
         /**
-         * @brief 
+         * @brief Print the scroll arrow pointing down
          */
         void printscrollDownArrow();
 

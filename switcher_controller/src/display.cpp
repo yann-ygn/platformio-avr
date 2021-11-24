@@ -45,49 +45,49 @@ void Display::printMenuHeader(const char* text)
     m_ssd1306.setTextColor(BLACK); // Invert the text color
     m_ssd1306.setTextSize(1);
     setCursorX((m_witdh / 2) - (calcTextWidth(text) / 2)); // Set the cursor accounting for the screen and text width to center the text
-    setCursorY(1); // The rect is 9p and font is 7p, offset by 1p for clarity
+    setCursorY(c_headerOffset / 2); // The rect is 9p and font is 7p, offset by 1p for clarity
     m_ssd1306.print(text);
-    setCursorY(2); // The rect is 9p and font is 7p, offset by 1p for clarity
+    setCursorY(c_headerOffset); // The rect is 9p and font is 7p, offset by 1p for clarity
     m_ssd1306.setTextColor(WHITE); // Reset the text color
 }
 
 void Display::printMenuItem(const char* text)
 {
-    newLine();
-    setCursorX(8); // Indent to account for the arrow cursor
+    newLine(); // Set the Y cursor to a new line
+    setCursorX(c_newTab); // Indent to account for the arrow cursor
     m_ssd1306.print(text);
 }
 
 void Display::printSubMenuIcon()
 {
-    setCursorX(getWidth() - 16);
+    setCursorX(getWidth() - (c_newTab * 2)); // End of the line minues 2 tabs, first tab would be the scroll up/down arrows
     m_ssd1306.write(c_subMenuIcon);
 }
 
 void Display::printSubMenuBackIcon()
 {
-    setCursorX(getWidth() - 16);
+    setCursorX(getWidth() - (c_newTab * 2)); // End of the line minues 2 tabs, first tab would be the scroll up/down arrows
     m_ssd1306.write(c_subMenuBackIcon);
 }
 
 void Display::printMenuCursor(uint8_t line)
 {
     setCursorX(0);
-    setCursorY((line * c_newLine) + 2);
+    setCursorY((line * c_newLine) + c_headerOffset);
     m_ssd1306.write(c_menuCursor);
 }
 
 void Display::printScrollUpArrow()
 {
-    setCursorX(getWidth() - 8);
-    setCursorY(0 + c_newLine + 2);
+    setCursorX(getWidth() - c_newTab); // End of the line minus one tab
+    setCursorY(0 + c_newLine + c_headerOffset); // Top of the screen + new line + header off set
     m_ssd1306.write(c_scrollUpArrow);
 }
 
 void Display::printscrollDownArrow()
 {
-    setCursorX(getWidth() - 8);
-    setCursorY(getHeight() - c_newLine);
+    setCursorX(getWidth() - 8); // End of the line minus one tab
+    setCursorY(getHeight() - c_newLine); // Bottomof the screen minus one line
     m_ssd1306.write(c_scrollDownArrow);
 }
 
