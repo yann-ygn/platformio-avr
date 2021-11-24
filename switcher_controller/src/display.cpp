@@ -1,5 +1,6 @@
 #include "display.h"
 
+
 void Display::resetCursor()
 {
     setCursorX(0);
