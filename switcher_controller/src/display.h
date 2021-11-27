@@ -93,6 +93,15 @@ class Display
         void printMenuItem(const char* text);
 
         /**
+         * @brief Print a centered list of numbers, highlighted or not
+         *
+         * @param item Text to print
+         * @param highlight 1 = hightlighted, 0 = not highlighted
+         * @param count Number of items in the array
+         */
+        void printListNumbers(uint8_t item[], uint8_t highlight[], uint8_t count);
+
+        /**
          * @brief Print a sub icon at the end of the current line
          */
         void printSubMenuIcon();

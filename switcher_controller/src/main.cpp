@@ -3,9 +3,12 @@
 #include "encoder.h"
 #include "led.h"
 #include "switch.h"
+#include "loop.h"
 
 extern MenuItem mainMenu[];
+extern MenuItem loopSubMenu[];
 extern MenuItem subMenu1[];
+extern Loop loops[];
 
 bool swTrigger = false;
 
@@ -16,8 +19,8 @@ TemporarySwitch encSwitch0(34, 1000);
 MenuItem mainMenu[] =
 {
   MenuItemHeader("MAIN MENU"),
-  MenuItem("Test 1"),
   MenuItem("Test 2"),
+  MenuItemSubMenu("Loops settings", loopSubMenu),
   MenuItemSubMenu("Sub Menu 1", subMenu1),
   MenuItem("Test 4"),
   MenuItem("Test 5"),
@@ -25,6 +28,13 @@ MenuItem mainMenu[] =
   MenuItem("Test 7"),
   MenuItem("Test 8"),
   MenuItem("Test 9"),
+  MenuItemFooter()
+};
+
+MenuItem loopSubMenu[] =
+{
+  MenuItemHeader("LOOPS SETUP", mainMenu),
+  MenuItemLoopSubMenu(loops),
   MenuItemFooter()
 };
 
@@ -37,6 +47,16 @@ MenuItem subMenu1[] =
   MenuItem("Sub Menu Test 4"),
   MenuItemSubMenuBack("BACK"),
   MenuItemFooter()
+};
+
+Loop loops[] =
+{
+  Loop(1, 1),
+  Loop(2, 0),
+  Loop(3, 1),
+  Loop(4, 0),
+  Loop(5, 0),
+  Loop(6, 1)
 };
 
 Menu menu(128, 64, 7, 9, 2);

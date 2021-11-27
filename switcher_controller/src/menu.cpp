@@ -15,6 +15,41 @@ MenuItem* MenuItem::getMenuItemSubMenu()
     return m_menuItemSubMenu;
 }
 
+Loop* MenuItem::getMenuItemLoops()
+{
+    return m_menuItemLoops;
+}
+
+uint8_t MenuItem::getMenuItemSavedTop()
+{
+    return m_menuItemSavedTop;
+}
+
+uint8_t MenuItem::getMenuItemSavedBottom()
+{
+    return m_menuItemSavedBottom;
+}
+
+uint8_t MenuItem::getMenuItemSavedCursorPosition()
+{
+    return m_menuItemSavedCursorPosition;
+}
+
+void MenuItem::setMenuItemSavedTop(uint8_t top)
+{
+    m_menuItemSavedTop = top;
+}
+
+void MenuItem::setMenuItemSavedBottom(uint8_t bottom)
+{
+    m_menuItemSavedBottom = bottom;
+}
+
+void MenuItem::setMenuItemSavedCursorPosition(uint8_t cursor)
+{
+    m_menuItemSavedCursorPosition = cursor;
+}
+
 void Menu::drawMenu()
 {
     MenuItem* item = &m_currentMenuArray[0]; // 0 is always the header
@@ -39,6 +74,24 @@ void Menu::drawMenu()
                 m_display.printMenuItem(item->getMenuItemText());
                 m_display.printSubMenuBackIcon();
                 break;
+
+            case c_menuItemTypeLoopSubMenu:
+            {
+                uint8_t items[6];
+                uint8_t states[6];
+
+                Loop* loops = item->getMenuItemLoops();
+
+                for (uint8_t i = 0; i < 6; i++)
+                {
+                    items[i] = loops[i].getId();
+                    states[i] = loops[i].getState();
+                }
+
+                m_display.printListNumbers(items, states, 6);
+
+                break;
+            }
 
             default:
                 break;
@@ -79,31 +132,10 @@ void Menu::displayMenu()
     m_display.display();
 }
 
-void Menu::resetMenu(bool history)
-{
-    if (history)
-    {
-        m_menuCursorPosition = m_menuPreviousCursorPosition;
-        m_menuTopItem = m_menuPreviousTopItem;
-        m_menuBottomItem = m_menuPreviousBottomItem;
-    }
-    else
-    {
-        m_menuPreviousCursorPosition = m_menuCursorPosition;
-        m_menuPreviousTopItem = m_menuTopItem;
-        m_menuPreviousBottomItem = m_menuBottomItem;
-
-        m_menuCursorPosition = 1;
-        m_menuTopItem = 1;
-        m_menuBottomItem = m_menuMaxLines - 1;
-    }
-
-    displayMenu();
-}
-
 bool Menu::menuTop()
 {
-    if (m_currentMenuArray[m_menuCursorPosition - 1].getMenuItemType() == c_menuItemTypeMainMenuHeader)
+    if (m_currentMenuArray[m_menuCursorPosition - 1].getMenuItemType() == c_menuItemTypeMainMenuHeader ||
+        m_currentMenuArray[m_menuCursorPosition - 1].getMenuItemType() == c_menuItemTypeSubMenuHeader)
     {
         return true;
     }
@@ -123,6 +155,27 @@ bool Menu::menuBottom()
     {
         return false;
     }
+}
+
+void Menu::saveMenuPosition()
+{
+    m_currentMenuArray[0].setMenuItemSavedTop(m_menuTopItem);
+    m_currentMenuArray[0].setMenuItemSavedBottom(m_menuBottomItem);
+    m_currentMenuArray[0].setMenuItemSavedCursorPosition(m_menuCursorPosition);
+}
+
+void Menu::restoreMenuPosition()
+{
+    m_menuTopItem = m_currentMenuArray[0].getMenuItemSavedTop();
+    m_menuBottomItem = m_currentMenuArray[0].getMenuItemSavedBottom();
+    m_menuCursorPosition = m_currentMenuArray[0].getMenuItemSavedCursorPosition();
+}
+
+void Menu::resetMenuPosition()
+{
+    m_menuTopItem = 1;
+    m_menuBottomItem = m_menuMaxLines;
+    m_menuCursorPosition = 1;
 }
 
 void Menu::menuSetup(MenuItem* menu)
@@ -166,32 +219,33 @@ void Menu::menuCursorDown()
 
 void Menu::menuCursorEnter()
 {
-    Serial.println("Prout");
-
     MenuItem* item = &m_currentMenuArray[m_menuCursorPosition];
 
     switch (item->getMenuItemType())
     {
         case c_menuItemTypeSubMenu:
-            Serial.println("Prout2");
             if (item->getMenuItemSubMenu() != NULL)
             {
+                saveMenuPosition();
                 m_currentMenuArray = item->getMenuItemSubMenu();
+                resetMenuPosition();
 
-                resetMenu(false);
+                displayMenu();
                 break;
             }
 
         case c_menuItemTypeSubMenuBack:
-            Serial.println("Prout3");
             MenuItem* menuHeader = &m_currentMenuArray[0];
 
             if (menuHeader->getMenuItemType() == c_menuItemTypeSubMenuHeader)
             {
                 m_currentMenuArray = menuHeader->getMenuItemSubMenu();
 
-                resetMenu(true);
+                restoreMenuPosition();
+
+                displayMenu();
                 break;
             }
     }
 }
+

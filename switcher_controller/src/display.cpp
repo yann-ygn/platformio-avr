@@ -58,6 +58,34 @@ void Display::printMenuItem(const char* text)
     m_ssd1306.print(text);
 }
 
+void Display::printListNumbers(uint8_t item[], uint8_t highlight[], uint8_t count)
+{
+    setCursorY(m_height / 2);
+    setCursorX(0);
+
+    for (uint8_t i = 0; i < count; i++)
+    {
+        if (highlight[i])
+        {
+            m_ssd1306.setTextColor(BLACK, WHITE);
+            m_ssd1306.print(item[i]);
+            m_ssd1306.setTextColor(WHITE);
+            setCursorX(getCursorX() + c_newTab);
+        }
+        else
+        {
+            m_ssd1306.print(item[i]);
+            setCursorX(getCursorX() + c_newTab);
+        }
+
+        if (i < count - 1)
+        {
+            m_ssd1306.write(c_menuCursor);
+            setCursorX(getCursorX() + c_newTab);
+        }
+    }
+}
+
 void Display::printSubMenuIcon()
 {
     setCursorX(getWidth() - (c_newTab * 2)); // End of the line minues 2 tabs, first tab would be the scroll up/down arrows
