@@ -99,7 +99,7 @@ class Display
          * @param highlight 1 = hightlighted, 0 = not highlighted
          * @param count Number of items in the array
          */
-        void printListNumbers(uint8_t item[], uint8_t highlight[], uint8_t count);
+        void printListNumbers(uint8_t* items, uint8_t* states, uint8_t count);
 
         /**
          * @brief Print a sub icon at the end of the current line
@@ -115,6 +115,15 @@ class Display
          * @brief Draw the menu cursor at y = line * newline
          */
         void printMenuCursor(uint8_t line);
+
+        /**
+         * @brief 
+         * 
+         * @param column 
+         */
+        void printListMenuCursor(uint8_t column);
+
+        void printNewLine();
 
         /**
          * @brief Print the scroll arrow pointing up

@@ -58,32 +58,41 @@ void Display::printMenuItem(const char* text)
     m_ssd1306.print(text);
 }
 
-void Display::printListNumbers(uint8_t item[], uint8_t highlight[], uint8_t count)
+void Display::printListNumbers(uint8_t* items, uint8_t* states, uint8_t count)
 {
+    uint8_t cursor = getCursorY();
     setCursorY(m_height / 2);
     setCursorX(0);
 
-    for (uint8_t i = 0; i < count; i++)
+    for (uint8_t i = 1; i <= count; i++)
     {
-        if (highlight[i])
+        if (states[i])
         {
             m_ssd1306.setTextColor(BLACK, WHITE);
-            m_ssd1306.print(item[i]);
+            m_ssd1306.print(items[i]);
             m_ssd1306.setTextColor(WHITE);
             setCursorX(getCursorX() + c_newTab);
         }
         else
         {
-            m_ssd1306.print(item[i]);
+            m_ssd1306.print(items[i]);
             setCursorX(getCursorX() + c_newTab);
         }
 
-        if (i < count - 1)
+        if (i < count)
         {
             m_ssd1306.write(c_menuCursor);
             setCursorX(getCursorX() + c_newTab);
         }
     }
+
+    setCursorY(cursor);
+    newLine();
+}
+
+void Display::printNewLine()
+{
+    newLine();
 }
 
 void Display::printSubMenuIcon()
@@ -103,6 +112,13 @@ void Display::printMenuCursor(uint8_t line)
     setCursorX(0);
     setCursorY((line * c_newLine) + c_headerOffset);
     m_ssd1306.write(c_menuCursor);
+}
+
+void Display::printListMenuCursor(uint8_t column)
+{
+    setCursorY((m_height / 2) - c_newTab);
+    setCursorX(map(column, 1, 6, 0, 80));
+    m_ssd1306.write(c_scrollDownArrow);
 }
 
 void Display::printScrollUpArrow()

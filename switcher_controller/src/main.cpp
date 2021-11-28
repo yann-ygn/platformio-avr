@@ -3,18 +3,18 @@
 #include "encoder.h"
 #include "led.h"
 #include "switch.h"
-#include "loop.h"
+#include "loops.h"
 
 extern MenuItem mainMenu[];
 extern MenuItem loopSubMenu[];
 extern MenuItem subMenu1[];
-extern Loop loops[];
 
 bool swTrigger = false;
 
 Encoder encoder0(32, 33);
 Led swLed0(31);
 TemporarySwitch encSwitch0(34, 1000);
+Loops loops(6);
 
 MenuItem mainMenu[] =
 {
@@ -33,30 +33,25 @@ MenuItem mainMenu[] =
 
 MenuItem loopSubMenu[] =
 {
-  MenuItemHeader("LOOPS SETUP", mainMenu),
-  MenuItemLoopSubMenu(loops),
+  MenuItemListIntToggleHeader("LOOPS SETUP"),
+  MenuItemListIntToggle(loops.getLoops(), loops.getStates(), loops.getCount()),
+  MenuItem(),
+  MenuItem(),
+  MenuItem(),
+  MenuItem(),
+  MenuItemSubMenuBack("BACK", mainMenu),
   MenuItemFooter()
 };
 
 MenuItem subMenu1[] =
 {
-  MenuItemHeader("SUB MENU 1", mainMenu),
+  MenuItemSubMenuHeader("SUB MENU 1"),
   MenuItem("Sub Menu Test 1"),
   MenuItem("Sub Menu Test 2"),
   MenuItem("Sub Menu Test 3"),
   MenuItem("Sub Menu Test 4"),
-  MenuItemSubMenuBack("BACK"),
+  MenuItemSubMenuBack("BACK", mainMenu),
   MenuItemFooter()
-};
-
-Loop loops[] =
-{
-  Loop(1, 1),
-  Loop(2, 0),
-  Loop(3, 1),
-  Loop(4, 0),
-  Loop(5, 0),
-  Loop(6, 1)
 };
 
 Menu menu(128, 64, 7, 9, 2);
@@ -67,6 +62,9 @@ void setup()
   encoder0.encoderSetup();
   swLed0.ledSetup();
   encSwitch0.tempSwitchSetup();
+  loops.LoopsSetup();
+  loops.setLoopState(1, 1);
+  loops.setLoopState(5, 1);
   menu.menuSetup(mainMenu);
 
   swLed0.ledTurnOn();

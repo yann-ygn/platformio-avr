@@ -15,9 +15,26 @@ MenuItem* MenuItem::getMenuItemSubMenu()
     return m_menuItemSubMenu;
 }
 
-Loop* MenuItem::getMenuItemLoops()
+uint8_t* MenuItem::getMenuItemListIntToggleList()
 {
-    return m_menuItemLoops;
+    return m_menuItemListIntToggleList;
+}
+
+uint8_t* MenuItem::getMenuItemListIntToggleState()
+{
+    return m_menuItemListIntToggleState;
+}
+
+uint8_t MenuItem::getMenuItemListIntToggleCount()
+{
+    return m_menuItemListIntToggleCount;
+}
+
+void MenuItem::toggleMenuItemListInt(uint8_t item)
+{
+    uint8_t* states = getMenuItemListIntToggleState();
+    uint8_t state = states[item];
+    states[item] = !state;
 }
 
 uint8_t MenuItem::getMenuItemSavedTop()
@@ -52,76 +69,110 @@ void MenuItem::setMenuItemSavedCursorPosition(uint8_t cursor)
 
 void Menu::drawMenu()
 {
-    MenuItem* item = &m_currentMenuArray[0]; // 0 is always the header
-    m_display.printMenuHeader(item->getMenuItemText()); // Draw the menu header
+    MenuItem* item = getCurrentMenuHeader();
+    m_display.printMenuHeader(item->getMenuItemText());
 
-    for (uint8_t i = m_menuTopItem; i <= m_menuBottomItem; i++)
+    if (getCurrentMenuHeaderType() == c_menuItemTypeListIntToggleHeader)
     {
-        item = &m_currentMenuArray[i];
-
-        switch (item->getMenuItemType())
+        for (uint8_t i = m_menuTopItem; i <= m_menuBottomItem; i++)
         {
-            case c_menuItemTypeNone:
-                m_display.printMenuItem(item->getMenuItemText());
-                break;
+            item = &m_currentMenuArray[i];
 
-            case c_menuItemTypeSubMenu:
-                m_display.printMenuItem(item->getMenuItemText());
-                m_display.printSubMenuIcon();
-                break;
-
-            case c_menuItemTypeSubMenuBack:
-                m_display.printMenuItem(item->getMenuItemText());
-                m_display.printSubMenuBackIcon();
-                break;
-
-            case c_menuItemTypeLoopSubMenu:
+            switch (item->getMenuItemType())
             {
-                uint8_t items[6];
-                uint8_t states[6];
+                case c_menuItemTypeNone:
+                    if (item->getMenuItemText() != NULL)
+                    {
+                        m_display.printMenuItem(item->getMenuItemText());
+                    }
+                    else
+                    {
+                        m_display.printNewLine();
+                    }
+                    break;
 
-                Loop* loops = item->getMenuItemLoops();
+                case c_menuItemTypeSubMenuBack:
+                    m_display.printMenuItem(item->getMenuItemText());
+                    m_display.printSubMenuBackIcon();
+                    break;
 
-                for (uint8_t i = 0; i < 6; i++)
-                {
-                    items[i] = loops[i].getId();
-                    states[i] = loops[i].getState();
-                }
+                case c_menuItemTypeListIntToggle:
+                    m_display.printListNumbers(item->getMenuItemListIntToggleList(), item->getMenuItemListIntToggleState(), item->getMenuItemListIntToggleCount());
+                    break;
+            }
+        }
+    }
+    else
+    {
+        for (uint8_t i = m_menuTopItem; i <= m_menuBottomItem; i++)
+        {
+            item = &m_currentMenuArray[i];
 
-                m_display.printListNumbers(items, states, 6);
+            switch (item->getMenuItemType())
+            {
+                case c_menuItemTypeNone:
+                    if (item->getMenuItemText() != NULL)
+                    {
+                        m_display.printMenuItem(item->getMenuItemText());
+                    }
+                    else
+                    {
+                        m_display.printNewLine();
+                    }
+                    break;
 
-                break;
+                case c_menuItemTypeSubMenu:
+                    m_display.printMenuItem(item->getMenuItemText());
+                    m_display.printSubMenuIcon();
+                    break;
+
+                case c_menuItemTypeSubMenuBack:
+                    m_display.printMenuItem(item->getMenuItemText());
+                    m_display.printSubMenuBackIcon();
+                    break;
+
+                case c_menuItemTypeListIntToggle:
+                    m_display.printListNumbers(item->getMenuItemListIntToggleList(), item->getMenuItemListIntToggleState(), item->getMenuItemListIntToggleCount());
+                    break;
+
+                default:
+                    break;
             }
 
-            default:
+            if (item->getMenuItemType() == c_menuItemTypeFooter)
+            {
                 break;
+            }
         }
 
-        if (item->getMenuItemType() == c_menuItemTypeFooter)
+        if (menuTop())
         {
-            break;
+            m_display.printscrollDownArrow();
         }
-    }
-
-    if (menuTop())
-    {
-        m_display.printscrollDownArrow();
-    }
-    else if (menuBottom())
-    {
-        m_display.printScrollUpArrow();
-    }
-    else if (!menuTop() && !menuBottom())
-    {
-        m_display.printScrollUpArrow();
-        m_display.printscrollDownArrow();
+        else if (menuBottom())
+        {
+            m_display.printScrollUpArrow();
+        }
+        else if (!menuTop() && !menuBottom())
+        {
+            m_display.printScrollUpArrow();
+            m_display.printscrollDownArrow();
+        }
     }
 }
 
 void Menu::drawCursor()
 {
-    uint8_t line = constrain(m_menuCursorPosition - m_menuTopItem + 1, 1, 7); // + 1 to account for the header which is always visisble
-    m_display.printMenuCursor(line);
+    if (m_menuListCursorVisible)
+    {
+        m_display.printListMenuCursor(m_menuListCursorPosition);
+    }
+
+    if (m_menuCursorVisible)
+    {
+        uint8_t line = constrain(m_menuCursorPosition - m_menuTopItem + 1, 1, 7); // + 1 to account for the header which is always visisble
+        m_display.printMenuCursor(line);
+    }
 }
 
 void Menu::displayMenu()
@@ -135,7 +186,8 @@ void Menu::displayMenu()
 bool Menu::menuTop()
 {
     if (m_currentMenuArray[m_menuCursorPosition - 1].getMenuItemType() == c_menuItemTypeMainMenuHeader ||
-        m_currentMenuArray[m_menuCursorPosition - 1].getMenuItemType() == c_menuItemTypeSubMenuHeader)
+        m_currentMenuArray[m_menuCursorPosition - 1].getMenuItemType() == c_menuItemTypeSubMenuHeader ||
+        m_currentMenuArray[m_menuCursorPosition - 1].getMenuItemType() == c_menuItemTypeListIntToggleHeader)
     {
         return true;
     }
@@ -176,6 +228,27 @@ void Menu::resetMenuPosition()
     m_menuTopItem = 1;
     m_menuBottomItem = m_menuMaxLines;
     m_menuCursorPosition = 1;
+    m_menuListCursorPosition = 1;
+}
+
+MenuItem* Menu::getCurrentMenuItem()
+{
+    return &m_currentMenuArray[m_menuCursorPosition];
+}
+
+MenuItem* Menu::getCurrentMenuHeader()
+{
+    return &m_currentMenuArray[0];
+}
+
+uint8_t Menu::getCurrentMenuItemType()
+{
+    return getCurrentMenuItem()->getMenuItemType();
+}
+
+uint8_t Menu::getCurrentMenuHeaderType()
+{
+    return m_currentMenuArray[0].getMenuItemType();
 }
 
 void Menu::menuSetup(MenuItem* menu)
@@ -187,34 +260,92 @@ void Menu::menuSetup(MenuItem* menu)
 
 void Menu::menuCursorUp()
 {
-    if (!menuTop())
+    if (getCurrentMenuHeaderType() == c_menuItemTypeListIntToggleHeader)
     {
-        m_menuCursorPosition--;
+        MenuItem* item = getCurrentMenuItem();
 
-        if (m_menuCursorPosition < m_menuTopItem)
+        if (item->getMenuItemType() == c_menuItemTypeListIntToggle)
         {
-            m_menuTopItem--;
-            m_menuBottomItem--;
-        }
+            m_menuListCursorVisible = true;
+            m_menuCursorVisible = false;
 
-        displayMenu();
+            if (m_menuListCursorPosition < item->getMenuItemListIntToggleCount())
+            {
+                m_menuListCursorPosition++;
+            }
+            else
+            {
+                m_menuCursorPosition = m_menuMaxLines - 1;
+                m_menuListCursorVisible = false;
+                m_menuCursorVisible = true;
+            }
+        }
     }
+    else
+    {
+        m_menuListCursorVisible = false;
+        m_menuCursorVisible = true;
+
+        if (!menuTop())
+        {
+            m_menuCursorPosition--;
+
+            if (m_menuCursorPosition < m_menuTopItem)
+            {
+                m_menuTopItem--;
+                m_menuBottomItem--;
+            }
+        }
+    }
+
+    Serial.println(m_menuCursorPosition);
+    Serial.println(m_menuListCursorPosition);
+    displayMenu();
 }
 
 void Menu::menuCursorDown()
 {
-    if (!menuBottom())
+    if (getCurrentMenuHeaderType() == c_menuItemTypeListIntToggleHeader)
     {
-        m_menuCursorPosition++;
+        MenuItem* item = getCurrentMenuItem();
 
-        if (m_menuCursorPosition > m_menuBottomItem)
+        if (item->getMenuItemType() == c_menuItemTypeListIntToggle)
         {
-            m_menuTopItem++;
-            m_menuBottomItem++;
-        }
+            m_menuListCursorVisible = true;
+            m_menuCursorVisible = false;
 
-        displayMenu();
+            if (m_menuListCursorPosition > 1)
+            {
+                m_menuListCursorPosition--;
+            }
+        }
+        else
+        {
+            m_menuCursorPosition = 1;
+            m_menuListCursorVisible = true;
+            m_menuCursorVisible = false;
+        }
     }
+    else
+    {
+        m_menuListCursorVisible = false;
+        m_menuCursorVisible = true;
+
+        if (!menuBottom())
+        {
+            m_menuCursorPosition++;
+
+            if (m_menuCursorPosition > m_menuBottomItem)
+            {
+                m_menuTopItem++;
+                m_menuBottomItem++;
+            }
+        }
+    }
+
+    Serial.println(m_menuCursorPosition);
+    Serial.println(m_menuListCursorPosition);
+    displayMenu();
 }
 
 void Menu::menuCursorEnter()
@@ -230,22 +361,38 @@ void Menu::menuCursorEnter()
                 m_currentMenuArray = item->getMenuItemSubMenu();
                 resetMenuPosition();
 
+                item = &m_currentMenuArray[0];
+
+                if (item->getMenuItemType() == c_menuItemTypeListIntToggleHeader)
+                {
+                    m_menuCursorVisible = false;
+                    m_menuListCursorVisible = true;
+                }
+                else
+                {
+                    m_menuCursorVisible = true;
+                    m_menuListCursorVisible = false;
+                }
+
                 displayMenu();
                 break;
             }
 
         case c_menuItemTypeSubMenuBack:
-            MenuItem* menuHeader = &m_currentMenuArray[0];
-
-            if (menuHeader->getMenuItemType() == c_menuItemTypeSubMenuHeader)
+            if (item->getMenuItemSubMenu() != NULL)
             {
-                m_currentMenuArray = menuHeader->getMenuItemSubMenu();
+                m_currentMenuArray = item->getMenuItemSubMenu();
 
                 restoreMenuPosition();
 
                 displayMenu();
                 break;
             }
+
+        case c_menuItemTypeListIntToggle:
+            item->toggleMenuItemListInt(m_menuListCursorPosition);
+            displayMenu();
+
+            break;
     }
 }
-
