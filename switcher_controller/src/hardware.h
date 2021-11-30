@@ -14,6 +14,12 @@ class Hardware
         bool m_editSwitchPress = false;
         bool m_editSwitchLongPress = false;
 
+        // Menu States
+        bool m_presetMenuDisplay = false;
+        bool m_mainMenuDisplay = false;
+        bool m_editMenuDisplay = false;
+        bool m_loopEditMenuDisplay = false;
+
     public:
         void hardwareSetup();
         void hardwarePoll();

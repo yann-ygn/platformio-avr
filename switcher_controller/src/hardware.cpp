@@ -3,13 +3,14 @@
 #include "encoder.h"
 #include "led.h"
 #include "switch.h"
-#include "loops.h"
+#include "preset.h"
 
 Encoder selector(32, 33);
 TemporarySwitch selectorSwitch(34, 1000);
 TemporarySwitch editSwitch(30, 1000);
-Led editSwitchLed(31);
+//Led editSwitchLed(31);
 Loops loops(6);
+Preset preset(1, 1, &loops);
 
 void Hardware::hardwareSetup()
 {
@@ -17,7 +18,7 @@ void Hardware::hardwareSetup()
   selector.encoderSetup();
   selectorSwitch.tempSwitchSetup();
   editSwitch.tempSwitchSetup();
-  editSwitchLed.ledSetup();
+  //editSwitchLed.ledSetup();
 }
 
 void Hardware::hardwarePoll()
