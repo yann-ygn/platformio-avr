@@ -30,7 +30,7 @@ class Memory
         void writeInitialSetupState(uint8_t state);
 
         void writePreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
-        uint8_t readPreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
+        void readPreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
 };
 
 #endif

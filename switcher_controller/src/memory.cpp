@@ -59,9 +59,26 @@ void Memory::writeInitialSetupState(uint8_t state)
 
 }
 
-uint16_t writePreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
+void Memory::writePreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
 {
-    uint16_t startAdress = 
+    uint16_t startAdress = c_presetSaveStartAddress + ((bank - 64) * c_presetBankSaveSize) + (c_presetPresetSaveSize * preset);
+    eeprom0.writeInt8(startAdress, bank - 63);
+    startAdress++;
+
+    eeprom0.writeInt8(startAdress, preset);
+    startAdress++;
+
+    eeprom0.writeArray(startAdress, loop, loopcount);
+    startAdress =+ loopcount;
+
+    eeprom0.writeArray(startAdress, loopstate, loopcount);
+    startAdress =+ loopcount;
+}
+
+void Memory::readPreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
+{
+    uint16_t startAdress = c_presetSaveStartAddress + ((bank - 64) * c_presetBankSaveSize) + (c_presetPresetSaveSize * preset);
+    
 }
 
 void Memory::memoryTest()
