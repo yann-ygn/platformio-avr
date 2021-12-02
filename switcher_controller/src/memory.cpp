@@ -59,6 +59,11 @@ void Memory::writeInitialSetupState(uint8_t state)
 
 }
 
+uint16_t writePreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
+{
+    
+}
+
 void Memory::memoryTest()
 {
     eeprom0.testInt8();
