@@ -13,10 +13,10 @@ class Memory
     private:
         Eeprom eeprom0;
 
-        const uint16_t c_initialSetupStateAddress = 0;
-        const uint16_t m_presetSaveAddress = 128;
-        const uint16_t m_presetSaveSize = 16;
-        const uint16_t m_presetBankSaveSize = 64;
+        const uint8_t c_initialSetupStateAddress = 0;
+        const uint8_t c_presetSaveStartAddress = 128;
+        const uint8_t c_presetPresetSaveSize = 16;
+        const uint8_t c_presetBankSaveSize = 64;
 
     public:
         Memory(uint8_t pin) : eeprom0(pin) {}

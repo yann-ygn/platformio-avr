@@ -61,7 +61,7 @@ void Memory::writeInitialSetupState(uint8_t state)
 
 uint16_t writePreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
 {
-    
+    uint16_t startAdress = 
 }
 
 void Memory::memoryTest()
