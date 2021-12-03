@@ -2,9 +2,10 @@
 
 void Loops::LoopsSetup()
 {
-    for (uint8_t i = 1; i <= m_count; i++)
+    for (uint8_t i = 0; i <= m_count; i++)
     {
         m_loops[i] = i;
+        m_states[i] = 0;
     }
 }
 

@@ -61,8 +61,8 @@ void Memory::writeInitialSetupState(uint8_t state)
 
 void Memory::writePreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
 {
-    uint16_t startAdress = c_presetSaveStartAddress + ((bank - 64) * c_presetBankSaveSize) + (c_presetPresetSaveSize * preset);
-    eeprom0.writeInt8(startAdress, bank - 63);
+    uint16_t startAdress = c_presetSaveStartAddress + ((bank - 65) * c_presetBankSaveSize) + (c_presetPresetSaveSize * preset);
+    eeprom0.writeInt8(startAdress, bank - 64);
     startAdress++;
 
     eeprom0.writeInt8(startAdress, preset);
@@ -78,7 +78,28 @@ void Memory::writePreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* l
 void Memory::readPreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
 {
     uint16_t startAdress = c_presetSaveStartAddress + ((bank - 64) * c_presetBankSaveSize) + (c_presetPresetSaveSize * preset);
-    
+
+    startAdress =+ 2;
+
+    #ifdef DEBUG
+        for (uint8_t i = 0; i <= loopcount; i++)
+        {
+            Serial.print(loopstate[i]);
+        }
+    #endif
+
+    eeprom0.readArray(startAdress, loop, loopcount);
+    startAdress =+ loopcount;
+
+    eeprom0.readArray(startAdress, loopstate, loopcount);
+    startAdress =+ loopcount;
+
+    #ifdef DEBUG
+        for (uint8_t i = 0; i <= loopcount; i++)
+        {
+            Serial.print(loopstate[i]);
+        }
+    #endif
 }
 
 void Memory::memoryTest()

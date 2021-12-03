@@ -12,6 +12,8 @@ const uint8_t c_menuItemTypeSubMenu = 4;
 const uint8_t c_menuItemTypeSubMenuBack = 5;
 const uint8_t c_menuItemTypeListIntToggleHeader = 6;
 const uint8_t c_menuItemTypeListIntToggle = 7;
+const uint8_t c_menuItemTwoIntFullScreenHeader = 8;
+const uint8_t c_menuItemTwoIntFullScreen = 9;
 
 class MenuItem
 {

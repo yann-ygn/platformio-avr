@@ -17,7 +17,7 @@ class Preset
             m_preset(preset),
             m_presetLoops(loops) {}
 
-        uint8_t getbank();
+        uint8_t getBank();
         uint8_t getPreset();
         Loops* getLoops();
 };

@@ -125,6 +125,8 @@ class Display
 
         void printNewLine();
 
+        void printFullScreenChar(uint8_t number);
+
         /**
          * @brief Print the scroll arrow pointing up
          */

@@ -95,6 +95,12 @@ void Display::printNewLine()
     newLine();
 }
 
+void Display::printFullScreenChar(uint8_t number)
+{
+    m_ssd1306.setTextSize(8);
+    m_ssd1306.write(number);
+}
+
 void Display::printSubMenuIcon()
 {
     setCursorX(getWidth() - (c_newTab * 2)); // End of the line minues 2 tabs, first tab would be the scroll up/down arrows
