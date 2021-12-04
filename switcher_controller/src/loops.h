@@ -8,9 +8,10 @@ class Loops
     private:
         uint8_t m_loops[16] = {0};
         uint8_t m_states[16] = {0};
-        uint8_t m_count;
+        uint8_t m_count = 0;
 
     public:
+        Loops() {}
         Loops(uint8_t count) :
             m_count(count) {}
 
@@ -19,6 +20,7 @@ class Loops
         uint8_t* getLoops();
         uint8_t* getStates();
         uint8_t getCount();
+        void setCount(uint8_t count);
 
         void setLoopState(uint8_t loop, uint8_t state);
         uint8_t getLoopState(uint8_t loop);

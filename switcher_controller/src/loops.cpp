@@ -2,7 +2,7 @@
 
 void Loops::LoopsSetup()
 {
-    for (uint8_t i = 0; i <= m_count; i++)
+    for (uint8_t i = 0; i < m_count; i++)
     {
         m_loops[i] = i;
         m_states[i] = 0;
@@ -24,6 +24,11 @@ uint8_t* Loops::getStates()
 uint8_t Loops::getCount()
 {
     return m_count;
+}
+
+void Loops::setCount(uint8_t count)
+{
+    m_count = count;
 }
 
 uint8_t Loops::getLoopState(uint8_t loop)

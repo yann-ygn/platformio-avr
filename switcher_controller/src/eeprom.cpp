@@ -63,7 +63,7 @@ bool Eeprom::isWip()
 	return (data & (1 << 0));
 }
 
-uint8_t Eeprom::readInt8(uint16_t address) 
+uint8_t Eeprom::readInt8(uint16_t address)
 {
 	while (isWip()) {};
 

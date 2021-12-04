@@ -1,8 +1,20 @@
 #include <Arduino.h>
+#include "menu.h"
 #include "encoder.h"
+#include "led.h"
+#include "switch.h"
+#include "preset.h"
+#include "memory.h"
 
 #ifndef HARDWARE_H
 #define HARDWARE_H
+
+const uint8_t c_firstBank = 65; // A
+const uint8_t c_maxBanks = 10;
+const uint8_t c_firstPreset = 0;
+const uint8_t c_maxPresets = 4;
+const uint8_t c_firstLoop = 0;
+const uint8_t c_maxLoops = 6;
 
 class Hardware
 {
@@ -16,14 +28,23 @@ class Hardware
 
         // Menu States
         bool m_presetMenuDisplay = false;
+        bool m_presetEditMenuDisplay = false;
+        bool m_presetLoopEditMenuDisplay = false;
         bool m_mainMenuDisplay = false;
-        bool m_editMenuDisplay = false;
-        bool m_loopEditMenuDisplay = false;
+
+        // Presets logic
+        uint8_t m_currentPresetBank = 0;
+        uint8_t m_currentPreset = 0;
+        Preset *p_currentPreset = NULL;
 
     public:
         void hardwareSetup();
         void hardwarePoll();
+        void hardwareStartup();
+        void restoreLastState();
         void resetHardwareTriggers();
+
+        void loadPresetBank();
 
         bool getSelectorMove();
         bool getSelectorwitchPress();

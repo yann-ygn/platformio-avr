@@ -1,6 +1,5 @@
 #include "display.h"
 
-
 void Display::resetCursor()
 {
     setCursorX(0);
@@ -43,9 +42,9 @@ void Display::printMenuHeader(const char* text)
     resetCursor();
     m_ssd1306.fillRect(0, 0, m_witdh, c_newLine, WHITE); // White background
     m_ssd1306.setTextColor(BLACK); // Invert the text color
-    m_ssd1306.setTextSize(1);
+    m_ssd1306.setFont();
+    setCursorY(c_headerOffset); // The rect is 9p and font is 7p, offset by 1p for clarity
     setCursorX((m_witdh / 2) - (calcTextWidth(text) / 2)); // Set the cursor accounting for the screen and text width to center the text
-    setCursorY(c_headerOffset / 2); // The rect is 9p and font is 7p, offset by 1p for clarity
     m_ssd1306.print(text);
     setCursorY(c_headerOffset); // The rect is 9p and font is 7p, offset by 1p for clarity
     m_ssd1306.setTextColor(WHITE); // Reset the text color
@@ -95,10 +94,13 @@ void Display::printNewLine()
     newLine();
 }
 
-void Display::printFullScreenChar(uint8_t number)
+void Display::printFullScreenChar(uint8_t number, uint8_t number2)
 {
-    m_ssd1306.setTextSize(8);
+    m_ssd1306.setFont(&SourceCodePro_Bold32pt7b);
+    setCursorY(m_height);
     m_ssd1306.write(number);
+    m_ssd1306.print("|");
+    m_ssd1306.write(number2);
 }
 
 void Display::printSubMenuIcon()
