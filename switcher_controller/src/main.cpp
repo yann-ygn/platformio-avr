@@ -12,4 +12,5 @@ void setup()
 
 void loop()
 {
+  hardware.hardwarePoll();
 }

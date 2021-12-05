@@ -1,10 +1,10 @@
 #include "hardware.h"
 
-Memory mem(36);
-Encoder selector(32, 33);
-TemporarySwitch selectorSwitch(34, 1000);
-TemporarySwitch editSwitch(30, 1000);
-Led editSwitchLed(31);
+Memory mem(0);
+Encoder selector(12, 13);
+TemporarySwitch selectorSwitch(14, 1000);
+TemporarySwitch editSwitch(11, 1000);
+Led editSwitchLed(10);
 
 Preset presetBank[c_maxPresets];
 Loops presetLoops[c_maxPresets];
@@ -12,21 +12,27 @@ Loops presetLoops[c_maxPresets];
 void Hardware::hardwareSetup()
 {
   Serial.begin(115200);
+  delay(500);
   mem.memorySetup();
   selector.encoderSetup();
   selectorSwitch.tempSwitchSetup();
   editSwitch.tempSwitchSetup();
   editSwitchLed.ledSetup();
+
+  editSwitchLed.ledTurnOn();
 }
 
 void Hardware::hardwarePoll()
 {
-
+    selectorSwitch.tempSwitchPoll();
+    editSwitch.tempSwitchPoll();
+    selector.encoderPoll();
 }
 
 void Hardware::hardwareStartup()
 {
-
+    selectorSwitch.tempSwitchPoll();
+    editSwitch.tempSwitchPoll();
 }
 
 void Hardware::restoreLastState()
