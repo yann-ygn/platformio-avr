@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "hardware.h"
+#include "leddriver.h"
 
 Hardware hardware;
 
