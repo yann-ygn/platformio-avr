@@ -45,6 +45,8 @@ class Hardware
         void restoreLastState();
         void resetHardwareTriggers();
 
+        void menuSetup();
+
         void loadPresetBank();
 
         bool getSelectorMove();

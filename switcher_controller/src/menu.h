@@ -19,7 +19,7 @@ class MenuItem
 {
     private:
         const char* m_menuItemText = NULL;
-        uint16_t m_menuItemIntValue = 0;
+        uint8_t* m_menuItemIntValue = NULL;
         uint8_t m_menuItemType = c_menuItemTypeNone;
         MenuItem* m_menuItemSubMenu = NULL;
         uint8_t* m_menuItemListIntToggleList = NULL;
@@ -36,11 +36,16 @@ class MenuItem
         MenuItem(const char* text) :
             m_menuItemText(text) {}
 
+        MenuItem(uint8_t type) :
+            m_menuItemType(type) {}
+
+
         MenuItem(const char* text, uint8_t type) :
             m_menuItemText(text),
             m_menuItemType(type) {}
 
-        MenuItem(uint8_t type) :
+        MenuItem(uint8_t* value, uint8_t type) :
+            m_menuItemIntValue(value),
             m_menuItemType(type) {}
 
         MenuItem(const char* text, uint8_t type, MenuItem* submenu) :
@@ -57,8 +62,8 @@ class MenuItem
         const char* getMenuItemText();
         void setMenuItemText(const char* text);
 
-        uint8_t getMenuItemIntValue();
-        void setMenuItemIntValue(uint8_t value);
+        uint8_t* getMenuItemIntValue();
+        void setMenuItemIntValue(uint8_t* value);
 
         uint8_t getMenuItemType();
 
@@ -87,7 +92,7 @@ class MenuItemHeader : public MenuItem
 class MenuItemFooter : public MenuItem
 {
     public:
-        MenuItemFooter() : MenuItem(NULL, c_menuItemTypeFooter) {}
+        MenuItemFooter() : MenuItem(c_menuItemTypeFooter) {}
 };
 
 class MenuItemSubMenu : public MenuItem
@@ -129,7 +134,8 @@ class MenuItemTwoIntFullScreenHeader : public MenuItem
 class MenuItemTwoIntFullScreen : public MenuItem
 {
     public:
-        MenuItemTwoIntFullScreen() : MenuItem(0, c_menuItemTwoIntFullScreen) {}
+        MenuItemTwoIntFullScreen(uint8_t* value) : MenuItem(value, c_menuItemTwoIntFullScreen) {}
+        MenuItemTwoIntFullScreen() : MenuItem(c_menuItemTwoIntFullScreen) {}
 };
 
 class Menu

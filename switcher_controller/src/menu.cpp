@@ -10,6 +10,16 @@ void MenuItem::setMenuItemText(const char* text)
     m_menuItemText = text;
 }
 
+uint8_t* MenuItem::getMenuItemIntValue()
+{
+    return m_menuItemIntValue;
+}
+
+void MenuItem::setMenuItemIntValue(uint8_t* value)
+{
+    m_menuItemIntValue = value;
+}
+
 uint8_t MenuItem::getMenuItemType()
 {
     return m_menuItemType;

@@ -17,9 +17,6 @@ TemporarySwitch preset4Fsw(29, 1000);
 Preset presetBank[c_maxPresets];
 Loops presetLoops[c_maxPresets];
 
-extern MenuItem preset[];
-Menu presetMenu(128, 64, 7, 9, 2);
-
 MenuItem preset[] =
 {
     MenuItemTwoIntFullScreenHeader("Preset"),
@@ -27,6 +24,8 @@ MenuItem preset[] =
     MenuItemTwoIntFullScreen(),
     MenuItemFooter()
 };
+
+Menu presetMenu(128, 64, 7, 9, 2);
 
 void Hardware::hardwareSetup()
 {
@@ -87,6 +86,12 @@ void Hardware::resetHardwareTriggers()
     m_selectorSwitchLongPress = false;
     m_editSwitchPress = false;
     m_editSwitchLongPress = false;
+}
+
+void Hardware::menuSetup()
+{
+    preset[1].setMenuItemIntValue(&m_currentPresetBank);
+    preset[2].setMenuItemIntValue(&m_currentPreset);
 }
 
 void Hardware::loadPresetBank()
