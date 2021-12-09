@@ -5,6 +5,11 @@ const char* MenuItem::getMenuItemText()
     return m_menuItemText;
 }
 
+void MenuItem::setMenuItemText(const char* text)
+{
+    m_menuItemText = text;
+}
+
 uint8_t MenuItem::getMenuItemType()
 {
     return m_menuItemType;

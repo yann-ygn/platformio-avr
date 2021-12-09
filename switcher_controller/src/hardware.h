@@ -5,6 +5,7 @@
 #include "switch.h"
 #include "preset.h"
 #include "memory.h"
+#include "leddriver.h"
 
 #ifndef HARDWARE_H
 #define HARDWARE_H

@@ -19,6 +19,7 @@ class MenuItem
 {
     private:
         const char* m_menuItemText = NULL;
+        uint16_t m_menuItemIntValue = 0;
         uint8_t m_menuItemType = c_menuItemTypeNone;
         MenuItem* m_menuItemSubMenu = NULL;
         uint8_t* m_menuItemListIntToggleList = NULL;
@@ -39,6 +40,9 @@ class MenuItem
             m_menuItemText(text),
             m_menuItemType(type) {}
 
+        MenuItem(uint8_t type) :
+            m_menuItemType(type) {}
+
         MenuItem(const char* text, uint8_t type, MenuItem* submenu) :
             m_menuItemText(text),
             m_menuItemType(type),
@@ -51,6 +55,10 @@ class MenuItem
             m_menuItemListIntToggleCount(count) {}
 
         const char* getMenuItemText();
+        void setMenuItemText(const char* text);
+
+        uint8_t getMenuItemIntValue();
+        void setMenuItemIntValue(uint8_t value);
 
         uint8_t getMenuItemType();
 
@@ -110,6 +118,18 @@ class MenuItemListIntToggle : public MenuItem
 {
     public:
         MenuItemListIntToggle(uint8_t* items, uint8_t* states, uint8_t count) : MenuItem(items, states, count, c_menuItemTypeListIntToggle) {}
+};
+
+class MenuItemTwoIntFullScreenHeader : public MenuItem
+{
+    public:
+        MenuItemTwoIntFullScreenHeader(const char* text) : MenuItem(text, c_menuItemTwoIntFullScreenHeader) {}
+};
+
+class MenuItemTwoIntFullScreen : public MenuItem
+{
+    public:
+        MenuItemTwoIntFullScreen() : MenuItem(0, c_menuItemTwoIntFullScreen) {}
 };
 
 class Menu

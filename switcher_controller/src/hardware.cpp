@@ -1,25 +1,49 @@
 #include "hardware.h"
 
 Memory mem(0);
+
 Encoder selector(12, 13);
 TemporarySwitch selectorSwitch(14, 1000);
 TemporarySwitch editSwitch(11, 1000);
 Led editSwitchLed(10);
 
+TemporarySwitch presetUpFsw(24, 1000);
+TemporarySwitch presetDownFsw(25, 1000);
+TemporarySwitch preset1Fsw(26, 1000);
+TemporarySwitch preset2Fsw(27, 1000);
+TemporarySwitch preset3Fsw(28, 1000);
+TemporarySwitch preset4Fsw(29, 1000);
+
 Preset presetBank[c_maxPresets];
 Loops presetLoops[c_maxPresets];
 
+extern MenuItem preset[];
+Menu presetMenu(128, 64, 7, 9, 2);
+
+MenuItem preset[] =
+{
+    MenuItemTwoIntFullScreenHeader("Preset"),
+    MenuItemTwoIntFullScreen(),
+    MenuItemTwoIntFullScreen(),
+    MenuItemFooter()
+};
+
 void Hardware::hardwareSetup()
 {
-  Serial.begin(115200);
-  delay(500);
-  mem.memorySetup();
-  selector.encoderSetup();
-  selectorSwitch.tempSwitchSetup();
-  editSwitch.tempSwitchSetup();
-  editSwitchLed.ledSetup();
-
-  editSwitchLed.ledTurnOn();
+    Serial.begin(115200);
+    delay(500);
+    mem.memorySetup();
+    selector.encoderSetup();
+    selectorSwitch.tempSwitchSetup();
+    editSwitch.tempSwitchSetup();
+    editSwitchLed.ledSetup();
+    presetUpFsw.tempSwitchSetup();
+    presetDownFsw.tempSwitchSetup();
+    preset1Fsw.tempSwitchSetup();
+    preset2Fsw.tempSwitchSetup();
+    preset3Fsw.tempSwitchSetup();
+    preset4Fsw.tempSwitchSetup();
+    presetMenu.menuSetup(preset);
 }
 
 void Hardware::hardwarePoll()
@@ -27,12 +51,25 @@ void Hardware::hardwarePoll()
     selectorSwitch.tempSwitchPoll();
     editSwitch.tempSwitchPoll();
     selector.encoderPoll();
+    presetUpFsw.tempSwitchPoll();
+    presetDownFsw.tempSwitchPoll();
+    preset1Fsw.tempSwitchPoll();
+    preset2Fsw.tempSwitchPoll();
+    preset3Fsw.tempSwitchPoll();
+    preset4Fsw.tempSwitchPoll();
+    delay(500);
 }
 
 void Hardware::hardwareStartup()
 {
     selectorSwitch.tempSwitchPoll();
     editSwitch.tempSwitchPoll();
+    presetUpFsw.tempSwitchPoll();
+    presetDownFsw.tempSwitchPoll();
+    preset1Fsw.tempSwitchPoll();
+    preset2Fsw.tempSwitchPoll();
+    preset3Fsw.tempSwitchPoll();
+    preset4Fsw.tempSwitchPoll();
 }
 
 void Hardware::restoreLastState()
@@ -45,7 +82,11 @@ void Hardware::restoreLastState()
 
 void Hardware::resetHardwareTriggers()
 {
-
+    m_selectorMove = false;
+    m_selectorSwitchPress = false;
+    m_selectorSwitchLongPress = false;
+    m_editSwitchPress = false;
+    m_editSwitchLongPress = false;
 }
 
 void Hardware::loadPresetBank()
