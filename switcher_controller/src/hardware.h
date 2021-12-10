@@ -26,6 +26,14 @@ class Hardware
         bool m_selectorSwitchLongPress = false;
         bool m_editSwitchPress = false;
         bool m_editSwitchLongPress = false;
+        bool m_presetUpFswPress = false;
+        bool m_presetUpFswLongPress = false;
+        bool m_presetDownFswPress = false;
+        bool m_presetDownFswLongPress = false;
+        bool m_preset1FswPress = false;
+        bool m_preset2FswPress = false;
+        bool m_preset3FswPress = false;
+        bool m_preset4FswPress = false;
 
         // Menu States
         bool m_presetMenuDisplay = false;
@@ -54,6 +62,11 @@ class Hardware
         bool getSelectorSwitchLongPress();
         bool getEditSwitchPress();
         bool getEditSwitchLongPress();
+
+        bool getPresetMenuDisplay();
+        bool getPresetEditMenuDisplay();
+        bool getPresetLoopEditMenuDisplay();
+        bool getMainMenuDisplay();
 };
 
 #endif

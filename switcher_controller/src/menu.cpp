@@ -117,6 +117,18 @@ void Menu::drawMenu()
             }
         }
     }
+    else if (getCurrentMenuHeaderType() == c_menuItemTwoIntFullScreenHeader)
+    {
+        uint8_t* values[2];
+
+        for (uint8_t i = 1; i < 3; i++)
+        {
+            item = &m_currentMenuArray[i];
+            values[i-1] = item->getMenuItemIntValue();
+        }
+
+        m_display.printTwoIntFullScreen(values[0], values[1]);
+    }
     else
     {
         for (uint8_t i = m_menuTopItem; i <= m_menuBottomItem; i++)

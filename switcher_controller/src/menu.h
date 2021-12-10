@@ -170,6 +170,13 @@ class Menu
             m_menuMaxLines(maxlines),
             m_menuBottomItem(maxlines - 1) {}
 
+        Menu(uint8_t width, uint8_t height, uint8_t maxlines, uint8_t newline, uint8_t headeroffset, bool cursor) :
+            m_display(width, height, newline, maxlines, headeroffset),
+            m_menuMaxLines(maxlines),
+            m_menuBottomItem(maxlines - 1),
+            m_menuCursorVisible(false),
+            m_menuListCursorVisible(false) {}
+
         void menuSetup(MenuItem* menu);
         void menuCursorUp();
         void menuCursorDown();

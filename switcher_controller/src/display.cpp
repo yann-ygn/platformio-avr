@@ -94,13 +94,14 @@ void Display::printNewLine()
     newLine();
 }
 
-void Display::printFullScreenChar(uint8_t number, uint8_t number2)
+void Display::printTwoIntFullScreen(uint8_t* number, uint8_t* number2)
 {
     m_ssd1306.setFont(&SourceCodePro_Bold32pt7b);
     setCursorY(m_height);
-    m_ssd1306.write(number);
+    setCursorX(0);
+    m_ssd1306.write(*number);
     m_ssd1306.print("|");
-    m_ssd1306.write(number2);
+    m_ssd1306.write(*number2);
 }
 
 void Display::printSubMenuIcon()

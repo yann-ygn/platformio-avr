@@ -25,7 +25,7 @@ MenuItem preset[] =
     MenuItemFooter()
 };
 
-Menu presetMenu(128, 64, 7, 9, 2);
+Menu presetMenu(128, 64, 7, 9, 2, false);
 
 void Hardware::hardwareSetup()
 {
@@ -42,14 +42,36 @@ void Hardware::hardwareSetup()
     preset2Fsw.tempSwitchSetup();
     preset3Fsw.tempSwitchSetup();
     preset4Fsw.tempSwitchSetup();
-    presetMenu.menuSetup(preset);
 }
 
 void Hardware::hardwarePoll()
 {
+    if (m_presetMenuDisplay)
+    {
+        presetUpFsw.tempSwitchPoll();
+        if (presetUpFsw.tempSwitchPushed())
+        {
+            m_presetUpFswPress = true;
+        }
+        presetDownFsw.tempSwitchPoll();
+        preset1Fsw.tempSwitchPoll();
+        preset2Fsw.tempSwitchPoll();
+        preset3Fsw.tempSwitchPoll();
+        preset4Fsw.tempSwitchPoll();
+        editSwitch.tempSwitchPoll();
+    }
+    else
+    {
+        selectorSwitch.tempSwitchPoll();
+        selector.encoderPoll();
+    }
+}
+
+void Hardware::hardwareStartup()
+{
     selectorSwitch.tempSwitchPoll();
-    editSwitch.tempSwitchPoll();
     selector.encoderPoll();
+    editSwitch.tempSwitchPoll();
     presetUpFsw.tempSwitchPoll();
     presetDownFsw.tempSwitchPoll();
     preset1Fsw.tempSwitchPoll();
@@ -57,18 +79,6 @@ void Hardware::hardwarePoll()
     preset3Fsw.tempSwitchPoll();
     preset4Fsw.tempSwitchPoll();
     delay(500);
-}
-
-void Hardware::hardwareStartup()
-{
-    selectorSwitch.tempSwitchPoll();
-    editSwitch.tempSwitchPoll();
-    presetUpFsw.tempSwitchPoll();
-    presetDownFsw.tempSwitchPoll();
-    preset1Fsw.tempSwitchPoll();
-    preset2Fsw.tempSwitchPoll();
-    preset3Fsw.tempSwitchPoll();
-    preset4Fsw.tempSwitchPoll();
 }
 
 void Hardware::restoreLastState()
@@ -86,12 +96,21 @@ void Hardware::resetHardwareTriggers()
     m_selectorSwitchLongPress = false;
     m_editSwitchPress = false;
     m_editSwitchLongPress = false;
+    m_presetUpFswPress = false;
+    m_presetUpFswLongPress = false;
+    m_presetDownFswPress = false;
+    m_presetDownFswLongPress = false;
+    m_preset1FswPress = false;
+    m_preset2FswPress = false;
+    m_preset3FswPress = false;
+    m_preset4FswPress = false;
 }
 
 void Hardware::menuSetup()
 {
     preset[1].setMenuItemIntValue(&m_currentPresetBank);
     preset[2].setMenuItemIntValue(&m_currentPreset);
+    presetMenu.menuSetup(preset);
 }
 
 void Hardware::loadPresetBank()
@@ -126,4 +145,24 @@ bool Hardware::getEditSwitchPress()
 bool Hardware::getEditSwitchLongPress()
 {
     return m_editSwitchLongPress;
+}
+
+bool Hardware::getPresetMenuDisplay()
+{
+    return m_presetMenuDisplay;
+}
+
+bool Hardware::getPresetEditMenuDisplay()
+{
+    return m_presetEditMenuDisplay;
+}
+
+bool Hardware::getPresetLoopEditMenuDisplay()
+{
+    return m_presetLoopEditMenuDisplay;
+}
+
+bool Hardware::getMainMenuDisplay()
+{
+    return m_mainMenuDisplay;
 }
