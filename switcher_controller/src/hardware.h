@@ -10,8 +10,8 @@
 #ifndef HARDWARE_H
 #define HARDWARE_H
 
-const uint8_t c_firstBank = 65; // A
-const uint8_t c_maxBanks = 10;
+const uint8_t c_firstPresetBank = 65; // A
+const uint8_t c_maxPresetBanks = 10;
 const uint8_t c_firstPreset = 0;
 const uint8_t c_maxPresets = 4;
 const uint8_t c_firstLoop = 0;
@@ -30,10 +30,10 @@ class Hardware
         bool m_presetUpFswLongPress = false;
         bool m_presetDownFswPress = false;
         bool m_presetDownFswLongPress = false;
+        bool m_preset0FswPress = false;
         bool m_preset1FswPress = false;
         bool m_preset2FswPress = false;
         bool m_preset3FswPress = false;
-        bool m_preset4FswPress = false;
 
         // Menu States
         bool m_presetMenuDisplay = false;
@@ -56,12 +56,19 @@ class Hardware
         void menuSetup();
 
         void loadPresetBank();
+        void loadPreset();
 
         bool getSelectorMove();
         bool getSelectorwitchPress();
         bool getSelectorSwitchLongPress();
         bool getEditSwitchPress();
         bool getEditSwitchLongPress();
+        bool getPresetUpFswPress();
+        bool getPresetDownFswPress();
+        bool getPreset0FswPress();
+        bool getPreset1FswPress();
+        bool getPreset2FswPress();
+        bool getPreset3FswPress();
 
         bool getPresetMenuDisplay();
         bool getPresetEditMenuDisplay();

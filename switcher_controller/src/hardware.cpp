@@ -9,10 +9,10 @@ Led editSwitchLed(10);
 
 TemporarySwitch presetUpFsw(24, 1000);
 TemporarySwitch presetDownFsw(25, 1000);
-TemporarySwitch preset1Fsw(26, 1000);
-TemporarySwitch preset2Fsw(27, 1000);
-TemporarySwitch preset3Fsw(28, 1000);
-TemporarySwitch preset4Fsw(29, 1000);
+TemporarySwitch preset0Fsw(26, 1000);
+TemporarySwitch preset1Fsw(27, 1000);
+TemporarySwitch preset2Fsw(28, 1000);
+TemporarySwitch preset3Fsw(29, 1000);
 
 Preset presetBank[c_maxPresets];
 Loops presetLoops[c_maxPresets];
@@ -38,10 +38,10 @@ void Hardware::hardwareSetup()
     editSwitchLed.ledSetup();
     presetUpFsw.tempSwitchSetup();
     presetDownFsw.tempSwitchSetup();
+    preset0Fsw.tempSwitchSetup();
     preset1Fsw.tempSwitchSetup();
     preset2Fsw.tempSwitchSetup();
     preset3Fsw.tempSwitchSetup();
-    preset4Fsw.tempSwitchSetup();
 }
 
 void Hardware::hardwarePoll()
@@ -51,14 +51,60 @@ void Hardware::hardwarePoll()
         presetUpFsw.tempSwitchPoll();
         if (presetUpFsw.tempSwitchPushed())
         {
+            m_currentPresetBank++;
+            m_currentPreset = 0;
             m_presetUpFswPress = true;
         }
+        if (presetUpFsw.tempSwitchLongPress())
+        {
+            m_presetUpFswLongPress = true;
+        }
+
         presetDownFsw.tempSwitchPoll();
+        if (presetDownFsw.tempSwitchPushed())
+        {
+            m_currentPresetBank--;
+            m_currentPreset = 0;
+            m_presetDownFswPress = true;
+        }
+        if (presetDownFsw.tempSwitchLongPress())
+        {
+            m_presetDownFswLongPress = true;
+        }
+
+        preset0Fsw.tempSwitchPoll();
+        if (preset0Fsw.tempSwitchPushed())
+        {
+            m_currentPreset = 0;
+            m_preset0FswPress = true;
+        }
+
         preset1Fsw.tempSwitchPoll();
+        if (preset1Fsw.tempSwitchPushed())
+        {
+            m_currentPreset = 1;
+            m_preset1FswPress = true;
+        }
+
         preset2Fsw.tempSwitchPoll();
+        if (preset2Fsw.tempSwitchPushed())
+        {
+            m_currentPreset = 2;
+            m_preset2FswPress = true;
+        }
+
         preset3Fsw.tempSwitchPoll();
-        preset4Fsw.tempSwitchPoll();
+        if (preset2Fsw.tempSwitchPushed())
+        {
+            m_currentPreset = 3;
+            m_preset2FswPress = true;
+        }
+
         editSwitch.tempSwitchPoll();
+        if (editSwitch.tempSwitchPushed())
+        {
+            m_editSwitchPress = true;
+        }
     }
     else
     {
@@ -74,10 +120,10 @@ void Hardware::hardwareStartup()
     editSwitch.tempSwitchPoll();
     presetUpFsw.tempSwitchPoll();
     presetDownFsw.tempSwitchPoll();
+    preset0Fsw.tempSwitchPoll();
     preset1Fsw.tempSwitchPoll();
     preset2Fsw.tempSwitchPoll();
     preset3Fsw.tempSwitchPoll();
-    preset4Fsw.tempSwitchPoll();
     delay(500);
 }
 
@@ -100,10 +146,10 @@ void Hardware::resetHardwareTriggers()
     m_presetUpFswLongPress = false;
     m_presetDownFswPress = false;
     m_presetDownFswLongPress = false;
+    m_preset0FswPress = false;
     m_preset1FswPress = false;
     m_preset2FswPress = false;
     m_preset3FswPress = false;
-    m_preset4FswPress = false;
 }
 
 void Hardware::menuSetup()
@@ -115,6 +161,15 @@ void Hardware::menuSetup()
 
 void Hardware::loadPresetBank()
 {
+    if (m_currentPresetBank > (c_firstPresetBank + c_maxPresetBanks))
+    {
+        m_currentPresetBank = c_firstPresetBank;
+    }
+    if (m_currentPresetBank < c_firstPresetBank)
+    {
+        m_currentPresetBank = c_firstPresetBank + c_maxPresetBanks;
+    }
+
     for (uint8_t i = 0; i < c_maxPresets; i++)
     {
         presetBank[i].presetSetup(m_currentPresetBank, i, &presetLoops[i], c_maxLoops);
@@ -145,6 +200,36 @@ bool Hardware::getEditSwitchPress()
 bool Hardware::getEditSwitchLongPress()
 {
     return m_editSwitchLongPress;
+}
+
+bool Hardware::getPresetUpFswPress()
+{
+    return m_presetUpFswPress;
+}
+
+bool Hardware::getPresetDownFswPress()
+{
+    return m_presetDownFswPress;
+}
+
+bool Hardware::getPreset0FswPress()
+{
+    return m_preset0FswPress;
+}
+
+bool Hardware::getPreset1FswPress()
+{
+    return m_preset1FswPress;
+}
+
+bool Hardware::getPreset2FswPress()
+{
+    return m_preset2FswPress;
+}
+
+bool Hardware::getPreset3FswPress()
+{
+    return m_preset3FswPress;
 }
 
 bool Hardware::getPresetMenuDisplay()

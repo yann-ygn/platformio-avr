@@ -19,8 +19,20 @@ void loop()
   {
     if (hardware.getEditSwitchPress())
     {
-      
+
+    }
+
+    if (hardware.getPresetUpFswPress() || hardware.getPresetDownFswPress())
+    {
+      hardware.loadPresetBank();
+    }
+
+    if (hardware.getPreset0FswPress() || hardware.getPreset1FswPress() ||
+        hardware.getPreset2FswPress() || hardware.getPreset3FswPress())
+    {
+      hardware.loadPreset();
     }
   }
+
   hardware.resetHardwareTriggers();
 }
