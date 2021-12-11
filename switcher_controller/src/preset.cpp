@@ -30,9 +30,9 @@ void Preset::setBank(uint8_t bank)
     m_bank = bank;
 }
 
-uint8_t Preset::getPreset()
+uint8_t* Preset::getPreset()
 {
-    return m_preset;
+    return &m_preset;
 }
 
 void Preset::setPreset(uint8_t preset)

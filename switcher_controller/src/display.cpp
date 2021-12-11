@@ -96,9 +96,11 @@ void Display::printNewLine()
 
 void Display::printTwoIntFullScreen(uint8_t* number, uint8_t* number2)
 {
-    m_ssd1306.setFont(&SourceCodePro_Bold32pt7b);
-    setCursorY(m_height);
-    setCursorX(0);
+    //m_ssd1306.setFont(&SourceCodePro_Bold32pt7b);
+    //setCursorY(m_height);
+    //setCursorX(0);
+    newLine();
+    Serial.println(*number2);
     m_ssd1306.write(*number);
     m_ssd1306.print("|");
     m_ssd1306.write(*number2);

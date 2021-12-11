@@ -12,7 +12,7 @@
 
 const uint8_t c_firstPresetBank = 65; // A
 const uint8_t c_maxPresetBanks = 10;
-const uint8_t c_firstPreset = 0;
+const uint8_t c_firstPreset = 48;
 const uint8_t c_maxPresets = 4;
 const uint8_t c_firstLoop = 0;
 const uint8_t c_maxLoops = 6;

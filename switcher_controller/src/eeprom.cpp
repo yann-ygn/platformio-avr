@@ -30,7 +30,7 @@ void Eeprom::enableWrite()
 	deselect();
 }
 
-void Eeprom::sendAddress(uint16_t addr) 
+void Eeprom::sendAddress(uint16_t addr)
 {
 	SPI.transfer(highByte(addr));
 	SPI.transfer(lowByte(addr));
@@ -74,6 +74,17 @@ uint8_t Eeprom::readInt8(uint16_t address)
 	deselect();
 
 	return data;
+}
+
+void Eeprom::readInt8(uint16_t address, uint8_t* data)
+{
+	while (isWip()) {};
+
+	select();
+	SPI.transfer(READ);
+	sendAddress(address);
+	*data = SPI.transfer(0x00);
+	deselect();
 }
 
 void Eeprom::writeInt8(uint16_t address, uint8_t data)

@@ -42,6 +42,8 @@ void Hardware::hardwareSetup()
     preset1Fsw.tempSwitchSetup();
     preset2Fsw.tempSwitchSetup();
     preset3Fsw.tempSwitchSetup();
+
+    //mem.memoryReset();
 }
 
 void Hardware::hardwarePoll()
@@ -94,7 +96,7 @@ void Hardware::hardwarePoll()
         }
 
         preset3Fsw.tempSwitchPoll();
-        if (preset2Fsw.tempSwitchPushed())
+        if (preset3Fsw.tempSwitchPushed())
         {
             m_currentPreset = 3;
             m_preset2FswPress = true;
@@ -133,6 +135,7 @@ void Hardware::restoreLastState()
     m_currentPreset = mem.readCurrentPreset();
     loadPresetBank();
     p_currentPreset = &presetBank[m_currentPreset];
+    m_presetMenuDisplay = true;
 }
 
 void Hardware::resetHardwareTriggers()
@@ -155,7 +158,7 @@ void Hardware::resetHardwareTriggers()
 void Hardware::menuSetup()
 {
     preset[1].setMenuItemIntValue(&m_currentPresetBank);
-    preset[2].setMenuItemIntValue(&m_currentPreset);
+    preset[2].setMenuItemIntValue(p_currentPreset->getPreset());
     presetMenu.menuSetup(preset);
 }
 
@@ -175,6 +178,21 @@ void Hardware::loadPresetBank()
         presetBank[i].presetSetup(m_currentPresetBank, i, &presetLoops[i], c_maxLoops);
         mem.readPreset(presetBank[i].getBank(), presetBank[i].getPreset(), presetBank[i].getLoops(), presetBank[i].getLoopsStates(), c_maxLoops);
     }
+
+    p_currentPreset = &presetBank[0];
+    m_currentPreset = 0;
+    presetMenu.menuRefresh();
+}
+
+void Hardware::loadPreset()
+{
+    Serial.println(m_currentPreset);
+    p_currentPreset = &presetBank[m_currentPreset];
+
+    Serial.println(p_currentPreset->getBank());
+    Serial.println(*p_currentPreset->getPreset());
+
+    presetMenu.menuRefresh();
 }
 
 bool Hardware::getSelectorMove()

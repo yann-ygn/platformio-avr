@@ -37,8 +37,8 @@ class Memory
         uint8_t readCurrentPreset();
         void writeCurrentPreset(uint8_t preset);
 
-        void writePreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
-        void readPreset(uint8_t bank, uint8_t preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
+        void writePreset(uint8_t bank, uint8_t* preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
+        void readPreset(uint8_t bank, uint8_t* preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
 };
 
 #endif

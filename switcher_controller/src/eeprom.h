@@ -81,6 +81,8 @@ class Eeprom
          */
         uint8_t readInt8(uint16_t address);
 
+        void readInt8(uint16_t address, uint8_t* data);
+
         /**
          * @brief Writes a 8 bit value to the selected memory address
          *

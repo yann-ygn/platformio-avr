@@ -23,7 +23,7 @@ class Preset
         uint8_t getBank();
         void setBank(uint8_t bank);
 
-        uint8_t getPreset();
+        uint8_t* getPreset();
         void setPreset(uint8_t preset);
 
         uint8_t* getLoops();

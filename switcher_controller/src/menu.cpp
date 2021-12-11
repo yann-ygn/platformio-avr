@@ -423,3 +423,8 @@ void Menu::menuCursorEnter()
             break;
     }
 }
+
+void Menu::menuRefresh()
+{
+    displayMenu();
+}

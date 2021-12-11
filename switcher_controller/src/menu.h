@@ -181,6 +181,7 @@ class Menu
         void menuCursorUp();
         void menuCursorDown();
         void menuCursorEnter();
+        void menuRefresh();
 };
 
 #endif
