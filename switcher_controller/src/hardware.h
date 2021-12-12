@@ -12,7 +12,7 @@
 
 const uint8_t c_firstPresetBank = 65; // A
 const uint8_t c_maxPresetBanks = 10;
-const uint8_t c_firstPreset = 48;
+const uint8_t c_firstPreset = 48; // 0
 const uint8_t c_maxPresets = 4;
 const uint8_t c_firstLoop = 0;
 const uint8_t c_maxLoops = 6;
@@ -40,6 +40,7 @@ class Hardware
         bool m_presetEditMenuDisplay = false;
         bool m_presetLoopEditMenuDisplay = false;
         bool m_mainMenuDisplay = false;
+        Menu *p_currentMenu = NULL;
 
         // Presets logic
         uint8_t m_currentPresetBank = 0;
@@ -53,10 +54,17 @@ class Hardware
         void restoreLastState();
         void resetHardwareTriggers();
 
+        void processSelector();
+        void processSelectorSwitch();
+
         void menuSetup();
+        void resetMenuStates();
+        void displayPresetMenu();
+        void displayPresetEditMenu();
 
         void loadPresetBank();
         void loadPreset();
+        void savePreset();
 
         bool getSelectorMove();
         bool getSelectorwitchPress();

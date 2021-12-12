@@ -4,7 +4,7 @@
 #include <Adafruit_GFX.h>
 //#include "fonts/SourceCodePro_Regular5pt7b.h"
 //#include "fonts/SourceCodePro_Regular6pt7b.h"
-//#include "fonts/SourceCodePro_Bold32pt7b.h"
+#include "fonts/SourceCodePro_Bold32pt7b.h"
 
 #ifndef DISPLAY_H
 #define DISPLAY_H

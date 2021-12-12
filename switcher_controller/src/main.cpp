@@ -7,8 +7,11 @@ void setup()
 {
   Serial.begin(115200);
   hardware.hardwareSetup();
-  hardware.restoreLastState();
+  delay(500);
   hardware.menuSetup();
+  hardware.restoreLastState();
+  hardware.hardwareStartup();
+  delay(500);
 }
 
 void loop()
@@ -19,7 +22,7 @@ void loop()
   {
     if (hardware.getEditSwitchPress())
     {
-
+      hardware.displayPresetEditMenu();
     }
 
     if (hardware.getPresetUpFswPress() || hardware.getPresetDownFswPress())
@@ -31,6 +34,19 @@ void loop()
         hardware.getPreset2FswPress() || hardware.getPreset3FswPress())
     {
       hardware.loadPreset();
+    }
+  }
+
+  if (hardware.getPresetEditMenuDisplay())
+  {
+    if (hardware.getSelectorMove())
+    {
+      hardware.processSelector();
+    }
+
+    if (hardware.getSelectorwitchPress())
+    {
+      hardware.processSelectorSwitch();
     }
   }
 

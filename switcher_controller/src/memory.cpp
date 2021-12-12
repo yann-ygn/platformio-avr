@@ -129,7 +129,7 @@ void Memory::writeCurrentPreset(uint8_t preset)
     eeprom0.writeInt8(c_currentPresetAddress, preset);
 
     #ifdef DEBUG
-        Serial.print("Writing current preset bank : ");
+        Serial.print("Writing current preset : ");
         Serial.println(preset);
     #endif
 }

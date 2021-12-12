@@ -109,6 +109,20 @@ void LedDriver16::resetBlink()
     m_lastBlinkState = 0;
 }
 
+void LedDriver16::setLedStateByMask(uint16_t mask)
+{
+    m_ledDriverMask = mask;
+
+    select();
+    SPI.transfer16(mask);
+    deselect();
+}
+
+uint16_t LedDriver16::getLedDriverMask()
+{
+    return m_ledDriverMask;
+}
+
 #ifdef DEBUG
     void LedDriver8::testAllLed()
     {

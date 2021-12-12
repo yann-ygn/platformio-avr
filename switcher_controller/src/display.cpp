@@ -63,8 +63,9 @@ void Display::printListNumbers(uint8_t* items, uint8_t* states, uint8_t count)
     setCursorY(m_height / 2);
     setCursorX(0);
 
-    for (uint8_t i = 1; i <= count; i++)
+    for (uint8_t i = 0; i < count; i++)
     {
+        Serial.println(items[i]);
         if (states[i])
         {
             m_ssd1306.setTextColor(BLACK, WHITE);
@@ -78,7 +79,7 @@ void Display::printListNumbers(uint8_t* items, uint8_t* states, uint8_t count)
             setCursorX(getCursorX() + c_newTab);
         }
 
-        if (i < count)
+        if (i < count - 1)
         {
             m_ssd1306.write(c_menuCursor);
             setCursorX(getCursorX() + c_newTab);
@@ -96,11 +97,9 @@ void Display::printNewLine()
 
 void Display::printTwoIntFullScreen(uint8_t* number, uint8_t* number2)
 {
-    //m_ssd1306.setFont(&SourceCodePro_Bold32pt7b);
-    //setCursorY(m_height);
-    //setCursorX(0);
-    newLine();
-    Serial.println(*number2);
+    m_ssd1306.setFont(&SourceCodePro_Bold32pt7b);
+    setCursorY(m_height);
+    setCursorX(0);
     m_ssd1306.write(*number);
     m_ssd1306.print("|");
     m_ssd1306.write(*number2);

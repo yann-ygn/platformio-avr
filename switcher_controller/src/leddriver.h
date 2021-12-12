@@ -15,6 +15,7 @@ class LedDriver
         uint32_t m_blinkTime = 0;
         uint32_t m_lastBlinkTime = 0;
         uint8_t m_lastBlinkState = 0;
+        uint16_t m_ledDriverMask = 0;
 
         /**
          * @brief Setup the SPI bus and select the chip
@@ -81,33 +82,33 @@ class LedDriver16 : public LedDriver
     public:
         /**
          * @brief Construct a new Led Driver 16 object
-         * 
+         *
          * @param cspin CS pin #
          */
         LedDriver16(uint8_t cspin) : LedDriver(cspin) { };
 
         /**
          * @brief Light the selected LED
-         * 
+         *
          * @param led LED #
          */
         void lightLed(uint8_t led);
 
         /**
          * @brief Lights the 2 selected LEDs
-         * 
+         *
          * @param led LED #
          */
-        void lightLed2(uint8_t led);  
+        void lightLed2(uint8_t led);
 
         /**
-         * @brief Toggles all the LED off 
+         * @brief Toggles all the LED off
          */
-        void lightAllLedOff(); 
+        void lightAllLedOff();
 
         /**
          * @brief Blink an LED with a given inrterval
-         * 
+         *
          * @param led LED #
          * @param interval Interval in ms
          */
@@ -115,7 +116,7 @@ class LedDriver16 : public LedDriver
 
         /**
          * @brief Blink two LEDs with a given inrterval
-         * 
+         *
          * @param led LED #
          * @param interval Interval in ms
          */
@@ -123,9 +124,12 @@ class LedDriver16 : public LedDriver
 
         /**
          * @brief Reset the blink state
-         * 
+         *
          */
         void resetBlink();
+
+        void setLedStateByMask(uint16_t mask);
+        uint16_t getLedDriverMask();
 
         #ifdef DEBUG
             /**

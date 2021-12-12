@@ -72,6 +72,9 @@ class MenuItem
         uint8_t* getMenuItemListIntToggleList();
         uint8_t* getMenuItemListIntToggleState();
         uint8_t getMenuItemListIntToggleCount();
+        void setMenuItemListIntToggleList(uint8_t* list);
+        void setMenuItemListIntToggleState(uint8_t* state);
+        void setMenuItemListIntToggleCount(uint8_t count);
         void toggleMenuItemListInt(uint8_t item);
 
         uint8_t getMenuItemSavedTop();
@@ -123,6 +126,7 @@ class MenuItemListIntToggle : public MenuItem
 {
     public:
         MenuItemListIntToggle(uint8_t* items, uint8_t* states, uint8_t count) : MenuItem(items, states, count, c_menuItemTypeListIntToggle) {}
+        MenuItemListIntToggle() : MenuItem(c_menuItemTypeListIntToggle) {}
 };
 
 class MenuItemTwoIntFullScreenHeader : public MenuItem
@@ -177,11 +181,13 @@ class Menu
             m_menuCursorVisible(false),
             m_menuListCursorVisible(false) {}
 
-        void menuSetup(MenuItem* menu);
+        void menuSetup(MenuItem* menu, bool display);
         void menuCursorUp();
         void menuCursorDown();
         void menuCursorEnter();
         void menuRefresh();
+        uint8_t getMenuType();
+        uint8_t getCurrentItemType();
 };
 
 #endif

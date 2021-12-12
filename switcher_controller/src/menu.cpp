@@ -45,6 +45,21 @@ uint8_t MenuItem::getMenuItemListIntToggleCount()
     return m_menuItemListIntToggleCount;
 }
 
+void MenuItem::setMenuItemListIntToggleList(uint8_t* list)
+{
+    m_menuItemListIntToggleList = list;
+}
+
+void MenuItem::setMenuItemListIntToggleState(uint8_t* state)
+{
+    m_menuItemListIntToggleState = state;
+}
+
+void MenuItem::setMenuItemListIntToggleCount(uint8_t count)
+{
+    m_menuItemListIntToggleCount = count;
+}
+
 void MenuItem::toggleMenuItemListInt(uint8_t item)
 {
     uint8_t* states = getMenuItemListIntToggleState();
@@ -278,11 +293,15 @@ uint8_t Menu::getCurrentMenuHeaderType()
     return m_currentMenuArray[0].getMenuItemType();
 }
 
-void Menu::menuSetup(MenuItem* menu)
+void Menu::menuSetup(MenuItem* menu, bool display)
 {
     m_display.displaySetup();
     m_currentMenuArray = menu;
-    displayMenu();
+
+    if (display)
+    {
+        displayMenu();
+    }
 }
 
 void Menu::menuCursorUp()
@@ -427,4 +446,14 @@ void Menu::menuCursorEnter()
 void Menu::menuRefresh()
 {
     displayMenu();
+}
+
+uint8_t Menu::getMenuType()
+{
+    return getCurrentMenuHeaderType();
+}
+
+uint8_t Menu::getCurrentItemType()
+{
+    return getCurrentMenuItemType();
 }
