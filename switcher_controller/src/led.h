@@ -11,6 +11,9 @@ class Led
     protected:
         uint8_t m_pin; // LED pin #
         uint8_t m_ledState = 0;
+        uint32_t m_blinkTime = 0;
+        uint32_t m_lastBlinkTime = 0;
+        uint8_t m_lastBlinkState = 0;
 
     public:
         /**
@@ -60,6 +63,8 @@ class Led
          * @param state
          */
         void setLedState(uint8_t state);
+
+        void blinkLed(uint8_t interval);
 };
 
 class PwmLed : public Led

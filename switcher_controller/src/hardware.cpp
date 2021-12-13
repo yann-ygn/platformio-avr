@@ -137,16 +137,21 @@ void Hardware::hardwarePoll()
     }
     else if (m_presetEditMenuDisplay)
     {
-        selectorSwitch.tempSwitchPoll();
-
         if (selector.encoderPoll())
         {
             m_selectorMove = true;
         }
 
+        selectorSwitch.tempSwitchPoll();
         if (selectorSwitch.tempSwitchPushed())
         {
             m_selectorSwitchPress = true;
+        }
+
+        editSwitch.tempSwitchPoll();
+        if (editSwitch.tempSwitchLongPress())
+        {
+            m_editSwitchLongPress = true;
         }
     }
     else
@@ -287,6 +292,15 @@ void Hardware::loadPreset()
     presetLed.setLedStateByMask(0x3 + (1 << (m_currentPreset + 2)));
 
     presetMenu.menuRefresh();
+}
+
+void Hardware::savePreset()
+{
+    while (! editSwitch.tempSwitchReleased())
+    {
+        editSwitchLed.blinkLed(100);
+        editSwitch.tempSwitchPoll();
+    }
 }
 
 bool Hardware::getSelectorMove()

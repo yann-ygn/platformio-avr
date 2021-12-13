@@ -48,6 +48,11 @@ void loop()
     {
       hardware.processSelectorSwitch();
     }
+
+    if (hardware.getEditSwitchLongPress())
+    {
+      hardware.savePreset();
+    }
   }
 
   hardware.resetHardwareTriggers();

@@ -69,6 +69,27 @@ void Led::setLedState(uint8_t state)
     m_ledState = state;
 }
 
+void Led::blinkLed(uint8_t interval)
+{
+    m_blinkTime = millis();
+
+    if ((m_blinkTime - m_lastBlinkTime) >= interval)
+    {
+        if (m_lastBlinkState)
+        {
+            m_lastBlinkState = 0;
+            ledTurnOff();
+        }
+        else
+        {
+            m_lastBlinkState = 1;
+            ledTurnOn();
+        }
+
+        m_lastBlinkTime = m_blinkTime;
+    }
+}
+
 void PwmLed::setPwmLedState(uint8_t state)
 {
     m_ledState = state;
