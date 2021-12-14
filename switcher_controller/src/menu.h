@@ -188,6 +188,7 @@ class Menu
         void menuRefresh();
         uint8_t getMenuType();
         uint8_t getCurrentItemType();
+        uint8_t getMenuListCursorPosition();
 };
 
 #endif

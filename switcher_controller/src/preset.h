@@ -28,6 +28,10 @@ class Preset
 
         uint8_t* getLoops();
         uint8_t* getLoopsStates();
+
+        void setLoopState(uint8_t loop, uint8_t state);
+        uint8_t getLoopState(uint8_t loop);
+        void toggleLoopState(uint8_t loop);
 };
 
 #endif

@@ -10,16 +10,6 @@ void Preset::presetSetup(uint8_t bank, uint8_t preset, Loops* loops, uint8_t loo
     m_presetLoops->LoopsSetup();
 }
 
-uint8_t* Preset::getLoops()
-{
-    return m_presetLoops->getLoops();
-}
-
-uint8_t* Preset::getLoopsStates()
-{
-    return m_presetLoops->getStates();
-}
-
 uint8_t Preset::getBank()
 {
     return m_bank;
@@ -38,4 +28,29 @@ uint8_t* Preset::getPreset()
 void Preset::setPreset(uint8_t preset)
 {
     m_preset = preset;
+}
+
+uint8_t* Preset::getLoops()
+{
+    return m_presetLoops->getLoops();
+}
+
+uint8_t* Preset::getLoopsStates()
+{
+    return m_presetLoops->getStates();
+}
+
+void Preset::setLoopState(uint8_t loop, uint8_t state)
+{
+    m_presetLoops->setLoopState(loop, state);
+}
+
+uint8_t Preset::getLoopState(uint8_t loop)
+{
+    return m_presetLoops->getLoopState(loop);
+}
+
+void Preset::toggleLoopState(uint8_t loop)
+{
+    m_presetLoops->toggleLoopState(loop);
 }

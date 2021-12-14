@@ -453,3 +453,8 @@ uint8_t Menu::getCurrentItemType()
 {
     return getCurrentMenuItemType();
 }
+
+uint8_t Menu::getMenuListCursorPosition()
+{
+    return m_menuListCursorPosition;
+}
