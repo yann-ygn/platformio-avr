@@ -127,7 +127,7 @@ void Display::printMenuCursor(uint8_t line)
 void Display::printListMenuCursor(uint8_t column)
 {
     setCursorY((m_height / 2) - c_newTab);
-    setCursorX(map(column, 1, 6, 0, 80));
+    setCursorX(map(column, 0, 5, 0, 80));
     m_ssd1306.write(c_scrollDownArrow);
 }
 

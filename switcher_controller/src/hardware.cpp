@@ -219,6 +219,10 @@ void Hardware::processSelectorSwitch()
     {
         p_currentMenu->menuCursorEnter();
     }
+    else if (p_currentMenu->getCurrentItemType() == c_menuItemTypeListIntToggle)
+    {
+        p_currentMenu->menuCursorEnter();
+    }
 }
 
 void Hardware::menuSetup()
@@ -301,6 +305,13 @@ void Hardware::savePreset()
         editSwitchLed.blinkLed(100);
         editSwitch.tempSwitchPoll();
     }
+
+    mem.writePreset(m_currentPresetBank, p_currentPreset->getPreset(), p_currentPreset->getLoops(), p_currentPreset->getLoopsStates(), c_maxLoops);
+
+    resetMenuStates();
+    m_presetMenuDisplay = true;
+    p_currentMenu = &presetMenu;
+    p_currentMenu->menuRefresh();
 }
 
 bool Hardware::getSelectorMove()

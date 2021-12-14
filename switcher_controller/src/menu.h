@@ -152,7 +152,7 @@ class Menu
         uint8_t m_menuBottomItem;
         uint8_t m_menuCursorPosition = 1; // 0 is always the header
         bool m_menuCursorVisible = true;
-        uint8_t m_menuListCursorPosition = 1;
+        uint8_t m_menuListCursorPosition = 0;
         bool m_menuListCursorVisible = false;
 
         void drawMenu();

@@ -270,7 +270,7 @@ void Menu::resetMenuPosition()
     m_menuTopItem = 1;
     m_menuBottomItem = m_menuMaxLines;
     m_menuCursorPosition = 1;
-    m_menuListCursorPosition = 1;
+    m_menuListCursorPosition = 0;
 }
 
 MenuItem* Menu::getCurrentMenuItem()
@@ -315,7 +315,7 @@ void Menu::menuCursorUp()
             m_menuListCursorVisible = true;
             m_menuCursorVisible = false;
 
-            if (m_menuListCursorPosition < item->getMenuItemListIntToggleCount())
+            if (m_menuListCursorPosition < item->getMenuItemListIntToggleCount() - 1)
             {
                 m_menuListCursorPosition++;
             }
@@ -344,8 +344,6 @@ void Menu::menuCursorUp()
         }
     }
 
-    Serial.println(m_menuCursorPosition);
-    Serial.println(m_menuListCursorPosition);
     displayMenu();
 }
 
@@ -360,7 +358,7 @@ void Menu::menuCursorDown()
             m_menuListCursorVisible = true;
             m_menuCursorVisible = false;
 
-            if (m_menuListCursorPosition > 1)
+            if (m_menuListCursorPosition > 0)
             {
                 m_menuListCursorPosition--;
             }
@@ -389,8 +387,6 @@ void Menu::menuCursorDown()
         }
     }
 
-    Serial.println(m_menuCursorPosition);
-    Serial.println(m_menuListCursorPosition);
     displayMenu();
 }
 
