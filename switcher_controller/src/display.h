@@ -120,14 +120,21 @@ class Display
         void printMenuCursor(uint8_t line);
 
         /**
-         * @brief 
-         * 
-         * @param column 
+         * @brief Draw the list cursor at x = column * text lenght
          */
         void printListMenuCursor(uint8_t column);
 
+        /**
+         * @brief Print a new line
+         */
         void printNewLine();
 
+        /**
+         * @brief Prints two number with a separator in full screen
+         *
+         * @param number
+         * @param number2
+         */
         void printTwoIntFullScreen(uint8_t* number, uint8_t* number2);
 
         /**

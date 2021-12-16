@@ -53,7 +53,7 @@ class Encoder
             m_maxCounterValue(maxvalue) {}
 
         /**
-         * @brief Construct a new Encoder object
+         * @brief Construct a new Encoder object without setting the counter values
          *
          * @param pina // Encoder CLK pin #
          * @param pinb // Encoder DT pin #

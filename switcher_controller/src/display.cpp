@@ -90,21 +90,6 @@ void Display::printListNumbers(uint8_t* items, uint8_t* states, uint8_t count)
     newLine();
 }
 
-void Display::printNewLine()
-{
-    newLine();
-}
-
-void Display::printTwoIntFullScreen(uint8_t* number, uint8_t* number2)
-{
-    m_ssd1306.setFont(&SourceCodePro_Bold32pt7b);
-    setCursorY(m_height);
-    setCursorX(0);
-    m_ssd1306.write(*number);
-    m_ssd1306.print("|");
-    m_ssd1306.write(*number2);
-}
-
 void Display::printSubMenuIcon()
 {
     setCursorX(getWidth() - (c_newTab * 2)); // End of the line minues 2 tabs, first tab would be the scroll up/down arrows
@@ -129,6 +114,21 @@ void Display::printListMenuCursor(uint8_t column)
     setCursorY((m_height / 2) - c_newTab);
     setCursorX(map(column, 0, 5, 0, 80));
     m_ssd1306.write(c_scrollDownArrow);
+}
+
+void Display::printNewLine()
+{
+    newLine();
+}
+
+void Display::printTwoIntFullScreen(uint8_t* number, uint8_t* number2)
+{
+    m_ssd1306.setFont(&SourceCodePro_Bold32pt7b);
+    setCursorY(m_height);
+    setCursorX(0);
+    m_ssd1306.write(*number);
+    m_ssd1306.print("|");
+    m_ssd1306.write(*number2);
 }
 
 void Display::printScrollUpArrow()

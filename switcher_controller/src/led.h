@@ -64,6 +64,11 @@ class Led
          */
         void setLedState(uint8_t state);
 
+        /**
+         * @brief Blink the LED
+         *
+         * @param interval ON/OFF interval
+         */
         void blinkLed(uint8_t interval);
 };
 

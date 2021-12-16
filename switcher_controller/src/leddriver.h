@@ -124,11 +124,21 @@ class LedDriver16 : public LedDriver
 
         /**
          * @brief Reset the blink state
-         *
          */
         void resetBlink();
 
+        /**
+         * @brief Set the driver's state using a 16bit mask variable
+         *
+         * @param mask driver's mask
+         */
         void setLedStateByMask(uint16_t mask);
+
+        /**
+         * @brief Get the Led Driver Mask object
+         *
+         * @return uint16_t
+         */
         uint16_t getLedDriverMask();
 
         #ifdef DEBUG

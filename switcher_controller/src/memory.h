@@ -6,7 +6,7 @@
 #define MEMORY_H
 
 /**
- * @brief Manages
+ * @brief Interface between the hardware and the eeprom
  */
 class Memory
 {
