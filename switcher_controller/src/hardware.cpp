@@ -309,6 +309,7 @@ void Hardware::savePreset()
 
     mem.writePreset(m_currentPresetBank, p_currentPreset->getPreset(), p_currentPreset->getLoops(), p_currentPreset->getLoopsStates(), c_maxLoops);
 
+    p_currentMenu->menuReset(presetEdit);
     resetMenuStates();
     m_presetMenuDisplay = true;
     p_currentMenu = &presetMenu;

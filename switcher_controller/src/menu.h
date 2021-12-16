@@ -186,6 +186,7 @@ class Menu
         void menuCursorDown();
         void menuCursorEnter();
         void menuRefresh();
+        void menuReset(MenuItem* activemenu);
         uint8_t getMenuType();
         uint8_t getCurrentItemType();
         uint8_t getMenuListCursorPosition();

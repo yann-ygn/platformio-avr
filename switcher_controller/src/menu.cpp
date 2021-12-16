@@ -444,6 +444,12 @@ void Menu::menuRefresh()
     displayMenu();
 }
 
+void Menu::menuReset(MenuItem* activemenu)
+{
+    m_currentMenuArray = activemenu;
+    resetMenuPosition();
+}
+
 uint8_t Menu::getMenuType()
 {
     return getCurrentMenuHeaderType();
