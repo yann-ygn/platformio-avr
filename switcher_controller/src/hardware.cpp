@@ -222,7 +222,7 @@ void Hardware::processSelectorSwitch()
     else if (p_currentMenu->getCurrentItemType() == c_menuItemTypeListIntToggle)
     {
         p_currentPreset->toggleLoopState(p_currentMenu->getMenuListCursorPosition());
-        p_currentMenu->menuCursorEnter();
+        p_currentMenu->menuRefresh();
     }
 }
 

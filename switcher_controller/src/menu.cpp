@@ -432,8 +432,8 @@ void Menu::menuCursorEnter()
             }
 
         case c_menuItemTypeListIntToggle:
-            item->toggleMenuItemListInt(m_menuListCursorPosition);
-            displayMenu();
+            //item->toggleMenuItemListInt(m_menuListCursorPosition);
+            //displayMenu();
 
             break;
     }
