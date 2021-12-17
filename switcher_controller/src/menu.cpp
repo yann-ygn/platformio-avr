@@ -447,6 +447,8 @@ void Menu::menuRefresh()
 void Menu::menuReset(MenuItem* activemenu)
 {
     m_currentMenuArray = activemenu;
+    m_menuListCursorVisible = false;
+    m_menuCursorVisible = true;
     resetMenuPosition();
 }
 
