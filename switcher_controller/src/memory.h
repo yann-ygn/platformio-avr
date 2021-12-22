@@ -17,8 +17,8 @@ class Memory
         const uint8_t c_currentPresetBankAddress = 1;
         const uint8_t c_currentPresetAddress = 2;
         const uint8_t c_presetSaveStartAddress = 128;
-        const uint8_t c_presetBankSaveSize = 64;
-        const uint8_t c_presetSaveSize = 16;
+        const uint8_t c_presetBankSaveSize = 252;
+        const uint8_t c_presetSaveSize = 63;
 
     public:
         Memory(uint8_t pin) : eeprom0(pin) {}
@@ -37,8 +37,8 @@ class Memory
         uint8_t readCurrentPreset();
         void writeCurrentPreset(uint8_t preset);
 
-        void writePreset(uint8_t bank, uint8_t* preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
-        void readPreset(uint8_t bank, uint8_t* preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount);
+        void writePreset(uint8_t bank, uint8_t* preset, uint8_t* loopsid, uint8_t* loopsstate, uint8_t* loopsorder, uint8_t loopscount);
+        void readPreset(uint8_t bank, uint8_t* preset, uint8_t* loopsid, uint8_t* loopsstate, uint8_t* loopsorder, uint8_t loopscount);
 };
 
 #endif

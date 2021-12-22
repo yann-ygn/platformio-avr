@@ -43,16 +43,28 @@ void Memory::memoryReset()
     uint8_t startPreset = 48; // 0
     uint8_t maxPresetBanks = 10; // Number of banks
     uint8_t maxPresets = 4; // Number of presets per banks
-    uint8_t maxLoops = 6; // Number of loops per preset
+    uint8_t startLoop = 49; // 1
+    uint8_t bufferLoop = 66; // B
+    uint8_t maxLoops = 8; // Number of loops per preset
 
     uint8_t loops[maxLoops] = {0};
     uint8_t states[maxLoops] = {0};
+    uint8_t orders[maxLoops] = {0};
     uint8_t* loopsptr = loops;
     uint8_t* statesptr = states;
+    uint8_t* ordersptr = orders;
+
+    for (uint8_t i = 0; i < maxLoops - 2; i++) // Last 2 loops are reserved for the internal buffers
+    {
+        loops[i] = startLoop + i;
+    }
+
+    loops[maxLoops - 1] = bufferLoop; // Buffer 1
+    loops[maxLoops - 2] = bufferLoop; // Buffer 2
 
     for (uint8_t i = 0; i < maxLoops; i++)
     {
-        loops[i] = i;
+        orders[i] = i;
     }
 
     writeInitialSetupState(1);
@@ -63,7 +75,7 @@ void Memory::memoryReset()
     {
         for (uint8_t j = startPreset; j < startPreset + maxPresets; j++)
         {
-            writePreset(i, &j, loopsptr, statesptr, maxLoops);
+            writePreset(i, &j, loopsptr, statesptr, ordersptr, maxLoops);
         }
     }
 }
@@ -134,7 +146,7 @@ void Memory::writeCurrentPreset(uint8_t preset)
     #endif
 }
 
-void Memory::writePreset(uint8_t bank, uint8_t* preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
+void Memory::writePreset(uint8_t bank, uint8_t* preset, uint8_t* loopsid, uint8_t* loopsstate, uint8_t* loopsorder, uint8_t loopscount)
 {
     uint16_t startAdress = c_presetSaveStartAddress + ((bank - 65) * c_presetBankSaveSize) + (c_presetSaveSize * (*preset - 48));
 
@@ -158,24 +170,29 @@ void Memory::writePreset(uint8_t bank, uint8_t* preset, uint8_t* loop, uint8_t* 
         Serial.println(*preset);
     #endif
 
-    eeprom0.writeArray(startAdress, loop, loopcount);
-    startAdress += loopcount;
+    eeprom0.writeArray(startAdress, loopsid, loopscount);
+    startAdress += loopscount;
 
-    eeprom0.writeArray(startAdress, loopstate, loopcount);
-    startAdress += loopcount;
+    eeprom0.writeArray(startAdress, loopsstate, loopscount);
+    startAdress += loopscount;
+
+    eeprom0.writeArray(startAdress, loopsorder, loopscount);
+    startAdress += loopscount;
 
     #ifdef DEBUG
-        for (uint8_t i = 0; i < loopcount; i++)
+        for (uint8_t i = 0; i < loopscount; i++)
         {
-            Serial.print("Loop ");
-            Serial.print(loop[i]);
-            Serial.print(" : | State : ");
-            Serial.println(loopstate[i]);
+            Serial.print("Loop : ");
+            Serial.print(loopsid[i]);
+            Serial.print(" | Order : ");
+            Serial.print(loopsorder[i]);
+            Serial.print(" | State : ");
+            Serial.println(loopsstate[i]);
         }
     #endif
 }
 
-void Memory::readPreset(uint8_t bank, uint8_t* preset, uint8_t* loop, uint8_t* loopstate, uint8_t loopcount)
+void Memory::readPreset(uint8_t bank, uint8_t* preset, uint8_t* loopsid, uint8_t* loopsstate, uint8_t* loopsorder, uint8_t loopscount)
 {
     uint16_t startAdress = c_presetSaveStartAddress + ((bank - 65) * c_presetBankSaveSize) + (c_presetSaveSize * (*preset));
 
@@ -204,23 +221,27 @@ void Memory::readPreset(uint8_t bank, uint8_t* preset, uint8_t* loop, uint8_t* l
         Serial.println(*preset);
     #endif
 
-    eeprom0.readArray(startAdress, loop, loopcount);
-    startAdress += loopcount;
+    eeprom0.readArray(startAdress, loopsid, loopscount);
+    startAdress += loopscount;
 
-    eeprom0.readArray(startAdress, loopstate, loopcount);
-    startAdress += loopcount;
+    eeprom0.readArray(startAdress, loopsstate, loopscount);
+    startAdress += loopscount;
+
+    eeprom0.readArray(startAdress, loopsorder, loopscount);
+    startAdress += loopscount;
 
     #ifdef DEBUG
-        for (uint8_t i = 0; i < loopcount; i++)
+        for (uint8_t i = 0; i < loopscount; i++)
         {
-            Serial.print("Loop ");
-            Serial.print(loop[i]);
-            Serial.print(" : | State : ");
-            Serial.println(loopstate[i]);
+            Serial.print("Loop : ");
+            Serial.print(loopsid[i]);
+            Serial.print(" | Order : ");
+            Serial.print(loopsorder[i]);
+            Serial.print(" | State : ");
+            Serial.println(loopsstate[i]);
         }
     #endif
 }
-
 
 void Memory::memoryTest()
 {

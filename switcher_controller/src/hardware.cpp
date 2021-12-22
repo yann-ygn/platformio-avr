@@ -274,7 +274,7 @@ void Hardware::loadPresetBank()
     for (uint8_t i = 0; i < c_maxPresets; i++)
     {
         presetBank[i].presetSetup(m_currentPresetBank, i, &presetLoops[i], c_maxLoops);
-        mem.readPreset(presetBank[i].getBank(), presetBank[i].getPreset(), presetBank[i].getLoops(), presetBank[i].getLoopsStates(), c_maxLoops);
+        mem.readPreset(presetBank[i].getBank(), presetBank[i].getPreset(), presetBank[i].getPresetLoopsId(), presetBank[i].getPresetLoopsStates(), presetBank[i].getPresetLoopsOrder(), c_maxLoops);
     }
 
     //p_currentPreset = &presetBank[0];
@@ -290,8 +290,8 @@ void Hardware::loadPreset()
     mem.writeCurrentPreset(*p_currentPreset->getPreset());
 
     preset[2].setMenuItemIntValue(p_currentPreset->getPreset());
-    presetEditLoops[1].setMenuItemListIntToggleList(p_currentPreset->getLoops());
-    presetEditLoops[1].setMenuItemListIntToggleState(p_currentPreset->getLoopsStates());
+    presetEditLoops[1].setMenuItemListIntToggleList(p_currentPreset->getPresetLoopsId());
+    presetEditLoops[1].setMenuItemListIntToggleState(p_currentPreset->getPresetLoopsStates());
     presetEditLoops[1].setMenuItemListIntToggleCount(c_maxLoops);
 
     presetLed.setLedStateByMask(0x3 + (1 << (m_currentPreset + 2)));
@@ -307,7 +307,7 @@ void Hardware::savePreset()
         editSwitch.tempSwitchPoll();
     }
 
-    mem.writePreset(m_currentPresetBank, p_currentPreset->getPreset(), p_currentPreset->getLoops(), p_currentPreset->getLoopsStates(), c_maxLoops);
+    mem.writePreset(m_currentPresetBank, p_currentPreset->getPreset(), p_currentPreset->getPresetLoopsId(), p_currentPreset->getPresetLoopsStates(), p_currentPreset->getPresetLoopsOrder(), c_maxLoops);
 
     p_currentMenu->menuReset(presetEdit);
     resetMenuStates();
