@@ -57,7 +57,7 @@ void Display::printMenuItem(const char* text)
     m_ssd1306.print(text);
 }
 
-void Display::printListNumbers(uint8_t* items, uint8_t* states, uint8_t count)
+void Display::printListNumbers(uint8_t* items, uint8_t* states, uint8_t* orders, uint8_t count)
 {
     uint8_t cursor = getCursorY();
     setCursorY(m_height / 2);
