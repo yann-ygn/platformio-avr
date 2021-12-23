@@ -70,7 +70,7 @@ void Hardware::hardwareSetup()
     preset3Fsw.tempSwitchSetup();
     presetLed.ledDriverSetup();
 
-    //mem.memoryReset();
+    mem.memoryReset();
 }
 
 void Hardware::hardwarePoll()

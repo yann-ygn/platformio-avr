@@ -102,7 +102,7 @@ class Display
          * @param highlight 1 = hightlighted, 0 = not highlighted
          * @param count Number of items in the array
          */
-        void printListNumbers(uint8_t* items, uint8_t* states, uint8_t* orders, uint8_t count);
+        void printListNumbers(uint8_t* items, uint8_t* states, /**uint8_t* orders,**/ uint8_t count);
 
         /**
          * @brief Print a sub icon at the end of the current line
