@@ -45,22 +45,19 @@ void Memory::memoryReset()
     uint8_t maxPresets = 4; // Number of presets per banks
     uint8_t startLoop = 49; // 1
     uint8_t bufferLoop = 66; // B
-    uint8_t maxLoops = 8; // Number of loops per preset
+    uint8_t maxLoops = 6; // Number of loops per preset
 
     uint8_t loops[maxLoops] = {0};
     uint8_t states[maxLoops] = {0};
     uint8_t orders[maxLoops] = {0};
-    uint8_t* loopsptr = loops;
-    uint8_t* statesptr = states;
-    uint8_t* ordersptr = orders;
 
-    for (uint8_t i = 0; i < maxLoops - 2; i++) // Last 2 loops are reserved for the internal buffers
+    for (uint8_t i = 0; i < maxLoops; i++) // Last 2 loops are reserved for the internal buffers
     {
         loops[i] = startLoop + i;
     }
 
-    loops[maxLoops - 1] = bufferLoop; // Buffer 1
-    loops[maxLoops - 2] = bufferLoop; // Buffer 2
+    //loops[maxLoops - 1] = bufferLoop; // Buffer 1
+    //loops[maxLoops - 2] = bufferLoop; // Buffer 2
 
     for (uint8_t i = 0; i < maxLoops; i++)
     {
@@ -75,7 +72,7 @@ void Memory::memoryReset()
     {
         for (uint8_t j = startPreset; j < startPreset + maxPresets; j++)
         {
-            writePreset(i, &j, loopsptr, statesptr, ordersptr, maxLoops);
+            writePreset(i, &j, &loops[0], &states[0], &orders[0], maxLoops);
         }
     }
 }

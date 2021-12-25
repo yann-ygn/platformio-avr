@@ -15,7 +15,7 @@ const uint8_t c_maxPresetBanks = 10;
 const uint8_t c_firstPreset = 48; // 0
 const uint8_t c_maxPresets = 4;
 const uint8_t c_firstLoop = 0;
-const uint8_t c_maxLoops = 8;
+const uint8_t c_maxLoops = 6;
 
 class Hardware
 {
