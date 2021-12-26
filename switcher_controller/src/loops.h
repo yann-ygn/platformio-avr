@@ -70,6 +70,8 @@ class Loops
 
         uint8_t getLoopOrder(uint8_t loop);
 
+        uint8_t getLoopIdByOrder(uint8_t order);
+
         void setLoopOrder(uint8_t loop, uint8_t order);
 
         uint8_t getLoopIn(uint8_t loop);

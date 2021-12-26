@@ -42,6 +42,22 @@ uint8_t Loops::getLoopOrder(uint8_t loop)
     return m_loopsOrder[loop];
 }
 
+uint8_t Loops::getLoopIdByOrder(uint8_t order)
+{
+    uint8_t returnId = 0;
+
+    for (uint8_t i = 0; i < m_loopsCount; i++)
+    {
+        if (m_loopsOrder[i] == order)
+        {
+            returnId =  m_loopsId[i];
+            break;
+        }
+    }
+
+    return returnId;
+}
+
 void Loops::setLoopOrder(uint8_t loop, uint8_t order)
 {
     m_loopsOrder[loop] = order;

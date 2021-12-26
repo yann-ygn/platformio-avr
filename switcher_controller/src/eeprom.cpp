@@ -127,7 +127,7 @@ void Eeprom::writeInt16(uint16_t address, uint16_t data)
 	SPI.transfer(data & 0xFF);
 	deselect();
 }
-
+/**
 void Eeprom::readArray(uint16_t address, uint8_t* data, uint8_t length)
 {
 	while (isWip()) {};
@@ -156,6 +156,23 @@ void Eeprom::writeArray(uint16_t address, uint8_t* data, uint8_t length)
 		SPI.transfer(data[i]);
 	}
 	deselect();
+}
+**/
+
+void Eeprom::readArray(uint16_t address, uint8_t* data, uint8_t length)
+{
+	for(uint8_t i = 0; i < length; i++)
+	{
+		data[i] = readInt8(address + i);
+	}
+}
+
+void Eeprom::writeArray(uint16_t address, uint8_t* data, uint8_t length)
+{
+	for(uint8_t i = 0; i < length; i++)
+	{
+		writeInt8(address + i, data[i]);
+	}
 }
 
 #ifdef DEBUG

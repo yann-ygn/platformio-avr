@@ -57,7 +57,7 @@ void Display::printMenuItem(const char* text)
     m_ssd1306.print(text);
 }
 
-void Display::printListNumbers(uint8_t* items, uint8_t* states, /**uint8_t* orders,**/ uint8_t count)
+void Display::printListNumbers(uint8_t* items, uint8_t* states, uint8_t* orders, uint8_t count, bool selected, uint8_t selecteditem)
 {
     uint8_t cursor = getCursorY();
     setCursorY(m_height / 2);
@@ -65,25 +65,33 @@ void Display::printListNumbers(uint8_t* items, uint8_t* states, /**uint8_t* orde
 
     for (uint8_t i = 0; i < count; i++)
     {
-        Serial.println(items[i]);
+        setCursorX((orders[i] * c_newTab) * 2);
+
         if (states[i])
         {
             m_ssd1306.setTextColor(BLACK, WHITE);
-            m_ssd1306.print(items[i]);
+            m_ssd1306.write(items[i]);
             m_ssd1306.setTextColor(WHITE);
             setCursorX(getCursorX() + c_newTab);
         }
         else
         {
-            m_ssd1306.print(items[i]);
+            m_ssd1306.write(items[i]);
             setCursorX(getCursorX() + c_newTab);
         }
 
-        if (i < count - 1)
+        if (orders[i] < count - 1)
         {
             m_ssd1306.write(c_menuCursor);
             setCursorX(getCursorX() + c_newTab);
         }
+    }
+
+    if (selected)
+    {
+        setCursorY(getCursorY() + c_newLine);
+        setCursorX((selecteditem * c_newTab) * 2);
+        m_ssd1306.write(c_selectedItem);
     }
 
     setCursorY(cursor);
@@ -112,7 +120,7 @@ void Display::printMenuCursor(uint8_t line)
 void Display::printListMenuCursor(uint8_t column)
 {
     setCursorY((m_height / 2) - c_newTab);
-    setCursorX(map(column, 0, 5, 0, 80));
+    setCursorX((column * c_newTab) * 2);
     m_ssd1306.write(c_scrollDownArrow);
 }
 

@@ -24,7 +24,10 @@ class MenuItem
         MenuItem* m_menuItemSubMenu = NULL;
         uint8_t* m_menuItemListIntToggleList = NULL;
         uint8_t* m_menuItemListIntToggleState = NULL;
+        uint8_t* m_menuItemListIntToggleOrder = NULL;
         uint8_t m_menuItemListIntToggleCount = 0;
+        bool m_menuItemListIntToggleHasSelectedItem = false;
+        uint8_t m_menuItemListIntToggleSelectedItem = 0;
 
         uint8_t m_menuItemSavedTop = 0;
         uint8_t m_menuItemSavedBottom = 0;
@@ -71,10 +74,16 @@ class MenuItem
 
         uint8_t* getMenuItemListIntToggleList();
         uint8_t* getMenuItemListIntToggleState();
+        uint8_t* getMenuItemListIntToggleOrder();
         uint8_t getMenuItemListIntToggleCount();
+        bool getMenuItemListIntToggleHasSelectedItem();
+        uint8_t getMenuItemListIntToggleSelectedItem();
         void setMenuItemListIntToggleList(uint8_t* list);
         void setMenuItemListIntToggleState(uint8_t* state);
+        void setMenuItemListIntToggleOrder(uint8_t* order);
         void setMenuItemListIntToggleCount(uint8_t count);
+        void setMenuItemListIntToggleHasSelectedItem(bool selected);
+        void setMenuItemListIntToggleSelectedItem(uint8_t utem);
         void toggleMenuItemListInt(uint8_t item);
 
         uint8_t getMenuItemSavedTop();

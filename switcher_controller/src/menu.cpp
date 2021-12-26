@@ -40,14 +40,34 @@ uint8_t* MenuItem::getMenuItemListIntToggleState()
     return m_menuItemListIntToggleState;
 }
 
+uint8_t* MenuItem::getMenuItemListIntToggleOrder()
+{
+    return m_menuItemListIntToggleOrder;
+}
+
 uint8_t MenuItem::getMenuItemListIntToggleCount()
 {
     return m_menuItemListIntToggleCount;
 }
 
+bool MenuItem::getMenuItemListIntToggleHasSelectedItem()
+{
+    return m_menuItemListIntToggleHasSelectedItem;
+}
+
+uint8_t MenuItem::getMenuItemListIntToggleSelectedItem()
+{
+    return m_menuItemListIntToggleSelectedItem;
+}
+
 void MenuItem::setMenuItemListIntToggleList(uint8_t* list)
 {
     m_menuItemListIntToggleList = list;
+}
+
+void MenuItem::setMenuItemListIntToggleOrder(uint8_t* order)
+{
+    m_menuItemListIntToggleOrder = order;
 }
 
 void MenuItem::setMenuItemListIntToggleState(uint8_t* state)
@@ -58,6 +78,16 @@ void MenuItem::setMenuItemListIntToggleState(uint8_t* state)
 void MenuItem::setMenuItemListIntToggleCount(uint8_t count)
 {
     m_menuItemListIntToggleCount = count;
+}
+
+void MenuItem::setMenuItemListIntToggleHasSelectedItem(bool selected)
+{
+    m_menuItemListIntToggleHasSelectedItem = selected;
+}
+
+void MenuItem::setMenuItemListIntToggleSelectedItem(uint8_t item)
+{
+    m_menuItemListIntToggleSelectedItem = item;
 }
 
 void MenuItem::toggleMenuItemListInt(uint8_t item)
@@ -127,7 +157,7 @@ void Menu::drawMenu()
                     break;
 
                 case c_menuItemTypeListIntToggle:
-                    m_display.printListNumbers(item->getMenuItemListIntToggleList(), item->getMenuItemListIntToggleState(), item->getMenuItemListIntToggleCount());
+                    m_display.printListNumbers(item->getMenuItemListIntToggleList(), item->getMenuItemListIntToggleState(), item->getMenuItemListIntToggleOrder(), item->getMenuItemListIntToggleCount(), item->getMenuItemListIntToggleHasSelectedItem(), item->getMenuItemListIntToggleSelectedItem());
                     break;
             }
         }
@@ -174,7 +204,7 @@ void Menu::drawMenu()
                     break;
 
                 case c_menuItemTypeListIntToggle:
-                    m_display.printListNumbers(item->getMenuItemListIntToggleList(), item->getMenuItemListIntToggleState(), item->getMenuItemListIntToggleCount());
+                    m_display.printListNumbers(item->getMenuItemListIntToggleList(), item->getMenuItemListIntToggleState(), item->getMenuItemListIntToggleOrder(), item->getMenuItemListIntToggleCount(), item->getMenuItemListIntToggleHasSelectedItem(), item->getMenuItemListIntToggleSelectedItem());
                     break;
 
                 default:

@@ -70,7 +70,7 @@ void Hardware::hardwareSetup()
     preset3Fsw.tempSwitchSetup();
     presetLed.ledDriverSetup();
 
-    mem.memoryReset();
+    //mem.memoryReset();
 }
 
 void Hardware::hardwarePoll()
@@ -292,6 +292,7 @@ void Hardware::loadPreset()
     preset[2].setMenuItemIntValue(p_currentPreset->getPreset());
     presetEditLoops[1].setMenuItemListIntToggleList(p_currentPreset->getPresetLoopsId());
     presetEditLoops[1].setMenuItemListIntToggleState(p_currentPreset->getPresetLoopsStates());
+    presetEditLoops[1].setMenuItemListIntToggleOrder(p_currentPreset->getPresetLoopsOrder());
     presetEditLoops[1].setMenuItemListIntToggleCount(c_maxLoops);
 
     presetLed.setLedStateByMask(0x3 + (1 << (m_currentPreset + 2)));

@@ -17,8 +17,8 @@ class Memory
         const uint8_t c_currentPresetBankAddress = 1;
         const uint8_t c_currentPresetAddress = 2;
         const uint8_t c_presetSaveStartAddress = 128;
-        const uint8_t c_presetBankSaveSize = 252;
-        const uint8_t c_presetSaveSize = 63;
+        const uint16_t c_presetBankSaveSize = 256;
+        const uint8_t c_presetSaveSize = 64;
 
     public:
         Memory(uint8_t pin) : eeprom0(pin) {}
