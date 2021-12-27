@@ -46,7 +46,12 @@ void loop()
 
     if (hardware.getSelectorwitchPress())
     {
-      hardware.processSelectorSwitch();
+      hardware.processSelectorSwitchPress();
+    }
+
+    if (hardware.getSelectorSwitchLongPress())
+    {
+      hardware.processSelectorSwitchLongPress();
     }
 
     if (hardware.getEditSwitchLongPress())

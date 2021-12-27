@@ -143,9 +143,14 @@ void Hardware::hardwarePoll()
         }
 
         selectorSwitch.tempSwitchPoll();
-        if (selectorSwitch.tempSwitchPushed())
+        if (selectorSwitch.tempSwitchReleased())
         {
             m_selectorSwitchPress = true;
+        }
+
+        if (selectorSwitch.tempSwitchLongPress())
+        {
+            m_selectorSwitchLongPress = true;
         }
 
         editSwitch.tempSwitchPoll();
@@ -212,7 +217,7 @@ void Hardware::processSelector()
     }
 }
 
-void Hardware::processSelectorSwitch()
+void Hardware::processSelectorSwitchPress()
 {
     if (p_currentMenu->getCurrentItemType() == c_menuItemTypeSubMenu ||
         p_currentMenu->getCurrentItemType() == c_menuItemTypeSubMenuBack )
@@ -222,6 +227,55 @@ void Hardware::processSelectorSwitch()
     else if (p_currentMenu->getCurrentItemType() == c_menuItemTypeListIntToggle)
     {
         p_currentPreset->toggleLoopState(p_currentMenu->getMenuListCursorPosition());
+        p_currentMenu->menuRefresh();
+    }
+}
+
+void Hardware::processSelectorSwitchLongPress()
+{
+    if (p_currentMenu->getCurrentItemType() == c_menuItemTypeListIntToggle)
+    {
+        uint8_t itemToSwap1Order = p_currentMenu->getMenuListCursorPosition();
+        uint8_t itemToSwap1 = p_currentPreset->getPresetLoopIdByOrder(itemToSwap1Order);
+
+        presetEditLoops[1].setMenuItemListIntToggleHasSelectedItem(true);
+        presetEditLoops[1].setMenuItemListIntToggleSelectedItem(itemToSwap1Order);
+        p_currentMenu->menuRefresh();
+
+        while (! selectorSwitch.tempSwitchReleased())
+        {
+            selectorSwitch.tempSwitchPoll();
+        }
+
+        m_presetEditSwapLoopDisplay = true;
+
+        while (m_presetEditSwapLoopDisplay)
+        {
+            selectorSwitch.tempSwitchPoll();
+
+            if (selector.encoderPoll())
+            {
+                processSelector();
+            }
+
+            if (selectorSwitch.tempSwitchReleased())
+            {
+                if (p_currentMenu->getCurrentItemType() == c_menuItemTypeListIntToggle)
+                {
+                    uint8_t itemToSwap2Order = p_currentMenu->getMenuListCursorPosition();
+                    uint8_t itemToSwap2 = p_currentPreset->getPresetLoopIdByOrder(itemToSwap2Order);
+
+                    if (itemToSwap1 != itemToSwap2)
+                    {
+                        p_currentPreset->swapPresetLoopsOrder(itemToSwap1, itemToSwap1Order, itemToSwap2, itemToSwap2Order);
+                        m_presetEditSwapLoopDisplay = false;
+                    }
+                }
+            }
+        }
+
+        presetEditLoops[1].setMenuItemListIntToggleHasSelectedItem(false);
+        presetEditLoops[1].setMenuItemListIntToggleSelectedItem(0);
         p_currentMenu->menuRefresh();
     }
 }

@@ -45,6 +45,17 @@ uint8_t* Preset::getPresetLoopsOrder()
     return m_presetLoops->getLoopsOrder();
 }
 
+void Preset::swapPresetLoopsOrder(uint8_t id1, uint8_t order1, uint8_t id2, uint8_t order2)
+{
+    m_presetLoops->setLoopOrder(id1, order2);
+    m_presetLoops->setLoopOrder(id2, order1);
+}
+
+uint8_t Preset::getPresetLoopIdByOrder(uint8_t order)
+{
+    return m_presetLoops->getLoopIdByOrder(order);
+}
+
 void Preset::setPresetLoopsInOut(uint8_t loop, uint8_t in, uint8_t out)
 {
     m_presetLoops->setLoopIn(loop, in);

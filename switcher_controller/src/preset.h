@@ -29,6 +29,8 @@ class Preset
         uint8_t* getPresetLoopsId();
         uint8_t* getPresetLoopsStates();
         uint8_t* getPresetLoopsOrder();
+        void swapPresetLoopsOrder(uint8_t id1, uint8_t order1, uint8_t id2, uint8_t order2);
+        uint8_t getPresetLoopIdByOrder(uint8_t order);
         void setPresetLoopsInOut(uint8_t loop, uint8_t in, uint8_t out);
         void setLoopState(uint8_t loop, uint8_t state);
         uint8_t getLoopState(uint8_t loop);

@@ -50,7 +50,7 @@ uint8_t Loops::getLoopIdByOrder(uint8_t order)
     {
         if (m_loopsOrder[i] == order)
         {
-            returnId =  m_loopsId[i];
+            returnId =  i;
             break;
         }
     }

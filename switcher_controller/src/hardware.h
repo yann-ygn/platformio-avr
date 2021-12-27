@@ -38,6 +38,7 @@ class Hardware
         // Menu States
         bool m_presetMenuDisplay = false;
         bool m_presetEditMenuDisplay = false;
+        bool m_presetEditSwapLoopDisplay = false;
         bool m_presetLoopEditMenuDisplay = false;
         bool m_mainMenuDisplay = false;
         Menu *p_currentMenu = NULL;
@@ -55,7 +56,8 @@ class Hardware
         void resetHardwareTriggers();
 
         void processSelector();
-        void processSelectorSwitch();
+        void processSelectorSwitchPress();
+        void processSelectorSwitchLongPress();
 
         void menuSetup();
         void resetMenuStates();
