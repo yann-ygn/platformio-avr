@@ -43,6 +43,22 @@ class Hardware
         const uint8_t c_buffer1LoopReturn = 1; // X1
         const uint8_t c_buffer2LoopSend = 13; // Y13
         const uint8_t c_buffer2LoopReturn = 2; // X1
+        const uint8_t c_loop0Send = 0;
+        const uint8_t c_loop0Return = 0;
+        const uint8_t c_loop1Send = 0;
+        const uint8_t c_loop1Return = 0;
+        const uint8_t c_loop2Send = 0;
+        const uint8_t c_loop2Return = 0;
+        const uint8_t c_loop3Send = 0;
+        const uint8_t c_loop3Return = 0;
+        const uint8_t c_loop4Send = 0;
+        const uint8_t c_loop4Return = 0;
+        const uint8_t c_loop5Send = 0;
+        const uint8_t c_loop5Return = 0;
+        const uint8_t c_loop6Send = 0;
+        const uint8_t c_loop6Return = 0;
+        const uint8_t c_loop7Send = 0;
+        const uint8_t c_loop7Return = 0;
         const uint8_t c_outputLoopSend = 0; // Y0;
 
         // Menu States

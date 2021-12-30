@@ -285,7 +285,17 @@ void Hardware::processSelectorSwitchLongPress()
 
 void Hardware::setupMatrixLoops()
 {
-
+    for (uint8_t i = 0; i < c_maxPresets; i++)
+    {
+        presetBank[i].setPresetLoopSendReturn(0, c_loop0Send, c_loop0Return);
+        presetBank[i].setPresetLoopSendReturn(1, c_loop1Send, c_loop1Return);
+        presetBank[i].setPresetLoopSendReturn(2, c_loop2Send, c_loop2Return);
+        presetBank[i].setPresetLoopSendReturn(3, c_loop3Send, c_loop3Return);
+        presetBank[i].setPresetLoopSendReturn(4, c_loop4Send, c_loop4Return);
+        presetBank[i].setPresetLoopSendReturn(5, c_loop5Send, c_loop5Return);
+        presetBank[i].setPresetLoopSendReturn(6, c_buffer1LoopSend, c_buffer1LoopReturn);
+        presetBank[i].setPresetLoopSendReturn(7, c_buffer2LoopSend, c_buffer2LoopReturn);
+    }
 }
 
 void Hardware::menuSetup()
@@ -338,9 +348,6 @@ void Hardware::loadPresetBank()
         presetBank[i].presetSetup(m_currentPresetBank, i, &presetLoops[i], c_maxLoops);
         mem.readPreset(presetBank[i].getBank(), presetBank[i].getPreset(), presetBank[i].getPresetLoopsId(), presetBank[i].getPresetLoopsStates(), presetBank[i].getPresetLoopsOrder(), c_maxLoops);
     }
-
-    //p_currentPreset = &presetBank[0];
-    //m_currentPreset = 0;
 
     loadPreset();
 }

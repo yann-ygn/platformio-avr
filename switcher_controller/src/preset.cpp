@@ -56,10 +56,10 @@ uint8_t Preset::getPresetLoopIdByOrder(uint8_t order)
     return m_presetLoops->getLoopIdByOrder(order);
 }
 
-void Preset::setPresetLoopsInOut(uint8_t loop, uint8_t in, uint8_t out)
+void Preset::setPresetLoopSendReturn(uint8_t loop, uint8_t send, uint8_t ret)
 {
-    m_presetLoops->setLoopIn(loop, in);
-    m_presetLoops->setLoopOut(loop, out);
+    m_presetLoops->setLoopSend(loop, send);
+    m_presetLoops->setLoopReturn(loop, ret);
 }
 
 void Preset::setLoopState(uint8_t loop, uint8_t state)
