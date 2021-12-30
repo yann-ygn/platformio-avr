@@ -63,24 +63,24 @@ void Loops::setLoopOrder(uint8_t loop, uint8_t order)
     m_loopsOrder[loop] = order;
 }
 
-uint8_t Loops::getLoopIn(uint8_t loop)
+uint8_t Loops::getLoopSend(uint8_t loop)
 {
-    return m_loopsIn[loop];
+    return m_loopsSend[loop];
 }
 
-void Loops::setLoopIn(uint8_t loop, uint8_t in)
+void Loops::setLoopSend(uint8_t loop, uint8_t send)
 {
-    m_loopsIn[loop] = in;
+    m_loopsSend[loop] = send;
 }
 
-uint8_t Loops::getLoopOut(uint8_t loop)
+uint8_t Loops::getLoopReturn(uint8_t loop)
 {
-    return m_loopsOut[loop];
+    return m_loopsReturn[loop];
 }
 
-void Loops::setLoopOut(uint8_t loops, uint8_t out)
+void Loops::setLoopReturn(uint8_t loop, uint8_t ret)
 {
-    m_loopsOut[loops] = out;
+    m_loopsReturn[loop] = ret;
 }
 
 uint8_t Loops::getLoopsCount()

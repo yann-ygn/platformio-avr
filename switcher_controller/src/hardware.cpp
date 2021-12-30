@@ -16,6 +16,8 @@ TemporarySwitch preset3Fsw(29, 1000);
 
 LedDriver16 presetLed(1);
 
+SwitchMatrix matrix(0);
+
 Preset presetBank[c_maxPresets];
 Loops presetLoops[c_maxPresets];
 
@@ -69,6 +71,7 @@ void Hardware::hardwareSetup()
     preset2Fsw.tempSwitchSetup();
     preset3Fsw.tempSwitchSetup();
     presetLed.ledDriverSetup();
+    matrix.switchMatrixSetup();
 
     //mem.memoryReset();
 }
@@ -278,6 +281,11 @@ void Hardware::processSelectorSwitchLongPress()
         presetEditLoops[1].setMenuItemListIntToggleSelectedItem(0);
         p_currentMenu->menuRefresh();
     }
+}
+
+void Hardware::setupMatrixLoops()
+{
+
 }
 
 void Hardware::menuSetup()

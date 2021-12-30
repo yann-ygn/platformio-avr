@@ -6,6 +6,7 @@
 #include "preset.h"
 #include "memory.h"
 #include "leddriver.h"
+#include "switchmatrix.h"
 
 #ifndef HARDWARE_H
 #define HARDWARE_H
@@ -36,13 +37,13 @@ class Hardware
         bool m_preset3FswPress = false;
 
         // Loops Ins/Outs
-        const uint8_t c_inputLoopFrom = 0; // X0
-        const uint8_t c_tunerLoopTo = 15; // Y15
-        const uint8_t c_buffer1LoopTo = 14; // Y14
-        const uint8_t c_buffer1LoopFrom = 1; // X1
-        const uint8_t c_buffer2LoopTo = 13; // Y13
-        const uint8_t c_buffer2LoopFrom = 2; // X1
-        const uint8_t c_outputLoopTo = 0; // Y0;
+        const uint8_t c_inputLoopReturn = 0; // X0
+        const uint8_t c_tunerLoopSend = 15; // Y15
+        const uint8_t c_buffer1LoopSend = 14; // Y14
+        const uint8_t c_buffer1LoopReturn = 1; // X1
+        const uint8_t c_buffer2LoopSend = 13; // Y13
+        const uint8_t c_buffer2LoopReturn = 2; // X1
+        const uint8_t c_outputLoopSend = 0; // Y0;
 
         // Menu States
         bool m_presetMenuDisplay = false;

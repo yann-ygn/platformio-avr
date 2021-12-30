@@ -13,8 +13,8 @@ class Loops
         uint8_t m_loopsId[16] = {0}; // Loops ID array
         uint8_t m_loopsState[16] = {0}; // Loops states array
         uint8_t m_loopsOrder[16] = {0};
-        uint8_t m_loopsIn[16] = {0};
-        uint8_t m_loopsOut[16] = {0};
+        uint8_t m_loopsSend[16] = {0};
+        uint8_t m_loopsReturn[16] = {0};
         uint8_t m_loopsCount = 0; // Number of loops
 
     public:
@@ -74,13 +74,13 @@ class Loops
 
         void setLoopOrder(uint8_t loop, uint8_t order);
 
-        uint8_t getLoopIn(uint8_t loop);
+        uint8_t getLoopSend(uint8_t loop);
 
-        void setLoopIn(uint8_t loop, uint8_t in);
+        void setLoopSend(uint8_t loop, uint8_t send);
 
-        uint8_t getLoopOut(uint8_t loop);
+        uint8_t getLoopReturn(uint8_t loop);
 
-        void setLoopOut(uint8_t loop, uint8_t out);
+        void setLoopReturn(uint8_t loop, uint8_t ret);
 
         /**
          * @brief Get the Count object
