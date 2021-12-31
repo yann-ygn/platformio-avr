@@ -43,22 +43,18 @@ class Hardware
         const uint8_t c_buffer1LoopReturn = 1; // X1
         const uint8_t c_buffer2LoopSend = 13; // Y13
         const uint8_t c_buffer2LoopReturn = 2; // X1
-        const uint8_t c_loop0Send = 0;
-        const uint8_t c_loop0Return = 0;
-        const uint8_t c_loop1Send = 0;
-        const uint8_t c_loop1Return = 0;
-        const uint8_t c_loop2Send = 0;
-        const uint8_t c_loop2Return = 0;
-        const uint8_t c_loop3Send = 0;
-        const uint8_t c_loop3Return = 0;
-        const uint8_t c_loop4Send = 0;
-        const uint8_t c_loop4Return = 0;
-        const uint8_t c_loop5Send = 0;
-        const uint8_t c_loop5Return = 0;
-        const uint8_t c_loop6Send = 0;
-        const uint8_t c_loop6Return = 0;
-        const uint8_t c_loop7Send = 0;
-        const uint8_t c_loop7Return = 0;
+        const uint8_t c_loop0Send = 12;
+        const uint8_t c_loop0Return = 3;
+        const uint8_t c_loop1Send = 11;
+        const uint8_t c_loop1Return = 4;
+        const uint8_t c_loop2Send = 10;
+        const uint8_t c_loop2Return = 5;
+        const uint8_t c_loop3Send = 9;
+        const uint8_t c_loop3Return = 6;
+        const uint8_t c_loop4Send = 8;
+        const uint8_t c_loop4Return = 7;
+        const uint8_t c_loop5Send = 7;
+        const uint8_t c_loop5Return = 8;
         const uint8_t c_outputLoopSend = 0; // Y0;
 
         // Menu States
@@ -86,7 +82,8 @@ class Hardware
         void processSelectorSwitchLongPress();
 
         void setupMatrixLoops();
-        void processMatrixLoops();
+        void connectMatrixLoops();
+        void connectTunerMatrixLoops();
 
         void menuSetup();
         void resetMenuStates();

@@ -16,7 +16,7 @@ TemporarySwitch preset3Fsw(29, 1000);
 
 LedDriver16 presetLed(1);
 
-SwitchMatrix matrix(0);
+SwitchMatrix matrix(2);
 
 Preset presetBank[c_maxPresets];
 Loops presetLoops[c_maxPresets];
@@ -298,6 +298,38 @@ void Hardware::setupMatrixLoops()
     }
 }
 
+void Hardware::connectMatrixLoops()
+{
+    uint8_t count = p_currentPreset->getActiveLoopsCount();
+    uint8_t order[count] = {0};
+    uint8_t orderIndex = 0;
+
+    for (uint8_t i = 0; i < c_maxLoops; i++)
+    {
+        if (p_currentPreset->getLoopState(i) == 1)
+        {
+            order[orderIndex] = p_currentPreset->getPresetLoopIdByOrder(i);
+            orderIndex++;
+        }
+    }
+
+    for (uint8_t i = 0; i <= count; i++)
+    {
+        if (i == 0) // First loop send needs to be connected to the input return
+        {
+            matrix.setSwitchArray(c_inputLoopReturn, p_currentPreset->getPresetLoopSend(order[i]), 1);
+        }
+        else if (i == count) // Last loop return needs to be connected to the output send
+        {
+            matrix.setSwitchArray(p_currentPreset->getPresetLoopReturn(order[i - 1]), c_outputLoopSend, 1);
+        }
+        else
+        {
+            matrix.setSwitchArray(p_currentPreset->getPresetLoopReturn(order[i - 1]), p_currentPreset->getPresetLoopSend(order[i]), 1);
+        }
+    }
+}
+
 void Hardware::menuSetup()
 {
     presetEditMenu.menuSetup(presetEdit, false);
@@ -349,6 +381,7 @@ void Hardware::loadPresetBank()
         mem.readPreset(presetBank[i].getBank(), presetBank[i].getPreset(), presetBank[i].getPresetLoopsId(), presetBank[i].getPresetLoopsStates(), presetBank[i].getPresetLoopsOrder(), c_maxLoops);
     }
 
+    setupMatrixLoops();
     loadPreset();
 }
 
@@ -378,6 +411,8 @@ void Hardware::savePreset()
     }
 
     mem.writePreset(m_currentPresetBank, p_currentPreset->getPreset(), p_currentPreset->getPresetLoopsId(), p_currentPreset->getPresetLoopsStates(), p_currentPreset->getPresetLoopsOrder(), c_maxLoops);
+
+    connectMatrixLoops();
 
     p_currentMenu->menuReset(presetEdit);
     resetMenuStates();

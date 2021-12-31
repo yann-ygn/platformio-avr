@@ -62,6 +62,16 @@ void Preset::setPresetLoopSendReturn(uint8_t loop, uint8_t send, uint8_t ret)
     m_presetLoops->setLoopReturn(loop, ret);
 }
 
+uint8_t Preset::getPresetLoopSend(uint8_t loop)
+{
+    return m_presetLoops->getLoopSend(loop);
+}
+
+uint8_t Preset::getPresetLoopReturn(uint8_t loop)
+{
+    return m_presetLoops->getLoopReturn(loop);
+}
+
 void Preset::setLoopState(uint8_t loop, uint8_t state)
 {
     m_presetLoops->setLoopState(loop, state);
@@ -75,4 +85,18 @@ uint8_t Preset::getLoopState(uint8_t loop)
 void Preset::toggleLoopState(uint8_t loop)
 {
     m_presetLoops->toggleLoopsState(loop);
+}
+
+uint8_t Preset::getActiveLoopsCount()
+{
+    uint8_t returnValue = 0;
+    for (uint8_t i = 0; i < m_presetLoops->getLoopsCount(); i++)
+    {
+        if (m_presetLoops->getLoopState(i) == 1)
+        {
+            returnValue ++;
+        }
+    }
+
+    return returnValue;
 }

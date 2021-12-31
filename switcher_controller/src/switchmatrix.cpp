@@ -1,3 +1,5 @@
+#define DEBUG 1
+
 #include "switchmatrix.h"
 
 void SwitchMatrix::select()
@@ -23,6 +25,13 @@ void SwitchMatrix::switchMatrixSetup()
 
 void SwitchMatrix::setSwitchArray(uint8_t y, uint8_t x, uint8_t value)
 {
+    #ifdef DEBUG
+        Serial.print("Connecting Y : ");
+        Serial.print(y);
+        Serial.print(" to X : ");
+        Serial.println(x);
+    #endif
+
     bitWrite(m_switchArray[y], x, value);
 }
 

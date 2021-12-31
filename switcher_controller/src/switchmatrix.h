@@ -18,6 +18,7 @@ class SwitchMatrix
         SwitchMatrix(uint8_t pin) : m_csPin(pin) {}
 
         void switchMatrixSetup();
+        void resetSwitchMatrix();
 
         /**
          * @brief Set the Switch Array object

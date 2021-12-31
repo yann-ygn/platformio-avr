@@ -32,9 +32,12 @@ class Preset
         void swapPresetLoopsOrder(uint8_t id1, uint8_t order1, uint8_t id2, uint8_t order2);
         uint8_t getPresetLoopIdByOrder(uint8_t order);
         void setPresetLoopSendReturn(uint8_t loop, uint8_t send, uint8_t ret);
+        uint8_t getPresetLoopSend(uint8_t loop);
+        uint8_t getPresetLoopReturn(uint8_t loop);
         void setLoopState(uint8_t loop, uint8_t state);
         uint8_t getLoopState(uint8_t loop);
         void toggleLoopState(uint8_t loop);
+        uint8_t getActiveLoopsCount();
 };
 
 #endif
