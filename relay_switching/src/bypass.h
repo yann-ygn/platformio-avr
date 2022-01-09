@@ -5,7 +5,7 @@
 
 /**
  * @brief A switch is connected to the µC along with a relay, an opticalrelay and an LED.
- * It has to be setup once, can read the state of the footswitch and swith the state 
+ * It has to be setup once, can read the state of the footswitch and swith the state
  * of the relay/opticalrelay/LED combination. A jumper is also connected and used to set the startup state.
  */
 class Bypass
@@ -30,9 +30,9 @@ class Bypass
 
         /**
          * @brief Read the footswitch state.
-         * 
+         *
          * @return true if LOW and if the debounce delay has passed and if its state changed since the last cycle.
-         * @return false 
+         * @return false
          */
         bool bypassPressed();
 

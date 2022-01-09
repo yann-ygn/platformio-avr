@@ -20,12 +20,12 @@ bool Bypass::bypassPressed()
 {
     m_switchState = digitalRead(c_switchPin);
 
-    if (m_switchState == LOW 
-    && m_now - m_lastPressTime > c_debounceTime 
+    if (m_switchState == LOW
+    && m_now - m_lastPressTime > c_debounceTime
     && m_switchState != m_lastSwitchState)
     {
         m_lastSwitchState = m_switchState;
-        m_lastPressTime = m_now;        
+        m_lastPressTime = m_now;
         return true;
     }
     else
