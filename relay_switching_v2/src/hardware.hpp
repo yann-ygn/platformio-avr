@@ -18,10 +18,14 @@ namespace hw {
     public:
       void setuphardware();
       void pollHardware();
+      void processHardware();
 
     private:
+      bool m_footswitchPushed = false;
+
       bool readStartupState();
       void toggleBypass();
+      void resetTriggers();
   };
 }
 

@@ -22,8 +22,16 @@ void Hardware::pollHardware() {
   footswitch.poll();
 
   if (footswitch.isPushed()) {
+    m_footswitchPushed = true;
+  }
+}
+
+void Hardware::processHardware() {
+  if (m_footswitchPushed == true) {
     toggleBypass();
   }
+
+  resetTriggers();
 }
 
 bool Hardware::readStartupState() {
@@ -37,4 +45,8 @@ void Hardware::toggleBypass() {
   stateLed.toggleState();
   delay(10);
   optocoupler.toggleState();
+}
+
+void Hardware::resetTriggers() {
+  m_footswitchPushed = false;
 }
