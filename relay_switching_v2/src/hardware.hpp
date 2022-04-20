@@ -21,6 +21,7 @@ namespace hw {
       void processHardware();
 
     private:
+      bool m_triggered = false;
       bool m_footswitchPushed = false;
 
       bool readStartupState();

@@ -23,15 +23,18 @@ void Hardware::pollHardware() {
 
   if (footswitch.isPushed()) {
     m_footswitchPushed = true;
+    m_triggered = true;
   }
 }
 
 void Hardware::processHardware() {
-  if (m_footswitchPushed == true) {
-    toggleBypass();
-  }
+  if (m_triggered) {
+    if (m_footswitchPushed == true) {
+      toggleBypass();
+    }
 
-  resetTriggers();
+    resetTriggers();
+  }
 }
 
 bool Hardware::readStartupState() {
@@ -48,5 +51,6 @@ void Hardware::toggleBypass() {
 }
 
 void Hardware::resetTriggers() {
+  m_triggered = false;
   m_footswitchPushed = false;
 }
