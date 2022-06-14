@@ -37,8 +37,8 @@ namespace hal {
       uint32_t m_deglitchTime = 0;
       uint32_t m_lastSwitchedTime = 0;
       uint32_t m_lastPushedTime = 0;
-      uint8_t m_deglitchPeriod = 30;
-      uint8_t m_debouncePeriod = 50;
+      const uint8_t m_deglitchPeriod = 30;
+      const uint8_t m_debouncePeriod = 50;
       uint16_t m_longPressPeriod;
 
       uint8_t m_switched = 0;

@@ -21,6 +21,9 @@ void Hardware::setuphardware() {
 void Hardware::pollHardware() {
   footswitch.poll();
 
+    m_footswitchPushed = true;
+    m_triggered = true;
+
   if (footswitch.isPushed()) {
     m_footswitchPushed = true;
     m_triggered = true;
@@ -31,6 +34,7 @@ void Hardware::processHardware() {
   if (m_triggered) {
     if (m_footswitchPushed == true) {
       toggleBypass();
+      delay(500);
     }
 
     resetTriggers();
