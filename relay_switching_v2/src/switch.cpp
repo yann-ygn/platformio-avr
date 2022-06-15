@@ -33,7 +33,7 @@ void TemporarySwitch::poll() {
     m_switched = 1;
   }
 
-  m_switched = 0;
+  m_longPress = 0;
 
   if (isReleased()) {
     m_longPressActive = false;

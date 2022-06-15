@@ -21,9 +21,6 @@ void Hardware::setuphardware() {
 void Hardware::pollHardware() {
   footswitch.poll();
 
-    m_footswitchPushed = true;
-    m_triggered = true;
-
   if (footswitch.isPushed()) {
     m_footswitchPushed = true;
     m_triggered = true;
@@ -42,7 +39,7 @@ void Hardware::processHardware() {
 }
 
 bool Hardware::readStartupState() {
-  return digitalRead(startupStatePin);
+  return !digitalRead(startupStatePin);
 }
 
 void Hardware::toggleBypass() {
