@@ -31,7 +31,6 @@ void Hardware::processHardware() {
   if (m_triggered) {
     if (m_footswitchPushed == true) {
       toggleBypass();
-      delay(500);
     }
 
     resetTriggers();
