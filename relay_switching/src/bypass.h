@@ -11,11 +11,11 @@
 class Bypass
 {
     private:
-        const byte c_relayPin = 3; // Relay pin #, to be set.
-        const byte c_ledPin = 1; // LED pin #, to be set.
+        const byte c_relayPin = 1; // Relay pin #, to be set.
+        const byte c_ledPin = 3; // LED pin #, to be set.
         const byte c_okPin = 2; // Optical relay pin #, to be set.
-        const byte c_switchPin = 4; // Footswitch pin #, to be set.
-        const byte c_startupPin = 0; // Startup state jumper pin #, to be set.
+        const byte c_switchPin = 0; // Footswitch pin #, to be set.
+        const byte c_startupPin = 4; // Startup state jumper pin #, to be set.
         unsigned long m_lastPressTime = 0;
         byte m_switchState = 0;
         byte m_lastSwitchState = 0;
